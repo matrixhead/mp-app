@@ -7,16 +7,17 @@ services:
       - '3306:3306'
     environment:
        MYSQL_DATABASE: 'my-app-db'
-       MYSQL_USER: 'root'
-       MYSQL_PASSWORD: 'password'
-       MYSQL_ROOT_PASSWORD: 'password'
+       MYSQL_USER: 'myuser'
+       MYSQL_PASSWORD: 'mypassword'
+       MYSQL_ROOT_PASSWORD: 'rootpassword'
   web:
     build: .
     command: python manage.py runserver 0.0.0.0:8000
+#    command: /bin/bash
     volumes:
-      - .:/my_app_dir
+      - ./my_projects:/my_projects
     ports:
       - "8000:8000"
     depends_on:
-      - db
+      - "db"
 
