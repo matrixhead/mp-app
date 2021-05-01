@@ -1,4 +1,4 @@
-version: "3"
+version: '3'
 services:
   mongo:
     image: mongo
@@ -6,3 +6,13 @@ services:
       - 27017:27017
     volumes:
       - ./mongodb/db/:/data/db
+  django:
+    build: ./django-project
+    volumes:
+      - ./django-project:/app
+    depends_on:
+      - mongo
+    ports:
+      - 8000:8000
+
+
