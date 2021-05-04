@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    #############################
+    'nivedhanamapp.apps.NivedhanamappConfig'
 ]
 
 MIDDLEWARE = [
@@ -77,6 +79,7 @@ DATABASES = {
     'default': {
            'ENGINE': 'djongo',
            'NAME': 'mpdb',
+           'ENFORCE_SCHEMA': False,
            'CLIENT': {
                 'host': 'mongo',
                 'port': 27017 ,
