@@ -10,6 +10,7 @@ services:
     build: ./django-project
     volumes:
       - ./django-project:/app
+      - ./flutter-project/build/web:/flutter-project/build/web
     depends_on:
       - mongo
     command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
