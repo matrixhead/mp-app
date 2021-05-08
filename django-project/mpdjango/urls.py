@@ -16,7 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include
 
+from helperfunctions.serveflutter import flutter_redirect
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',include('nivedhanamapp.urls')),
+    path('api/',include('nivedhanamapp.urls')),
+    ###########################
+    path('', lambda r: flutter_redirect(r, 'index.html')),
+    path('<path:resource>', flutter_redirect),
 ]
