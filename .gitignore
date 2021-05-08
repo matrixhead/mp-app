@@ -48,3 +48,5 @@ Thumbs.db
 *.mov
 *.wmv
 
+#  Test Db files
+/mongodb/db/*
