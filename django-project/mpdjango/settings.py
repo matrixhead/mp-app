@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'corsheaders',
     #############################
-    'nivedhanamapp.apps.NivedhanamappConfig'
+    'nivedhanamapp.apps.NivedhanamappConfig',
+    'customauth.apps.CustomauthConfig',
 ]
 
 MIDDLEWARE = [
@@ -84,7 +85,7 @@ DATABASES = {
     'default': {
            'ENGINE': 'djongo',
            'NAME': 'mpdb',
-           'ENFORCE_SCHEMA': False,
+           'ENFORCE_SCHEMA': True,
            'CLIENT': {
                 'host': 'mongo',
                 'port': 27017 ,
@@ -139,3 +140,5 @@ REST_FRAMEWORK = {
 }
 
 CORS_ORIGIN_ALLOW_ALL = True
+
+AUTH_USER_MODEL = 'customauth.User'

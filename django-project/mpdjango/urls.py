@@ -21,6 +21,7 @@ from helperfunctions.serveflutter import flutter_redirect
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/',include('nivedhanamapp.urls')),
+    path('',include('customauth.urls')),
     ###########################
     path('', lambda r: flutter_redirect(r, 'index.html')),
     path('<path:resource>', flutter_redirect),

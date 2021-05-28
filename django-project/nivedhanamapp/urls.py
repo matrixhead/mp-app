@@ -10,6 +10,4 @@ router.register(r'nivedhanams', views.NivedhanamViewSet)
 
 urlpatterns =[
     path('',include(router.urls)),
-    path('get-token/',obtain_auth_token),
-
 ]
