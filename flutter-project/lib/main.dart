@@ -1,124 +1,76 @@
 import 'package:flutter/material.dart';
-import 'auth.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mpapp/data_layer/authentication_repository/authentication_repository.dart';
+import 'package:mpapp/routes.dart';
+import 'authentication/bloc/authentication_bloc.dart';
+import 'package:flutter/services.dart';
+import 'data_layer/nivedhanam_repository/nivedhanam.dart';
 
 void main() {
-  runApp(MyApp());
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.dark,
+      systemNavigationBarColor: Colors.transparent,
+      systemNavigationBarIconBrightness: Brightness.dark));
+  runApp(MyApp(authenticationRepository: AuthenticationRepository()));
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({
+    Key? key,
+    required this.authenticationRepository,
+  }) : super(key: key);
+  final AuthenticationRepository authenticationRepository;
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Login(),
-      theme: ThemeData.from(
-        colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.grey),
+    return RepositoryProvider.value(
+      value: authenticationRepository,
+      child: BlocProvider(
+        create: (_) => AuthenticationBloc(
+          authenticationRepository: authenticationRepository,
+        ),
+        child: MyAppView(),
       ),
-      debugShowCheckedModeBanner: false,
     );
   }
 }
 
-class Login extends StatelessWidget {
-  TextEditingController text1 = TextEditingController();
-  TextEditingController text2 = TextEditingController();
+class MyAppView extends StatefulWidget {
+  @override
+  _MyAppViewState createState() => _MyAppViewState();
+}
 
+class _MyAppViewState extends State<MyAppView> {
+  final _navigatorKey = GlobalKey<NavigatorState>();
+  NavigatorState get _navigator => _navigatorKey.currentState!;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Row(
-        children: [
-          Container(
-              decoration: BoxDecoration(color: Colors.black),
-              width: MediaQuery.of(context).size.width / 2,
-              child: Padding(
-                padding: const EdgeInsets.all(80.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Welcome to sdfsdf",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textScaleFactor: 2,
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      "Omnis vero quo dolor quia. Et sint excepturi qui. Ex voluptatem quas sint suscipit eius inventore. Dolores et quo enim. Omnis accusantium autem qui architecto perspiciatis a. ",
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
-                      textScaleFactor: 1,
-                    ),
-                    SizedBox(height: 10),
-                    OutlinedButton(
-                      onPressed: () => {},
-                      child: Text("Know more"),
-                      style: OutlinedButton.styleFrom(
-                          primary: Colors.white,
-                          shape: StadiumBorder(),
-                          side: BorderSide(width: 1, color: Colors.white)),
-                    )
-                  ],
-                ),
-              )),
-          Container(
-              decoration: BoxDecoration(color: Colors.white),
-              width: MediaQuery.of(context).size.width / 2,
-              child: Padding(
-                padding: const EdgeInsets.all(225.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Signin",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textScaleFactor: 1.8,
-                    ),
-                    SizedBox(height: 20),
-                    TextField(
-                      decoration: InputDecoration(
-                          border: UnderlineInputBorder(),
-                          hintText: 'Enter Username ...'),
-                      controller: text1,
-                    ),
-                    SizedBox(height: 20),
-                    TextField(
-                      decoration: InputDecoration(
-                          border: UnderlineInputBorder(),
-                          hintText: 'Enter Password ...'),
-                      obscureText: true,
-                      controller: text2,
-                    ),
-                    SizedBox(height: 20),
-                    Builder(builder: (context) {
-                      return ElevatedButton(
-                        onPressed: () => {fetchToken(text1.text, text2.text)},
-                        style: ElevatedButton.styleFrom(
-                            elevation: 5,
-                            shape: StadiumBorder(),
-                            minimumSize: Size(double.infinity, 60),
-                            primary: Colors.black),
-                        child: Text(
-                          "Login",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      );
-                    })
-                  ],
-                ),
-              ))
-        ],
+    return MaterialApp(
+      theme: ThemeData.from(
+        colorScheme: ColorScheme.fromSwatch(
+            primarySwatch: Colors.grey, backgroundColor: Colors.white),
       ),
+      debugShowCheckedModeBanner: false,
+      navigatorKey: _navigatorKey,
+      routes: routes,
+      initialRoute: "/",
+      builder: (contex, child) {
+        return BlocListener<AuthenticationBloc, AuthenticationState>(
+          listener: (context, state) {
+            switch (state.status) {
+              case AuthenticationStatus.authenticated:
+                _navigator.pushNamedAndRemoveUntil('/home', (route) => false);
+                break;
+              case AuthenticationStatus.unauthenticated:
+                _navigator.pushNamedAndRemoveUntil('/login', (route) => false);
+                break;
+              default:
+                break;
+            }
+          },
+          child: child,
+        );
+      },
     );
   }
 }

@@ -37,12 +37,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_filters',
     #############################
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
     #############################
-    'nivedhanamapp.apps.NivedhanamappConfig'
+    'nivedhanamapp.apps.NivedhanamappConfig',
+    'customauth.apps.CustomauthConfig',
 ]
 
 MIDDLEWARE = [
@@ -84,7 +86,7 @@ DATABASES = {
     'default': {
            'ENGINE': 'djongo',
            'NAME': 'mpdb',
-           'ENFORCE_SCHEMA': False,
+           'ENFORCE_SCHEMA': True,
            'CLIENT': {
                 'host': 'mongo',
                 'port': 27017 ,
@@ -136,6 +138,9 @@ REST_FRAMEWORK = {
 'DEFAULT_AUTHENTICATION_CLASSES': [
 'rest_framework.authentication.TokenAuthentication',
 ],
+'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination'
 }
 
 CORS_ORIGIN_ALLOW_ALL = True
+
+AUTH_USER_MODEL = 'customauth.User'
