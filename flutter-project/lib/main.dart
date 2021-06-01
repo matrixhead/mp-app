@@ -3,8 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mpapp/data_layer/authentication_repository/authentication_repository.dart';
 import 'package:mpapp/routes.dart';
 import 'authentication/bloc/authentication_bloc.dart';
+import 'package:flutter/services.dart';
+import 'data_layer/nivedhanam_repository/nivedhanam.dart';
 
 void main() {
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.dark,
+      systemNavigationBarColor: Colors.transparent,
+      systemNavigationBarIconBrightness: Brightness.dark));
   runApp(MyApp(authenticationRepository: AuthenticationRepository()));
 }
 
@@ -40,7 +47,8 @@ class _MyAppViewState extends State<MyAppView> {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData.from(
-        colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.grey),
+        colorScheme: ColorScheme.fromSwatch(
+            primarySwatch: Colors.grey, backgroundColor: Colors.white),
       ),
       debugShowCheckedModeBanner: false,
       navigatorKey: _navigatorKey,
