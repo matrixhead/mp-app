@@ -1,4 +1,0 @@
-#Wed Jun 02 16:48:08 IST 2021
-base.0=/home/hari/Desktop/MainProject/mp-office/flutter-project/build/app/intermediates/dex/debug/mergeDexDebug/classes.dex
-renamed.0=classes.dex
-path.0=classes.dex
