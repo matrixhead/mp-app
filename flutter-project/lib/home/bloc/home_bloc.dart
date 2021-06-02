@@ -8,6 +8,8 @@ import 'package:rxdart/rxdart.dart';
 part 'home_state.dart';
 part 'home_event.dart';
 
+const int postLimit = 10;
+
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeBloc(NivedhanamRepository nivedhanamRepository,
       AuthenticationRepository authenticationRepository)
@@ -39,21 +41,22 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     if (state.hasReachedMax) return state;
     try {
       if (state.status == NivedhanamStatus.initial) {
-        final nivedhanams = await nivedhanamRepository.fetchNivedhanam();
+        final nivedhanams =
+            await nivedhanamRepository.fetchNivedhanam(postLimit: postLimit);
         return state.copyWith(
           status: NivedhanamStatus.success,
           nivedhanams: nivedhanams,
           hasReachedMax: false,
         );
       }
-      final nivedhanams =
-          await nivedhanamRepository.fetchNivedhanam(state.nivedhanams.length);
+      final nivedhanams = await nivedhanamRepository.fetchNivedhanam(
+          startIndex: state.nivedhanams.length, postLimit: postLimit);
       return nivedhanams.isEmpty
           ? state.copyWith(hasReachedMax: true)
           : state.copyWith(
               status: NivedhanamStatus.success,
-              nivedhanams: state.nivedhanams..addAll(nivedhanams),
-              hasReachedMax: false,
+              nivedhanams: List.of(state.nivedhanams)..addAll(nivedhanams),
+              hasReachedMax: nivedhanams.length < postLimit,
             );
     } on Exception {
       return state.copyWith(status: NivedhanamStatus.failure);

@@ -6,7 +6,7 @@ services:
       - 27017:27017
     volumes:
       - ./mongodb/db/:/data/db
-    command: --quiet
+    command: --quiet --logpath /dev/null 
   django:
     build: ./django-project
     volumes:

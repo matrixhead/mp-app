@@ -26,6 +26,10 @@ class HomeState extends Equatable {
   }
 
   @override
-  // TODO: implement props
-  List<Object?> get props => [];
+  List<Object?> get props => [status, nivedhanams, hasReachedMax];
+
+  @override
+  String toString() {
+    return '''Homestate { status: $status, hasReachedMax: $hasReachedMax, nivedhanams: ${nivedhanams.length} }''';
+  }
 }
