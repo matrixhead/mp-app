@@ -6,8 +6,6 @@ import 'home/home.dart';
 
 Map<String, Widget Function(BuildContext)> routes = {
   '/': (context) => SplashPage(),
-  // '/login': (context) => Login(),
+  '/login': (context) => Login(),
   '/home': (context) => HomePage(),
-
-  '/login': (context) => HomePage(),
 };

@@ -9,17 +9,26 @@ class NivedhanamRepository {
   NivedhanamRepository() : httpClient = http.Client();
 
   Future<List<Nivedhanam>> fetchNivedhanam(
-      {required int postLimit, int startIndex = 0}) async {
-    Uri uri = Uri.parse(url +
-        'api/nivedhanams/?limit=' +
-        postLimit.toString() +
-        '&offset=' +
-        startIndex.toString());
+      {required int postLimit,
+      int startIndex = 0,
+      required String token}) async {
+    Uri uri = Uri.http(
+      url,
+      '/api/nivedhanams/',
+      <String, String>{
+        'limit': '$postLimit',
+        'offset': '$startIndex',
+      },
+    );
+    Map<String, String> headers = {'Authorization': 'Token $token'};
 
-    final response = await httpClient.get(uri);
-    Map<String, dynamic> resultMap = jsonDecode(response.body);
-    return resultMap['results']
-        .map<Nivedhanam>((json) => Nivedhanam.fromJson(json))
-        .toList();
+    final response = await httpClient.get(uri, headers: headers);
+    if (response.statusCode == 200) {
+      Map<String, dynamic> resultMap = jsonDecode(response.body);
+      return resultMap['results']
+          .map<Nivedhanam>((json) => Nivedhanam.fromJson(json))
+          .toList();
+    }
+    throw Exception('error fetching posts');
   }
 }

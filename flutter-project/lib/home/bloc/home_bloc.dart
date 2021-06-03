@@ -41,8 +41,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     if (state.hasReachedMax) return state;
     try {
       if (state.status == NivedhanamStatus.initial) {
-        final nivedhanams =
-            await nivedhanamRepository.fetchNivedhanam(postLimit: postLimit);
+        final nivedhanams = await nivedhanamRepository.fetchNivedhanam(
+            postLimit: postLimit,
+            token: authenticationRepository.getUser.token);
         return state.copyWith(
           status: NivedhanamStatus.success,
           nivedhanams: nivedhanams,
@@ -50,7 +51,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         );
       }
       final nivedhanams = await nivedhanamRepository.fetchNivedhanam(
-          startIndex: state.nivedhanams.length, postLimit: postLimit);
+          startIndex: state.nivedhanams.length,
+          postLimit: postLimit,
+          token: authenticationRepository.getUser.token);
       return nivedhanams.isEmpty
           ? state.copyWith(hasReachedMax: true)
           : state.copyWith(

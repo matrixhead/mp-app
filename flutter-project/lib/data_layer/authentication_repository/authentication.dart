@@ -21,8 +21,9 @@ class AuthenticationRepository {
     required String username,
     required String password,
   }) async {
+    Uri uri = Uri.http(url, "/get-token/");
     Map<String, String> body = {"username": username, "password": password};
-    final response = await http.post(Uri.parse(url + "get-token/"), body: body);
+    final response = await http.post(uri, body: body);
     Map<String, dynamic> userMap = jsonDecode(response.body);
     if (response.statusCode == 200) {
       _user = User.fromJson(userMap);
