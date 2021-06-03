@@ -8,7 +8,7 @@ import 'package:rxdart/rxdart.dart';
 part 'home_state.dart';
 part 'home_event.dart';
 
-const int postLimit = 10;
+const int postLimit = 30;
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeBloc(NivedhanamRepository nivedhanamRepository,

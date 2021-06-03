@@ -1,20 +1,24 @@
 import 'package:flutter/material.dart';
 
-class CustomSliverAppBarM extends StatelessWidget {
-  const CustomSliverAppBarM({
+class CustomSliverAppBarW extends StatelessWidget {
+  const CustomSliverAppBarW({
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
+      shape: Border(
+        bottom:
+            BorderSide(color: Colors.grey, width: .5, style: BorderStyle.solid),
+      ),
+      collapsedHeight: 150,
       shadowColor: Colors.transparent,
-      backgroundColor: Colors.transparent,
+      backgroundColor: Colors.white,
       floating: true,
-      pinned: false,
+      pinned: true,
       title: Material(
         elevation: 3,
-        borderRadius: BorderRadius.all(Radius.circular(12.0)),
         child: Container(
           child: Row(
             children: [
