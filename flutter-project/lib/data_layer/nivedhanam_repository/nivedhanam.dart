@@ -3,14 +3,13 @@ import 'package:mpapp/data_layer/nivedhanam_repository/models/nivedhanam_model.d
 import 'package:http/http.dart' as http;
 import '../config.dart';
 
-const int postLimit = 20;
-
 class NivedhanamRepository {
   final http.Client httpClient;
 
   NivedhanamRepository() : httpClient = http.Client();
 
-  Future<List<Nivedhanam>> fetchNivedhanam([int startIndex = 0]) async {
+  Future<List<Nivedhanam>> fetchNivedhanam(
+      {required int postLimit, int startIndex = 0}) async {
     Uri uri = Uri.parse(url +
         'api/nivedhanams/?limit=' +
         postLimit.toString() +

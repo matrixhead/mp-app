@@ -6,7 +6,7 @@ services:
       - 27017:27017
     volumes:
       - ./mongodb/db/:/data/db
-    command: --quiet
+    command: --quiet --logpath /dev/null 
   django:
     build: ./django-project
     volumes:
@@ -14,7 +14,7 @@ services:
       - ./flutter-project/build/web:/flutter-project/build/web
     depends_on:
       - mongo
-    command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py initializedevserver && python manage.py runserver 0.0.0.0:8000"
     ports:
       - 8000:8000
 

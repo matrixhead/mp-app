@@ -1,4 +1,6 @@
-class Nivedhanam {
+import 'package:equatable/equatable.dart';
+
+class Nivedhanam extends Equatable {
   Nivedhanam.fromJson(Map<String, dynamic> json)
       : url = json['url'],
         id = json['_id'],
@@ -21,4 +23,7 @@ class Nivedhanam {
   final double amountSanctioned;
   final String dateSanctioned;
   final String remarks;
+
+  @override
+  List<Object?> get props => [id, name];
 }

@@ -1,8 +1,7 @@
 import 'package:flutter/rendering.dart';
-import 'package:flutter/services.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:mpapp/authentication/bloc/authentication_bloc.dart';
 import 'package:mpapp/data_layer/authentication_repository/authentication.dart';
 import 'package:mpapp/data_layer/nivedhanam_repository/models/nivedhanam_model.dart';
 import 'package:mpapp/home/bloc/home_bloc.dart';
@@ -46,7 +45,6 @@ class _CustomScrollState extends State<CustomScroll> {
 
   @override
   Widget build(BuildContext context) {
-    final _scrollController = ScrollController();
     return CustomScrollView(
       controller: _scrollController,
       slivers: [
@@ -64,14 +62,17 @@ class _CustomScrollState extends State<CustomScroll> {
   }
 
   void _onScroll() {
-    if (_isBottom) _homeBloc.add(NivedhanamFetchedEvent());
+    if (_isBottom) {
+      _homeBloc.add(NivedhanamFetchedEvent());
+    }
   }
 
   bool get _isBottom {
     if (!_scrollController.hasClients) return false;
+
     final maxScroll = _scrollController.position.maxScrollExtent;
     final currentScroll = _scrollController.offset;
-    return currentScroll >= (maxScroll * 0.9);
+    return currentScroll >= (maxScroll * 0.7);
   }
 }
 
@@ -83,15 +84,17 @@ class CustomSliverGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
-      return SliverGrid(
-        delegate: gridItemBuilder(state),
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 15,
-        ),
-      );
-    });
+    return BlocBuilder<HomeBloc, HomeState>(
+      builder: (context, state) {
+        return SliverGrid(
+          delegate: gridItemBuilder(state),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            crossAxisSpacing: 15,
+          ),
+        );
+      },
+    );
   }
 
   SliverChildBuilderDelegate gridItemBuilder(HomeState state) {
