@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import 'models/models.dart';
 import 'package:mpapp/data_layer/config.dart';
 import 'package:http/http.dart' as http;
@@ -13,7 +15,10 @@ class AuthenticationRepository {
   User get getUser => _user;
 
   Stream<AuthenticationStatus> get status async* {
-    yield AuthenticationStatus.unauthenticated;
+    yield AuthenticationStatus.unknown;
+    yield await getUserSP()
+        ? AuthenticationStatus.authenticated
+        : AuthenticationStatus.unauthenticated;
     yield* _controller.stream;
   }
 
@@ -27,6 +32,7 @@ class AuthenticationRepository {
     Map<String, dynamic> userMap = jsonDecode(response.body);
     if (response.statusCode == 200) {
       _user = User.fromJson(userMap);
+      saveUserSP();
       _controller.add(AuthenticationStatus.authenticated);
     } else {
       throw Exception(userMap['non_field_errors']);
@@ -38,4 +44,19 @@ class AuthenticationRepository {
   }
 
   void dispose() => _controller.close();
+
+  void saveUserSP() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setStringList("user", [_user.userId, _user.token]);
+  }
+
+  Future<bool> getUserSP() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> user = prefs.getStringList('user') ?? [];
+    if (user.isEmpty) {
+      return false;
+    }
+    _user = User(user[0], user[1]);
+    return true;
+  }
 }

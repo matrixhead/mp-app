@@ -10,44 +10,93 @@ class CustomSliverAppBarW extends StatelessWidget {
     return SliverAppBar(
       shape: Border(
         bottom:
-            BorderSide(color: Colors.grey, width: .5, style: BorderStyle.solid),
+            BorderSide(color: Colors.grey, width: .3, style: BorderStyle.solid),
       ),
-      collapsedHeight: 150,
+      collapsedHeight: 57,
       shadowColor: Colors.transparent,
       backgroundColor: Colors.white,
       floating: true,
       pinned: true,
-      title: Material(
-        elevation: 3,
-        child: Container(
-          child: Row(
-            children: [
-              IconButton(
-                splashColor: Colors.grey,
-                icon: Icon(Icons.menu),
-                onPressed: () {},
-              ),
-              Expanded(
-                child: TextField(
-                  cursorColor: Colors.black,
-                  keyboardType: TextInputType.text,
-                  textInputAction: TextInputAction.go,
-                  decoration: InputDecoration(
-                      border: InputBorder.none,
-                      contentPadding: EdgeInsets.symmetric(horizontal: 15),
-                      hintText: "Search..."),
+      title: Align(
+        alignment: Alignment.bottomCenter,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            IconButton(
+              color: Colors.grey[800],
+              icon: Icon(Icons.menu),
+              onPressed: () {},
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 25),
+              child: Text(
+                "mpoKottayam",
+                style: TextStyle(
+                  color: Colors.grey[800],
+                  fontWeight: FontWeight.w200,
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(right: 8.0),
-                child: IconButton(
-                  splashColor: Colors.grey,
-                  icon: Icon(Icons.account_circle),
-                  onPressed: () {},
+            ),
+            Expanded(
+              flex: 1,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30),
+                child: Material(
+                  color: Colors.grey[200],
+                  elevation: 0,
+                  borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                  child: Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: IconButton(
+                          color: Colors.grey,
+                          splashColor: Colors.grey[600],
+                          icon: Icon(Icons.search),
+                          onPressed: () {},
+                        ),
+                      ),
+                      Expanded(
+                        child: TextField(
+                          cursorColor: Colors.grey,
+                          keyboardType: TextInputType.text,
+                          textInputAction: TextInputAction.go,
+                          decoration: InputDecoration(
+                              border: InputBorder.none,
+                              contentPadding:
+                                  EdgeInsets.symmetric(horizontal: 15),
+                              hintText: "Search"),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ],
-          ),
+            ),
+            Expanded(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: IconButton(
+                      color: Colors.grey[800],
+                      icon: Icon(Icons.replay_outlined),
+                      onPressed: () {},
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: IconButton(
+                      color: Colors.grey[800],
+                      icon: Icon(Icons.account_circle),
+                      onPressed: () {},
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );
