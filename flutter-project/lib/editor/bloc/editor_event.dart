@@ -6,4 +6,12 @@ abstract class EditorEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class AddedNameEvent extends EditorEvent {}
+class FormEditedEvent extends EditorEvent {
+  const FormEditedEvent(this.input);
+  final Map<String, dynamic> input;
+
+  @override
+  List<Object> get props => [input];
+}
+
+class FormSubmittedEvent extends EditorEvent {}

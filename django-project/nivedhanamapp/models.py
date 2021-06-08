@@ -12,7 +12,7 @@ class Nivedhanam(models.Model):
     address = models.TextField()
     letterno = models.IntegerField()
     date = models.DateField()
-    reply_recieved = models.CharField(max_length=200)
+    reply_recieved = models.BooleanField()
     amount_sanctioned = models.FloatField()
     date_sanctioned = models.DateField()
     remarks = models.TextField()

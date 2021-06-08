@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 
 class Nivedhanam extends Equatable {
   Nivedhanam.fromJson(Map<String, dynamic> json)
-      : url = json['url'],
+      : siNo = json['SI_no'],
         id = json['_id'],
         name = json['name'],
         address = json['address'],
@@ -13,13 +13,13 @@ class Nivedhanam extends Equatable {
         dateSanctioned = json['date_sanctioned'],
         remarks = json['remarks'];
 
-  final String url;
+  final int siNo;
   final String id;
   final String name;
   final String address;
   final int letterno;
   final String date;
-  final String replyRecieved;
+  final bool replyRecieved;
   final double amountSanctioned;
   final String dateSanctioned;
   final String remarks;

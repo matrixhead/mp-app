@@ -13,9 +13,9 @@ from rest_framework.filters import OrderingFilter
 
 # Create your views here.
 class NivedhanamViewSet(viewsets.ModelViewSet):
-    queryset=Nivedhanam.objects.all().order_by('name')
+    queryset=Nivedhanam.objects.all()
     serializer_class=NivedhanamSerializer
     filter_backends = [DjangoFilterBackend,OrderingFilter]
     filterset_fields = '__all__'
     ordering_fields = '__all__'
-    permission_classes =[IsAuthenticated]
+    # permission_classes =[IsAuthenticated]

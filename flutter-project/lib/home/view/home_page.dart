@@ -9,11 +9,11 @@ import 'package:mpapp/data_layer/nivedhanam_repository/nivedhanam.dart';
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    NivedhanamRepository nivedhanamRepository = NivedhanamRepository();
-    return RepositoryProvider.value(
-        value: nivedhanamRepository,
+    return RepositoryProvider(
+        create: (_) => NivedhanamRepository(),
         child: BlocProvider(
-          create: (context) => HomeBloc(nivedhanamRepository,
+          create: (context) => HomeBloc(
+              RepositoryProvider.of<NivedhanamRepository>(context),
               RepositoryProvider.of<AuthenticationRepository>(context))
             ..add(NivedhanamFetchedEvent()),
           child: MediaQuery.of(context).size.width < 600
