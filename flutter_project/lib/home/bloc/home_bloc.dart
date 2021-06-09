@@ -34,6 +34,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   Stream<HomeState> mapEventToState(HomeEvent event) async* {
     if (event is NivedhanamFetchedEvent) {
       yield await _mapNivedhanamFetchedToState(state);
+    } else if (event is RefreshNivedhanamEvent) {
+      yield _refreshNivedhanamToState(state);
     }
   }
 
@@ -64,5 +66,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     } on Exception {
       return state.copyWith(status: NivedhanamStatus.failure);
     }
+  }
+
+  HomeState _refreshNivedhanamToState(HomeState state) {
+    this.add(NivedhanamFetchedEvent());
+    return state.copyWith(
+        status: NivedhanamStatus.initial,
+        nivedhanams: [],
+        hasReachedMax: false);
   }
 }

@@ -14,19 +14,20 @@ class EditorState extends Equatable {
   final SubmissionStatus status;
   final Mode mode;
 
-  const EditorState(
-      {this.editorFormMap = const {},
-      this.status = SubmissionStatus.pure,
-      this.mode = Mode.create});
+  EditorState({
+    required this.editorFormMap,
+    this.status = SubmissionStatus.pure,
+    required this.mode,
+  });
 
   EditorState copyWith(
       {Map<String, String>? editorFormMap, SubmissionStatus? status}) {
     return EditorState(
-      editorFormMap: editorFormMap ?? this.editorFormMap,
-      status: status ?? this.status,
-    );
+        editorFormMap: editorFormMap ?? this.editorFormMap,
+        status: status ?? this.status,
+        mode: this.mode);
   }
 
   @override
-  List<Object?> get props => [editorFormMap, status];
+  List<Object?> get props => [editorFormMap, status, mode];
 }

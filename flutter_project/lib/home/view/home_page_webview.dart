@@ -15,7 +15,12 @@ class HomePageWebView extends StatelessWidget {
       floatingActionButton: Padding(
         padding: const EdgeInsets.all(30),
         child: ElevatedButton(
-          onPressed: () => Navigator.pushNamed(context, '/editor'),
+          onPressed: () async {
+            final result = await Navigator.pushNamed(context, '/editor');
+            if (result == true) {
+              context.read<HomeBloc>().add(RefreshNivedhanamEvent());
+            }
+          },
           child: Padding(
             padding: const EdgeInsets.fromLTRB(13, 8, 13, 8),
             child: Row(

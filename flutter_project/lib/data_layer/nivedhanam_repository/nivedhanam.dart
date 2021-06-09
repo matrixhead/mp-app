@@ -42,4 +42,16 @@ class NivedhanamRepository {
       throw Exception(response);
     }
   }
+
+  void updateNivedhanam(
+      {required Map<String, String> nivedhanamMap,
+      required String token}) async {
+    String siNo = nivedhanamMap.remove("SI_no") ?? "";
+    Uri uri = Uri.http(url, '/api/nivedhanams/$siNo/');
+    Map<String, String> headers = {'Authorization': 'Token $token'};
+    final response = await http.put(uri, body: nivedhanamMap, headers: headers);
+    if (response.statusCode != 200) {
+      throw Exception(response);
+    }
+  }
 }

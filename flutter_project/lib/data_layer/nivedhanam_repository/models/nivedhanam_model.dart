@@ -24,6 +24,21 @@ class Nivedhanam extends Equatable {
   final String dateSanctioned;
   final String remarks;
 
+  Map<String, String> toMap() {
+    return {
+      "SI_no": this.siNo.toString(),
+      "_id": this.id,
+      "name": this.name,
+      "address": this.address,
+      "letterno": this.letterno.toString(),
+      "date": this.date,
+      "reply_recieved": this.replyRecieved.toString(),
+      "amount_sanctioned": this.amountSanctioned.toString(),
+      "date_sanctioned": this.dateSanctioned.toString(),
+      "remarks": this.remarks
+    };
+  }
+
   @override
   List<Object?> get props => [id, name];
 }

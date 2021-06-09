@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mpapp/home/bloc/home_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CustomSliverAppBarW extends StatelessWidget {
   const CustomSliverAppBarW({
@@ -82,7 +84,9 @@ class CustomSliverAppBarW extends StatelessWidget {
                     child: IconButton(
                       color: Colors.grey[800],
                       icon: Icon(Icons.replay_outlined),
-                      onPressed: () {},
+                      onPressed: () {
+                        context.read<HomeBloc>().add(RefreshNivedhanamEvent());
+                      },
                     ),
                   ),
                   Padding(

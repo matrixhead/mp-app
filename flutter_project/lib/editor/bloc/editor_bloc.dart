@@ -10,9 +10,12 @@ class EditorBloc extends Bloc<EditorEvent, EditorState> {
   EditorBloc(
     NivedhanamRepository nivedhanamRepository,
     AuthenticationRepository authenticationRepository,
+    nivedhanam,
   )   : nivedhanamRepository = nivedhanamRepository,
         authenticationRepository = authenticationRepository,
-        super(EditorState());
+        super(EditorState(
+            editorFormMap: nivedhanam ?? Map<String, String>(),
+            mode: nivedhanam == null ? Mode.create : Mode.update));
 
   final NivedhanamRepository nivedhanamRepository;
   final AuthenticationRepository authenticationRepository;
@@ -34,10 +37,17 @@ class EditorBloc extends Bloc<EditorEvent, EditorState> {
   Stream<EditorState> formSubmittedToState(EditorState state) async* {
     yield state.copyWith(status: SubmissionStatus.submissionInProgress);
     try {
-      await nivedhanamRepository.createNivedhanam(
-        nivedhanamMap: state.editorFormMap,
-        token: authenticationRepository.getUser.token,
-      );
+      if (state.mode == Mode.create) {
+        await nivedhanamRepository.createNivedhanam(
+          nivedhanamMap: state.editorFormMap,
+          token: authenticationRepository.getUser.token,
+        );
+      } else {
+        nivedhanamRepository.updateNivedhanam(
+          nivedhanamMap: state.editorFormMap,
+          token: authenticationRepository.getUser.token,
+        );
+      }
       yield state.copyWith(status: SubmissionStatus.submissionSuccess);
     } on Exception catch (_) {
       yield state.copyWith(status: SubmissionStatus.submissionFailure);

@@ -44,6 +44,13 @@ class CustomListTileW extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      onTap: () async {
+        final result = await Navigator.pushNamed(context, '/editor',
+            arguments: nivedhanam);
+        if (result == true) {
+          context.read<HomeBloc>().add(RefreshNivedhanamEvent());
+        }
+      },
       leading: Icon(Icons.description),
       title: Text(nivedhanam.name),
     );

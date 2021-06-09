@@ -13,11 +13,13 @@ class EditorPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Map<String, String>? nivedhanam =
+        (ModalRoute.of(context)!.settings.arguments as Nivedhanam?)?.toMap();
     return BlocProvider(
       create: (context) => EditorBloc(
-        RepositoryProvider.of<NivedhanamRepository>(context),
-        RepositoryProvider.of<AuthenticationRepository>(context),
-      ),
+          RepositoryProvider.of<NivedhanamRepository>(context),
+          RepositoryProvider.of<AuthenticationRepository>(context),
+          nivedhanam),
       child: Scaffold(
         body: BlocListener<EditorBloc, EditorState>(
           listener: (context, state) {
@@ -28,7 +30,7 @@ class EditorPage extends StatelessWidget {
                   const SnackBar(content: Text('Submission Failed')),
                 );
             } else if (state.status == SubmissionStatus.submissionSuccess) {
-              Navigator.pop(context);
+              Navigator.pop(context, true);
               ScaffoldMessenger.of(context)
                 ..hideCurrentSnackBar()
                 ..showSnackBar(
@@ -175,7 +177,11 @@ class _NivedhanamFormState extends State<NivedhanamForm> {
                             },
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: Text("Create",
+                              child: Text(
+                                  context.read<EditorBloc>().state.mode ==
+                                          Mode.create
+                                      ? "Create"
+                                      : "update",
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.w500)),
@@ -217,13 +223,15 @@ class NivedahnamFormText extends StatefulWidget {
 }
 
 class _NivedahnamFormTextState extends State<NivedahnamFormText> {
-  final TextEditingController _textEditingController = TextEditingController();
+  late final TextEditingController _textEditingController;
   late EditorBloc _editorBloc;
 
   @override
   void initState() {
     super.initState();
     _editorBloc = context.read<EditorBloc>();
+    _textEditingController = TextEditingController(
+        text: _editorBloc.state.editorFormMap[widget.keyName]);
   }
 
   @override
@@ -311,7 +319,9 @@ class _NivedhanamFormRadioState extends State<NivedhanamFormRadio> {
   void initState() {
     super.initState();
     _editorBloc = context.read<EditorBloc>();
-    _editorBloc.add(FormEditedEvent({widget.keyName: value.toString()}));
+    value = _editorBloc.state.editorFormMap['reply_recieved'] == "true"
+        ? true
+        : false;
   }
 
   @override
