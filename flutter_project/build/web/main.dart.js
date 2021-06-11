@@ -65179,7 +65179,7 @@ abc:function(a,b){var s=0,r=P.a_(t.H),q=this,p,o,n
 var $async$vK=P.Q(function(c,d){if(c===1)return P.X(d,r)
 while(true)switch(s){case 0:p=t.N
 s=2
-return P.a6(G.aqd(P.adE("http","0.0.0.0:8100","/get-token/",null),P.an(["username",b,"password",a],p,p),null),$async$vK)
+return P.a6(G.aqd(P.adE("http","117.232.108.35:8100","/get-token/",null),P.an(["username",b,"password",a],p,p),null),$async$vK)
 case 2:o=d
 n=C.aL.B8(0,B.apP(U.aoW(o.e).c.a.i(0,"charset")).dj(0,o.x),null)
 p=J.al(n)
@@ -65233,7 +65233,7 @@ a9l:function(a,b,c){var s=0,r=P.a_(t.Jp),q,p=this,o,n
 var $async$q9=P.Q(function(d,e){if(d===1)return P.X(e,r)
 while(true)switch(s){case 0:o=t.N
 s=3
-return P.a6(p.a.a4R("GET",P.adE("http","0.0.0.0:8100","/api/nivedhanams/",P.an(["limit",""+a,"offset",""+b],o,o)),P.an(["Authorization","Token "+c],o,o)),$async$q9)
+return P.a6(p.a.a4R("GET",P.adE("http","117.232.108.35:8100","/api/nivedhanams/",P.an(["limit",""+a,"offset",""+b],o,o)),P.an(["Authorization","Token "+c],o,o)),$async$q9)
 case 3:n=e
 if(n.b===200){q=J.CS(J.bc(C.aL.B8(0,B.apP(U.aoW(n.e).c.a.i(0,"charset")).dj(0,n.x),null),"results"),new D.a_G(),t.L_).f0(0)
 s=1
@@ -65245,7 +65245,7 @@ a87:function(a,b){var s=0,r=P.a_(t.H),q,p
 var $async$uP=P.Q(function(c,d){if(c===1)return P.X(d,r)
 while(true)switch(s){case 0:q=t.N
 s=2
-return P.a6(G.aqd(P.adE("http","0.0.0.0:8100","/api/nivedhanams/",null),a,P.an(["Authorization","Token "+b],q,q)),$async$uP)
+return P.a6(G.aqd(P.adE("http","117.232.108.35:8100","/api/nivedhanams/",null),a,P.an(["Authorization","Token "+b],q,q)),$async$uP)
 case 2:p=d
 if(p.b!==201)throw H.b(P.ci(p))
 return P.Y(null,r)}})
@@ -65256,7 +65256,7 @@ var $async$wm=P.Q(function(c,d){if(c===1)return P.X(d,r)
 while(true)switch(s){case 0:q=a.w(0,"SI_no")
 p=t.N
 s=2
-return P.a6(G.aDa(P.adE("http","0.0.0.0:8100","/api/nivedhanams/"+(q==null?"":q)+"/",null),a,P.an(["Authorization","Token "+b],p,p)),$async$wm)
+return P.a6(G.aDa(P.adE("http","117.232.108.35:8100","/api/nivedhanams/"+(q==null?"":q)+"/",null),a,P.an(["Authorization","Token "+b],p,p)),$async$wm)
 case 2:o=d
 if(o.b!==200)throw H.b(P.ci(o))
 return P.Y(null,r)}})
