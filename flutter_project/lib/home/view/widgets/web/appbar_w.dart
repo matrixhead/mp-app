@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mpapp/authentication/bloc/authentication_bloc.dart';
 import 'package:mpapp/home/bloc/home_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -89,12 +90,17 @@ class CustomSliverAppBarW extends StatelessWidget {
                       },
                     ),
                   ),
+                  Text(context.read<AuthenticationBloc>().state.user.userId),
                   Padding(
                     padding: const EdgeInsets.only(right: 8.0),
                     child: IconButton(
                       color: Colors.grey[800],
-                      icon: Icon(Icons.account_circle),
-                      onPressed: () {},
+                      icon: Icon(Icons.logout),
+                      onPressed: () {
+                        context
+                            .read<AuthenticationBloc>()
+                            .add(AuthenticationLogoutRequested());
+                      },
                     ),
                   ),
                 ],

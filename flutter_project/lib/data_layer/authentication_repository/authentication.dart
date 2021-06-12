@@ -41,6 +41,7 @@ class AuthenticationRepository {
 
   void logOut() {
     _controller.add(AuthenticationStatus.unauthenticated);
+    deleteUserSp();
   }
 
   void dispose() => _controller.close();
@@ -58,5 +59,10 @@ class AuthenticationRepository {
     }
     _user = User(user[0], user[1]);
     return true;
+  }
+
+  void deleteUserSp() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.remove('user');
   }
 }
