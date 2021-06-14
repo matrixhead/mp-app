@@ -14,10 +14,10 @@ class CustomSliverAppBarW extends StatelessWidget {
     return AppBar(
       backgroundColor: Colors.white,
       elevation: 0,
-      shape: Border(
-        bottom:
-            BorderSide(color: Colors.grey, width: .3, style: BorderStyle.solid),
-      ),
+      // shape: Border(
+      //   bottom:
+      //       BorderSide(color: Colors.grey, width: .3, style: BorderStyle.solid),
+      // ),
       title: Align(
         alignment: Alignment.bottomCenter,
         child: Row(

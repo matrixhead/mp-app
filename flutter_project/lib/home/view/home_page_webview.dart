@@ -1,58 +1,66 @@
 import 'package:flutter/material.dart';
-import 'package:mpapp/home/bloc/home_bloc.dart';
 import 'package:mpapp/home/view/widgets/web/custom_sliverlist_w.dart';
+import 'widgets/web/fab_w.dart';
 import 'widgets/web/home_widgets_w.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-class HomePageWebView extends StatelessWidget {
+class HomePageWebView extends StatefulWidget {
   const HomePageWebView({
     Key? key,
   }) : super(key: key);
+
+  @override
+  _HomePageWebViewState createState() => _HomePageWebViewState();
+}
+
+class _HomePageWebViewState extends State<HomePageWebView> {
+  late final PageController _pageController;
+
+  @override
+  void initState() {
+    _pageController = PageController();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
           preferredSize: Size.fromHeight(57.0), child: CustomSliverAppBarW()),
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.all(30),
-        child: ElevatedButton(
-          onPressed: () async {
-            final result = await Navigator.pushNamed(context, '/editor');
-            if (result == true) {
-              context.read<HomeBloc>().add(RefreshNivedhanamEvent());
-            }
-          },
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(13, 8, 13, 8),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(right: 8),
-                  child: Icon(
-                    Icons.create_sharp,
-                    color: Colors.white,
+      floatingActionButton: Fab(),
+      body: Column(
+        children: [
+          Material(
+            color: Colors.white,
+            shape: Border(
+              bottom: BorderSide(
+                  color: Colors.grey, width: .3, style: BorderStyle.solid),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  IconButton(
+                    iconSize: 25,
+                    icon: Icon(Icons.keyboard_arrow_left),
+                    onPressed: () => _pageController.previousPage(
+                        duration: Duration(milliseconds: 400),
+                        curve: Curves.easeIn),
                   ),
-                ),
-                Text(
-                  "Add nivedhanam",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w300,
-                      fontSize: 16),
-                )
-              ],
+                  IconButton(
+                    iconSize: 25,
+                    icon: Icon(Icons.keyboard_arrow_right),
+                    onPressed: () => _pageController.nextPage(
+                        duration: Duration(milliseconds: 400),
+                        curve: Curves.easeIn),
+                  ),
+                ],
+              ),
             ),
           ),
-          style: ElevatedButton.styleFrom(
-              elevation: 5,
-              shape: StadiumBorder(),
-              primary: Colors.black,
-              onPrimary: Colors.white),
-        ),
+          Expanded(child: CustomPageView(_pageController)),
+        ],
       ),
-      body: CustomPageView(),
     );
   }
 }

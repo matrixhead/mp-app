@@ -1,27 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:mpapp/data_layer/nivedhanam_repository/models/nivedhanam_model.dart';
 import 'package:mpapp/home/bloc/home_bloc.dart';
 
 class CustomPageView extends StatefulWidget {
-  const CustomPageView({
+  const CustomPageView(
+    pageController, {
     Key? key,
-  }) : super(key: key);
-
+  })  : pageController = pageController,
+        super(key: key);
+  final pageController;
   @override
   _CustomPageViewState createState() => _CustomPageViewState();
 }
 
 class _CustomPageViewState extends State<CustomPageView> {
   late HomeBloc _homeBloc;
-  final _pageController = PageController();
+
   var nPerView = 20;
 
   @override
   void initState() {
     super.initState();
-    _pageController.addListener(_onPageTurn);
+    widget.pageController.addListener(_onPageTurn);
+
     _homeBloc = context.read<HomeBloc>();
   }
 
@@ -30,7 +34,7 @@ class _CustomPageViewState extends State<CustomPageView> {
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (BuildContext context, state) {
         return PageView.builder(
-            controller: _pageController,
+            controller: widget.pageController,
             itemBuilder: pageBuilder,
             itemCount: _homeBloc.state.hasReachedMax
                 ? (_homeBloc.state.nivedhanams.length / nPerView).round()
@@ -57,7 +61,7 @@ class _CustomPageViewState extends State<CustomPageView> {
 
   @override
   void dispose() {
-    _pageController.dispose();
+    widget.pageController.dispose();
     super.dispose();
   }
 
@@ -68,9 +72,9 @@ class _CustomPageViewState extends State<CustomPageView> {
   }
 
   bool get _isBottom {
-    if (!_pageController.hasClients) return false;
-    final maxScroll = _pageController.position.maxScrollExtent;
-    final currentScroll = _pageController.offset;
+    if (!widget.pageController.hasClients) return false;
+    final maxScroll = widget.pageController.position.maxScrollExtent;
+    final currentScroll = widget.pageController.offset;
     return currentScroll >= (maxScroll * 0.7);
   }
 }
@@ -85,6 +89,7 @@ class CustomListTileW extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      tileColor: Colors.white,
       onTap: () async {
         final result = await Navigator.pushNamed(context, '/editor',
             arguments: nivedhanam);
@@ -120,23 +125,31 @@ class CustomListTileW extends StatelessWidget {
         ],
       ),
       title: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        mainAxisSize: MainAxisSize.max,
         children: [
-          Text(
-            toBeginningOfSentenceCase(nivedhanam.name) ?? "",
-            style: TextStyle(fontWeight: FontWeight.w600),
-          ),
           Expanded(
             child: Text(
-              toBeginningOfSentenceCase(nivedhanam.address) ?? "",
+              toBeginningOfSentenceCase(nivedhanam.name) ?? "",
               style: TextStyle(fontWeight: FontWeight.w600),
             ),
           ),
           Expanded(
+            flex: 3,
             child: Row(
+              mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text(
+                        toBeginningOfSentenceCase(nivedhanam.address) ?? "",
+                        style: TextStyle(fontWeight: FontWeight.w600),
+                      ),
+                      Text("-" + nivedhanam.remarks)
+                    ],
+                  ),
+                ),
                 Text(
                   nivedhanam.date,
                   style: TextStyle(fontWeight: FontWeight.w600),
