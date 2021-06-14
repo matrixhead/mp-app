@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:mpapp/authentication/bloc/authentication_bloc.dart';
 import 'package:mpapp/home/bloc/home_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,34 +11,32 @@ class CustomSliverAppBarW extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliverAppBar(
+    return AppBar(
+      backgroundColor: Colors.white,
+      elevation: 0,
       shape: Border(
         bottom:
             BorderSide(color: Colors.grey, width: .3, style: BorderStyle.solid),
       ),
-      collapsedHeight: 57,
-      shadowColor: Colors.transparent,
-      backgroundColor: Colors.white,
-      floating: true,
-      pinned: true,
       title: Align(
         alignment: Alignment.bottomCenter,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            IconButton(
-              color: Colors.grey[800],
-              icon: Icon(Icons.menu),
-              onPressed: () {},
-            ),
+            // IconButton(
+            //   color: Colors.grey[800],
+            //   icon: Icon(Icons.menu),
+            //   onPressed: () {},
+            // ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25),
+              padding: const EdgeInsets.symmetric(horizontal: 15),
               child: Text(
                 "mpoKottayam",
                 style: TextStyle(
-                  color: Colors.grey[800],
-                  fontWeight: FontWeight.w200,
+                  color: Colors.grey,
+                  fontFamily: 'Bellota',
                 ),
+                textScaleFactor: 1.15,
               ),
             ),
             Expanded(
@@ -90,7 +89,15 @@ class CustomSliverAppBarW extends StatelessWidget {
                       },
                     ),
                   ),
-                  Text(context.read<AuthenticationBloc>().state.user.userId),
+                  Text(
+                    toBeginningOfSentenceCase(context
+                            .read<AuthenticationBloc>()
+                            .state
+                            .user
+                            .userId) ??
+                        "",
+                    style: TextStyle(color: Colors.black),
+                  ),
                   Padding(
                     padding: const EdgeInsets.only(right: 8.0),
                     child: IconButton(

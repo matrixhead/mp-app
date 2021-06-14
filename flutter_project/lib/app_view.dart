@@ -15,7 +15,8 @@ class _AppViewState extends State<AppView> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData.from(
+      theme: ThemeData(
+        fontFamily: "Open Sans",
         colorScheme: ColorScheme.fromSwatch(
             primarySwatch: Colors.grey, backgroundColor: Colors.white),
       ),

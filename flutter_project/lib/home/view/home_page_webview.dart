@@ -12,6 +12,8 @@ class HomePageWebView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: PreferredSize(
+          preferredSize: Size.fromHeight(57.0), child: CustomSliverAppBarW()),
       floatingActionButton: Padding(
         padding: const EdgeInsets.all(30),
         child: ElevatedButton(
@@ -50,56 +52,7 @@ class HomePageWebView extends StatelessWidget {
               onPrimary: Colors.white),
         ),
       ),
-      body: CustomScrolViewW(),
+      body: CustomPageView(),
     );
-  }
-}
-
-class CustomScrolViewW extends StatefulWidget {
-  const CustomScrolViewW({Key? key}) : super(key: key);
-
-  @override
-  _CustomScrolViewWState createState() => _CustomScrolViewWState();
-}
-
-class _CustomScrolViewWState extends State<CustomScrolViewW> {
-  final _scrollController = ScrollController();
-  late HomeBloc _homeBloc;
-
-  @override
-  void initState() {
-    super.initState();
-    _scrollController.addListener(_onScroll);
-    _homeBloc = context.read<HomeBloc>();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return CustomScrollView(
-      controller: _scrollController,
-      slivers: [
-        CustomSliverAppBarW(),
-        CustomSliverListW(_scrollController),
-      ],
-    );
-  }
-
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
-  }
-
-  void _onScroll() {
-    if (_isBottom) {
-      _homeBloc.add(NivedhanamFetchedEvent());
-    }
-  }
-
-  bool get _isBottom {
-    if (!_scrollController.hasClients) return false;
-    final maxScroll = _scrollController.position.maxScrollExtent;
-    final currentScroll = _scrollController.offset;
-    return currentScroll >= (maxScroll * 0.7);
   }
 }
