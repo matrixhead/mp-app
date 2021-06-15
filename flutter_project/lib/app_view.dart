@@ -17,8 +17,11 @@ class _AppViewState extends State<AppView> {
     return MaterialApp(
       theme: ThemeData(
         fontFamily: "Open Sans",
+        accentColor: Colors.grey,
         colorScheme: ColorScheme.fromSwatch(
-            primarySwatch: Colors.grey, backgroundColor: Colors.white),
+            accentColor: Colors.grey,
+            primarySwatch: Colors.grey,
+            backgroundColor: Colors.white),
       ),
       debugShowCheckedModeBanner: false,
       navigatorKey: _navigatorKey,

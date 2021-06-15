@@ -34,6 +34,7 @@ class _CustomPageViewState extends State<CustomPageView> {
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (BuildContext context, state) {
         return PageView.builder(
+            physics: NeverScrollableScrollPhysics(),
             controller: widget.pageController,
             itemBuilder: pageBuilder,
             itemCount: _homeBloc.state.hasReachedMax

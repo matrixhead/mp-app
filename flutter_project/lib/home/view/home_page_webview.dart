@@ -44,14 +44,14 @@ class _HomePageWebViewState extends State<HomePageWebView> {
                     iconSize: 25,
                     icon: Icon(Icons.keyboard_arrow_left),
                     onPressed: () => _pageController.previousPage(
-                        duration: Duration(milliseconds: 400),
+                        duration: Duration(milliseconds: 100),
                         curve: Curves.easeIn),
                   ),
                   IconButton(
                     iconSize: 25,
                     icon: Icon(Icons.keyboard_arrow_right),
                     onPressed: () => _pageController.nextPage(
-                        duration: Duration(milliseconds: 400),
+                        duration: Duration(milliseconds: 100),
                         curve: Curves.easeIn),
                   ),
                 ],
