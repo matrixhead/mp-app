@@ -7,6 +7,7 @@ from rest_framework.permissions import IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter
 from rest_framework.response import Response
+from django.core.files.uploadedfile import InMemoryUploadedFile
 
 
 
@@ -21,14 +22,17 @@ class NivedhanamViewSet(viewsets.ModelViewSet):
 
 
 
+
 @api_view(['POST'])
 def scanupload(request):
+    serializer_class = ScanUploadSerializer
     if request.method == 'POST':
         serializer_class = ScanUploadSerializer(data=request.data)
         serializer_class.is_valid()
         serializer_class.save()
         response = "sucessful"
         return Response(response)
+
 
 
 
