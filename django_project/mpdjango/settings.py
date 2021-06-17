@@ -86,7 +86,7 @@ DATABASES = {
     'default': {
            'ENGINE': 'djongo',
            'NAME': 'mpdb',
-           'ENFORCE_SCHEMA': True,
+           'ENFORCE_SCHEMA': False,
            'CLIENT': {
                 'host': 'mongo',
                 'port': 27017 ,
@@ -144,3 +144,8 @@ REST_FRAMEWORK = {
 CORS_ORIGIN_ALLOW_ALL = True
 
 AUTH_USER_MODEL = 'customauth.User'
+
+
+
+
+

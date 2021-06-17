@@ -1,5 +1,9 @@
 import uuid
 from djongo import models
+from django.conf import settings
+from djongo.storage import GridFSStorage
+
+grid_fs_storage = GridFSStorage(collection='scan_collection', base_url='scan_collection/')
 
 # Create your models here.
 class Nivedhanam(models.Model):
@@ -16,5 +20,6 @@ class Nivedhanam(models.Model):
     amount_sanctioned = models.FloatField()
     date_sanctioned = models.DateField()
     remarks = models.TextField()
+    scan = models.ImageField(upload_to='scan_collection', storage=grid_fs_storage)
 
-    
+

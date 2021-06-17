@@ -13,16 +13,18 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
+from django.conf import settings
 from django.contrib import admin
 from django.urls import path,include
-
-from helperfunctions.serveflutter import flutter_redirect
-
+from helperfunctions import serveimage,serveflutter
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/',include('nivedhanamapp.urls')),
     path('',include('customauth.urls')),
     ###########################
-    path('', lambda r: flutter_redirect(r, 'index.html')),
-    path('<path:resource>', flutter_redirect),
+    path('scan_collection/<filename>',serveimage.test_image_server),
+    path('', lambda r: serveflutter.flutter_redirect(r, 'index.html')),
+    path('<path:resource>', serveflutter.flutter_redirect),
+
 ]
