@@ -27,6 +27,7 @@ class Nivedhanam(models.Model):
 
 class Scan(models.Model):
      SI_no = models.ForeignKey(Nivedhanam,on_delete=models.CASCADE)
+     page_number=models.IntegerField()
      scan = models.ImageField(upload_to='scan_collection', storage=grid_fs_storage)
      def save(self, *args, **kwargs):
           if not self.id:
