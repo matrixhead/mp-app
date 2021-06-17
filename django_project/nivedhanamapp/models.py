@@ -20,6 +20,10 @@ class Nivedhanam(models.Model):
     amount_sanctioned = models.FloatField()
     date_sanctioned = models.DateField()
     remarks = models.TextField()
-    scan = models.ImageField(upload_to='scan_collection', storage=grid_fs_storage)
+    
+
+class Scan(models.Model):
+     SI_no = models.ForeignKey(Nivedhanam,on_delete=models.CASCADE)
+     scan = models.ImageField(upload_to='scan_collection', storage=grid_fs_storage)
 
 

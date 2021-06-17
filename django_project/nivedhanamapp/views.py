@@ -1,15 +1,16 @@
+from rest_framework.decorators import api_view
+from rest_framework.serializers import Serializer
 from .models import Nivedhanam
-from .serializers import NivedhanamSerializer
+from .serializers import *
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter
+from rest_framework.response import Response
 
 
 
 
-
-# Create your views here.
 class NivedhanamViewSet(viewsets.ModelViewSet):
     queryset = Nivedhanam.objects.all()
     serializer_class = NivedhanamSerializer
@@ -17,5 +18,17 @@ class NivedhanamViewSet(viewsets.ModelViewSet):
     # filterset_fields = '__all__'
     # ordering_fields = '__all__'
     permission_classes = [IsAuthenticated]
+
+
+
+@api_view(['POST'])
+def scanupload(request):
+    if request.method == 'POST':
+        serializer_class = ScanUploadSerializer(data=request.data)
+        serializer_class.is_valid()
+        serializer_class.save()
+        response = "sucessful"
+        return Response(response)
+
 
 

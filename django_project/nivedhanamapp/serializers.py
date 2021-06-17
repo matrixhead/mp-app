@@ -1,4 +1,5 @@
-from .models import Nivedhanam
+from customauth import models
+from .models import *
 from rest_framework import serializers
 
 class NivedhanamSerializer(serializers.ModelSerializer):
@@ -12,3 +13,9 @@ class NivedhanamSerializer(serializers.ModelSerializer):
     def get_image_url(self, obj):
         return obj.scan.name
 
+class ScanUploadSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Scan
+        fields = '__all__'
+
+    
