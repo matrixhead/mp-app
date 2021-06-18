@@ -18,7 +18,7 @@ class Command(BaseCommand):
             print('no user found creating a super user "admin" with password "admin"')
             self.user.objects.create_superuser('admin', 'admin@mpokottayam', 'admin')
             print("creating some mock data")
-            for i in range(200):
+            for i in range(20):
                 nivedhanam =Nivedhanam(name="applicant{}".format(i),address="kottayam/kerala/india",letterno=i,date=date.today(),reply_recieved=False,amount_sanctioned=i+1000,date_sanctioned=date.today(),remarks="lalala")
                 nivedhanam.save()
         else:
