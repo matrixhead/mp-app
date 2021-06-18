@@ -10,4 +10,5 @@ router.register(r'nivedhanams', views.NivedhanamViewSet)
 
 urlpatterns =[
     path('',include(router.urls)),
+    path('scanupload/',views.scanupload),
 ]
