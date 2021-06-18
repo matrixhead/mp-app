@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mpapp/data_layer/authentication_repository/authentication.dart';
@@ -26,6 +28,8 @@ class EditorBloc extends Bloc<EditorEvent, EditorState> {
       yield formEditedEventToState(event, state);
     } else if (event is FormSubmittedEvent) {
       yield* formSubmittedToState(state);
+    } else if (event is FetchScannedImages) {
+      yield await fetchScannedImagesTostate(event, state);
     }
   }
 
@@ -53,5 +57,17 @@ class EditorBloc extends Bloc<EditorEvent, EditorState> {
       yield state.copyWith(status: SubmissionStatus.submissionFailure);
       print(_);
     }
+  }
+
+  Future<EditorState> fetchScannedImagesTostate(
+      FetchScannedImages event, EditorState state) async {
+    Map<int, String> imagemap;
+    try {
+      imagemap = await nivedhanamRepository.fetchscan(event.sino);
+      print("");
+    } on Exception catch (_) {
+      print(_);
+    }
+    return state.copyWith();
   }
 }

@@ -5,10 +5,11 @@ from . import views
 
 router = routers.DefaultRouter()
 router.register(r'nivedhanams', views.NivedhanamViewSet)
+router.register(r'scans', views.ScanViewSet)
 
 
 
 urlpatterns =[
     path('',include(router.urls)),
-    path('scanupload/',views.scanupload),
+    # path('scanupload/',views.scanupload),
 ]

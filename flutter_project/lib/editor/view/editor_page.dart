@@ -18,7 +18,8 @@ class EditorPage extends StatelessWidget {
       create: (context) => EditorBloc(
           RepositoryProvider.of<NivedhanamRepository>(context),
           RepositoryProvider.of<AuthenticationRepository>(context),
-          nivedhanam),
+          nivedhanam)
+        ..add(FetchScannedImages(nivedhanam?["SI_no"])),
       child: EditorPageWebView(),
     );
   }

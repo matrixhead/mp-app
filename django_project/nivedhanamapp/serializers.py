@@ -1,15 +1,5 @@
-from rest_framework.fields import ReadOnlyField
-from customauth import models
 from .models import *
 from rest_framework import serializers
-from PIL import Image
-import io
-
-
-
-        
-
-  
 
 
 class ScanUploadSerializer(serializers.ModelSerializer):
@@ -22,9 +12,6 @@ class ScanUploadSerializer(serializers.ModelSerializer):
         return obj.scan.name
 
 class NivedhanamSerializer(serializers.ModelSerializer):
-
-    scans = ScanUploadSerializer(source='scan_set', many=True,read_only=True)
-
     class Meta:
         model = Nivedhanam
         fields = '__all__'

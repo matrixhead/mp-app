@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 import 'package:mpapp/data_layer/nivedhanam_repository/models/nivedhanam_model.dart';
 import 'package:http/http.dart' as http;
 import '../config.dart';
@@ -53,5 +54,23 @@ class NivedhanamRepository {
     if (response.statusCode != 200) {
       throw Exception(response);
     }
+  }
+
+  Future<Map<int, String>> fetchscan(String? sino) async {
+    Uri uri = Uri.http(
+      url,
+      '/api/scans/',
+      <String, String>{
+        'SI_no': '$sino',
+      },
+    );
+    final response = await httpClient.get(uri);
+    List scanurls = jsonDecode(response.body);
+    Map<int, String> imageMap = {};
+    scanurls.forEach((element) async {
+      String imageuri = url + "/" + element["imageurl"];
+      imageMap.addAll({element["id"]: imageuri});
+    });
+    return imageMap;
   }
 }

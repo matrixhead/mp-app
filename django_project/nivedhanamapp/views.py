@@ -23,15 +23,22 @@ class NivedhanamViewSet(viewsets.ModelViewSet):
 
 
 
-@api_view(['POST'])
-def scanupload(request):
+class ScanViewSet(viewsets.ModelViewSet):
+    queryset = Scan.objects.all()
     serializer_class = ScanUploadSerializer
-    if request.method == 'POST':
-        serializer_class = ScanUploadSerializer(data=request.data)
-        serializer_class.is_valid()
-        serializer_class.save()
-        response = "sucessful"
-        return Response(response)
+    filter_backends = [DjangoFilterBackend, OrderingFilter]
+    filterset_fields = ["SI_no"]
+
+
+# @api_view(['POST'])
+# def scanupload(request):
+#     serializer_class = ScanUploadSerializer
+#     if request.method == 'POST':
+#         serializer_class = ScanUploadSerializer(data=request.data)
+#         serializer_class.is_valid()
+#         serializer_class.save()
+#         response = "sucessful"
+#         return Response(response)
 
 
 

@@ -15,3 +15,10 @@ class FormEditedEvent extends EditorEvent {
 }
 
 class FormSubmittedEvent extends EditorEvent {}
+
+class FetchScannedImages extends EditorEvent {
+  const FetchScannedImages(this.sino);
+  final String? sino;
+  @override
+  List<Object> get props => [sino ?? ""];
+}
