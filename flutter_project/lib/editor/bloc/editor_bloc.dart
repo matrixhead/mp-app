@@ -61,10 +61,9 @@ class EditorBloc extends Bloc<EditorEvent, EditorState> {
 
   Future<EditorState> fetchScannedImagesTostate(
       FetchScannedImages event, EditorState state) async {
-    Map<int, String> imagemap;
     try {
-      imagemap = await nivedhanamRepository.fetchscan(event.sino);
-      print("");
+      return state.copyWith(
+          imageList: await nivedhanamRepository.fetchscan(event.sino));
     } on Exception catch (_) {
       print(_);
     }

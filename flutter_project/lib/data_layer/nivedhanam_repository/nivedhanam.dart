@@ -1,5 +1,5 @@
+import 'dart:collection';
 import 'dart:convert';
-import 'dart:typed_data';
 import 'package:mpapp/data_layer/nivedhanam_repository/models/nivedhanam_model.dart';
 import 'package:http/http.dart' as http;
 import '../config.dart';
@@ -66,9 +66,9 @@ class NivedhanamRepository {
     );
     final response = await httpClient.get(uri);
     List scanurls = jsonDecode(response.body);
-    Map<int, String> imageMap = {};
+    SplayTreeMap<int, String> imageMap = SplayTreeMap();
     scanurls.forEach((element) async {
-      String imageuri = url + "/" + element["imageurl"];
+      String imageuri = "http://" + url + "/" + element["imageurl"];
       imageMap.addAll({element["id"]: imageuri});
     });
     return imageMap;

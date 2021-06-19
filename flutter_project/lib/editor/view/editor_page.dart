@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mpapp/data_layer/authentication_repository/authentication.dart';
 import 'package:mpapp/data_layer/nivedhanam_repository/nivedhanam_repository.dart';
 import 'package:mpapp/editor/bloc/editor_bloc.dart';
+import 'package:photo_view/photo_view_gallery.dart';
 
 import 'widgets/editor_form_widgets.dart';
 
@@ -55,7 +56,29 @@ class EditorPageWebView extends StatelessWidget {
             Expanded(
                 flex: 3,
                 child: Container(
-                  color: Colors.grey,
+                  child: BlocBuilder<EditorBloc, EditorState>(
+                    builder: (context, state) {
+                      return PhotoViewGallery.builder(
+                          builder: (BuildContext context, int index) {
+                            return PhotoViewGalleryPageOptions(
+                                imageProvider: NetworkImage(
+                                    state.imageList.values.elementAt(index)));
+                          },
+                          itemCount: state.imageList.length,
+                          loadingBuilder: (context, event) => Center(
+                                child: Container(
+                                  width: 20.0,
+                                  height: 20.0,
+                                  child: CircularProgressIndicator(
+                                    value: event == null
+                                        ? 0
+                                        : event.cumulativeBytesLoaded /
+                                            (event.expectedTotalBytes ?? 1),
+                                  ),
+                                ),
+                              ));
+                    },
+                  ),
                 )),
             Expanded(
                 flex: 2,

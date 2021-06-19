@@ -38,8 +38,8 @@ class _CustomPageViewState extends State<CustomPageView> {
             controller: widget.pageController,
             itemBuilder: pageBuilder,
             itemCount: _homeBloc.state.hasReachedMax
-                ? (_homeBloc.state.nivedhanams.length / nPerView).round()
-                : (_homeBloc.state.nivedhanams.length / nPerView).round() + 1);
+                ? (_homeBloc.state.nivedhanams.length / nPerView).ceil()
+                : (_homeBloc.state.nivedhanams.length / nPerView).ceil() + 1);
       },
     );
   }
@@ -52,7 +52,7 @@ class _CustomPageViewState extends State<CustomPageView> {
                     (pageNumber * nPerView + nPerView)
                 ? pageNumber * nPerView + nPerView
                 : null);
-    return pageNumber >= (_homeBloc.state.nivedhanams.length / nPerView).round()
+    return pageNumber >= (_homeBloc.state.nivedhanams.length / nPerView).ceil()
         ? BottomLoaderW()
         : ListView(
             children: currentpagenivedhanam
