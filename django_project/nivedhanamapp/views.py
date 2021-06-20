@@ -29,11 +29,26 @@ class ScanViewSet(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend, OrderingFilter]
     filterset_fields = ["SI_no"]
 
+    def create(self, request):
+        serializer_class = ScanUploadSerializer(data=request.data)
+        serializer_class.is_valid()
+        serializer_class.save()
+        response = "sucessful"
+        return Response(response)
+
 
 # @api_view(['POST'])
 # def scanupload(request):
-#     serializer_class = ScanUploadSerializer
 #     if request.method == 'POST':
+#         serializer_class = ScanUploadSerializer(data=request.data)
+#         serializer_class.is_valid()
+#         serializer_class.save()
+#         response = "sucessful"
+#         return Response(response)
+
+# class ScanViewSet(viewsets.ViewSet):
+#     queryset = Scan.objects.all()
+#     def create(self, request):
 #         serializer_class = ScanUploadSerializer(data=request.data)
 #         serializer_class.is_valid()
 #         serializer_class.save()

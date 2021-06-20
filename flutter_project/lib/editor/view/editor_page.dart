@@ -5,7 +5,6 @@ import 'package:mpapp/data_layer/authentication_repository/authentication.dart';
 import 'package:mpapp/data_layer/nivedhanam_repository/nivedhanam_repository.dart';
 import 'package:mpapp/editor/bloc/editor_bloc.dart';
 import 'package:photo_view/photo_view_gallery.dart';
-
 import 'widgets/editor_form_widgets.dart';
 
 class EditorPage extends StatelessWidget {
