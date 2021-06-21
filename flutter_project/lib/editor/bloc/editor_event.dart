@@ -22,3 +22,10 @@ class FetchScannedImages extends EditorEvent {
   @override
   List<Object> get props => [sino ?? ""];
 }
+
+class FilesSelectedEvent extends EditorEvent {
+  FilesSelectedEvent(this.files);
+  final files;
+  @override
+  List<Object> get props => [files ?? ""];
+}

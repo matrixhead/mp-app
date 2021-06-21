@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mpapp/data_layer/authentication_repository/authentication.dart';
@@ -52,33 +53,7 @@ class EditorPageWebView extends StatelessWidget {
         },
         child: Row(
           children: [
-            Expanded(
-                flex: 3,
-                child: Container(
-                  child: BlocBuilder<EditorBloc, EditorState>(
-                    builder: (context, state) {
-                      return PhotoViewGallery.builder(
-                          builder: (BuildContext context, int index) {
-                            return PhotoViewGalleryPageOptions(
-                                imageProvider: NetworkImage(
-                                    state.imageList.values.elementAt(index)));
-                          },
-                          itemCount: state.imageList.length,
-                          loadingBuilder: (context, event) => Center(
-                                child: Container(
-                                  width: 20.0,
-                                  height: 20.0,
-                                  child: CircularProgressIndicator(
-                                    value: event == null
-                                        ? 0
-                                        : event.cumulativeBytesLoaded /
-                                            (event.expectedTotalBytes ?? 1),
-                                  ),
-                                ),
-                              ));
-                    },
-                  ),
-                )),
+            Expanded(flex: 3, child: ScanView()),
             Expanded(
                 flex: 2,
                 child: Column(
@@ -113,6 +88,126 @@ class EditorPageWebView extends StatelessWidget {
                 ))
           ],
         ),
+      ),
+    );
+  }
+}
+
+class ScanView extends StatefulWidget {
+  const ScanView({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  _ScanViewState createState() => _ScanViewState();
+}
+
+class _ScanViewState extends State<ScanView> {
+  late EditorBloc _editBloc;
+  late final PageController _pageController;
+
+  @override
+  void initState() {
+    _editBloc = context.read<EditorBloc>();
+    _pageController = PageController();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.black,
+      child: BlocBuilder<EditorBloc, EditorState>(
+        builder: (context, state) {
+          return Stack(
+            children: [
+              PhotoViewGallery.builder(
+                builder: (BuildContext context, int index) {
+                  return state.scanloc == ScanLoc.local
+                      ? PhotoViewGalleryPageOptions(
+                          imageProvider: MemoryImage(
+                              state.imageList.values.elementAt(index).bytes))
+                      : PhotoViewGalleryPageOptions(
+                          imageProvider: NetworkImage(
+                              state.imageList.values.elementAt(index)));
+                },
+                itemCount: state.imageList.length,
+                loadingBuilder: (context, event) => Center(
+                  child: Container(
+                    width: 20.0,
+                    height: 20.0,
+                    child: CircularProgressIndicator(
+                      value: event == null
+                          ? 0
+                          : event.cumulativeBytesLoaded /
+                              event.cumulativeBytesLoaded,
+                    ),
+                  ),
+                ),
+                pageController: _pageController,
+                scrollPhysics: NeverScrollableScrollPhysics(),
+              ),
+              Positioned(
+                bottom: 50,
+                right: 50,
+                child: ElevatedButton(
+                  onPressed: () async {
+                    FilePickerResult? result = await FilePicker.platform
+                        .pickFiles(
+                            allowCompression: true,
+                            allowMultiple: true,
+                            type: FileType.image);
+
+                    if (result != null) {
+                      _editBloc.add(FilesSelectedEvent(result.files));
+                    }
+                  },
+                  child: Icon(
+                    Icons.post_add,
+                    size: 25,
+                    color: Colors.white.withOpacity(.8),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    onPrimary: Colors.grey.withOpacity(.4),
+                    primary: Colors.transparent,
+                    shape: StadiumBorder(),
+                    padding: EdgeInsets.all(24),
+                  ),
+                ),
+              ),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: IconButton(
+                  onPressed: () {
+                    _pageController.previousPage(
+                        duration: Duration(milliseconds: 150),
+                        curve: Curves.easeIn);
+                  },
+                  icon: Icon(
+                    Icons.chevron_left,
+                    size: 25,
+                    color: Colors.grey,
+                  ),
+                ),
+              ),
+              Align(
+                alignment: Alignment.centerRight,
+                child: IconButton(
+                  onPressed: () {
+                    _pageController.nextPage(
+                        duration: Duration(milliseconds: 150),
+                        curve: Curves.easeIn);
+                  },
+                  icon: Icon(
+                    Icons.chevron_right,
+                    size: 25,
+                    color: Colors.grey,
+                  ),
+                ),
+              )
+            ],
+          );
+        },
       ),
     );
   }

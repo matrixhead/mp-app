@@ -25,7 +25,6 @@ class _CustomPageViewState extends State<CustomPageView> {
   void initState() {
     super.initState();
     widget.pageController.addListener(_onPageTurn);
-
     _homeBloc = context.read<HomeBloc>();
   }
 

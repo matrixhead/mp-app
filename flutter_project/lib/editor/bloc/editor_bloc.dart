@@ -15,7 +15,8 @@ class EditorBloc extends Bloc<EditorEvent, EditorState> {
         authenticationRepository = authenticationRepository,
         super(EditorState(
             editorFormMap: nivedhanam ?? Map<String, String>(),
-            mode: nivedhanam == null ? Mode.create : Mode.update));
+            mode: nivedhanam == null ? Mode.create : Mode.update,
+            scanloc: nivedhanam == null ? ScanLoc.local : ScanLoc.network));
 
   final NivedhanamRepository nivedhanamRepository;
   final AuthenticationRepository authenticationRepository;
@@ -28,6 +29,8 @@ class EditorBloc extends Bloc<EditorEvent, EditorState> {
       yield* formSubmittedToState(state);
     } else if (event is FetchScannedImages) {
       yield await fetchScannedImagesTostate(event, state);
+    } else if (event is FilesSelectedEvent) {
+      yield await filesSelectedEventToState(event);
     }
   }
 
@@ -41,14 +44,14 @@ class EditorBloc extends Bloc<EditorEvent, EditorState> {
     try {
       if (state.mode == Mode.create) {
         await nivedhanamRepository.createNivedhanam(
-          nivedhanamMap: state.editorFormMap,
-          token: authenticationRepository.getUser.token,
-        );
+            nivedhanamMap: state.editorFormMap,
+            token: authenticationRepository.getUser.token,
+            imageList: state.scanloc == ScanLoc.local ? state.imageList : {});
       } else {
         nivedhanamRepository.updateNivedhanam(
-          nivedhanamMap: state.editorFormMap,
-          token: authenticationRepository.getUser.token,
-        );
+            nivedhanamMap: state.editorFormMap,
+            token: authenticationRepository.getUser.token,
+            imageList: state.scanloc == ScanLoc.local ? state.imageList : {});
       }
       yield state.copyWith(status: SubmissionStatus.submissionSuccess);
     } on Exception catch (_) {
@@ -59,12 +62,20 @@ class EditorBloc extends Bloc<EditorEvent, EditorState> {
 
   Future<EditorState> fetchScannedImagesTostate(
       FetchScannedImages event, EditorState state) async {
-    try {
-      return state.copyWith(
-          imageList: await nivedhanamRepository.fetchscan(event.sino));
-    } on Exception catch (_) {
-      print(_);
+    if (state.scanloc == ScanLoc.network) {
+      try {
+        return state.copyWith(
+            imageList: await nivedhanamRepository.fetchscan(event.sino));
+      } on Exception catch (_) {
+        print(_);
+      }
     }
     return state.copyWith();
+  }
+
+  Future<EditorState> filesSelectedEventToState(
+      FilesSelectedEvent event) async {
+    Map<int, dynamic> imageMap = event.files.asMap();
+    return state.copyWith(imageList: imageMap, scanloc: ScanLoc.local);
   }
 }

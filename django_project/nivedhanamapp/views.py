@@ -32,8 +32,9 @@ class ScanViewSet(viewsets.ModelViewSet):
     def create(self, request):
         serializer_class = ScanUploadSerializer(data=request.data)
         serializer_class.is_valid()
+        Scan.objects.filter(SI_no__exact=request.data['SI_no']).delete()
         serializer_class.save()
-        response = "sucessful"
+        response = "Scans upload status : Success"
         return Response(response)
 
 
