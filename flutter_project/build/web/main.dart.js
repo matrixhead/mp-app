@@ -68939,7 +68939,7 @@ afG:function(a,b){var s=0,r=P.V(t.H),q=this,p,o,n
 var $async$x8=P.O(function(c,d){if(c===1)return P.S(d,r)
 while(true)switch(s){case 0:p=t.N
 s=2
-return P.a2(G.avx(P.DL("http","0.0.0.0:8100","/get-token/",null),P.ai(["username",b,"password",a],p,p),null),$async$x8)
+return P.a2(G.avx(P.DL("http","117.232.108.35:8100","/get-token/",null),P.ai(["username",b,"password",a],p,p),null),$async$x8)
 case 2:o=d
 n=C.az.qN(0,B.UG(U.aiI(o.e).c.a.i(0,"charset"),C.aG).d3(0,o.x),null)
 p=J.ad(n)
@@ -69002,7 +69002,7 @@ adA:function(a,b,c){var s=0,r=P.V(t.Jp),q,p=this,o,n
 var $async$r6=P.O(function(d,e){if(d===1)return P.S(e,r)
 while(true)switch(s){case 0:o=t.N
 s=3
-return P.a2(p.a.LO("GET",P.DL("http","0.0.0.0:8100","/api/nivedhanams/",P.ai(["limit",""+a,"offset",""+b],o,o)),P.ai(["Authorization","Token "+c],o,o)),$async$r6)
+return P.a2(p.a.LO("GET",P.DL("http","117.232.108.35:8100","/api/nivedhanams/",P.ai(["limit",""+a,"offset",""+b],o,o)),P.ai(["Authorization","Token "+c],o,o)),$async$r6)
 case 3:n=e
 if(n.b===200){q=J.vq(J.b5(C.az.qN(0,B.UG(U.aiI(n.e).c.a.i(0,"charset"),C.aG).d3(0,n.x),null),"results"),new D.a2P(),t.L_).fm(0)
 s=1
@@ -69014,7 +69014,7 @@ acj:function(a,b,c){var s=0,r=P.V(t.H),q=this,p,o
 var $async$w3=P.O(function(d,e){if(d===1)return P.S(e,r)
 while(true)switch(s){case 0:p=t.N
 s=2
-return P.a2(G.avx(P.DL("http","0.0.0.0:8100","/api/nivedhanams/",null),b,P.ai(["Authorization","Token "+c],p,p)),$async$w3)
+return P.a2(G.avx(P.DL("http","117.232.108.35:8100","/api/nivedhanams/",null),b,P.ai(["Authorization","Token "+c],p,p)),$async$w3)
 case 2:o=e
 if(o.b===201)q.p_(a,c,J.dp(J.b5(C.az.qN(0,B.UG(U.aiI(o.e).c.a.i(0,"charset"),C.aG).d3(0,o.x),null),"SI_no")))
 else throw H.b(P.cj(o))
@@ -69028,7 +69028,7 @@ p=b.u(0,"SI_no")
 if(p==null)p=""
 o=t.N
 s=2
-return P.a2(G.aJI(P.DL("http","0.0.0.0:8100","/api/nivedhanams/"+p+"/",null),b,P.ai(["Authorization","Token "+c],o,o)),$async$xL)
+return P.a2(G.aJI(P.DL("http","117.232.108.35:8100","/api/nivedhanams/"+p+"/",null),b,P.ai(["Authorization","Token "+c],o,o)),$async$xL)
 case 2:n=e
 if(n.b===200){if(J.n_(a))q.p_(a,c,p)}else throw H.b(P.cj(n))
 return P.T(null,r)}})
@@ -69038,7 +69038,7 @@ adC:function(a){var s=0,r=P.V(t.gU),q,p=this,o,n,m,l
 var $async$ws=P.O(function(b,c){if(b===1)return P.S(c,r)
 while(true)switch(s){case 0:o=t.N
 s=3
-return P.a2(p.a.LO("GET",P.DL("http","0.0.0.0:8100","/api/scans/",P.ai(["SI_no",H.d(a)],o,o)),null),$async$ws)
+return P.a2(p.a.LO("GET",P.DL("http","117.232.108.35:8100","/api/scans/",P.ai(["SI_no",H.d(a)],o,o)),null),$async$ws)
 case 3:n=c
 m=C.az.qN(0,B.UG(U.aiI(n.e).c.a.i(0,"charset"),C.aG).d3(0,n.x),null)
 l=P.an5(t.S,o)
@@ -69051,7 +69051,7 @@ return P.U($async$ws,r)},
 p_:function(a,b,c){return this.aiw(a,b,c)},
 aiw:function(a,b,c){var s=0,r=P.V(t.z),q,p,o,n,m
 var $async$p_=P.O(function(d,e){if(d===1)return P.S(e,r)
-while(true)switch(s){case 0:o=P.DL("http","0.0.0.0:8100","/api/scans/",null)
+while(true)switch(s){case 0:o=P.DL("http","117.232.108.35:8100","/api/scans/",null)
 n=t.N
 P.ai(["Authorization","Token "+b],n,n)
 q=D.aDc("POST",o)
@@ -69079,7 +69079,7 @@ D.a2Q.prototype={
 $1:function(a){var s=0,r=P.V(t.H),q=this,p,o
 var $async$$1=P.O(function(b,c){if(b===1)return P.S(c,r)
 while(true)switch(s){case 0:p=J.ad(a)
-o=C.b.Z("http://0.0.0.0:8100/",p.i(a,"imageurl"))
+o=C.b.Z("http://117.232.108.35:8100/",p.i(a,"imageurl"))
 q.a.S(0,P.ai([p.i(a,"page_number_read"),o],t.S,t.N))
 return P.T(null,r)}})
 return P.U($async$$1,r)},
