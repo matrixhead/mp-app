@@ -13,7 +13,8 @@ class HomePage extends StatelessWidget {
       create: (context) => HomeBloc(
           RepositoryProvider.of<NivedhanamRepository>(context),
           RepositoryProvider.of<AuthenticationRepository>(context))
-        ..add(NivedhanamFetchedEvent()),
+        ..add(NivedhanamFetchedEvent())
+        ..add(CategoryFetchedEvent()),
       child: MediaQuery.of(context).size.width < 600
           ? HomePageHandsetView()
           : HomePageWebView(),

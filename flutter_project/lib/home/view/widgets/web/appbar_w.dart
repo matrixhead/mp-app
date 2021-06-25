@@ -14,26 +14,21 @@ class CustomSliverAppBarW extends StatelessWidget {
     return AppBar(
       backgroundColor: Colors.white,
       elevation: 0,
-      // shape: Border(
-      //   bottom:
-      //       BorderSide(color: Colors.grey, width: .3, style: BorderStyle.solid),
-      // ),
+      shape: Border(
+        bottom:
+            BorderSide(color: Colors.grey, width: .3, style: BorderStyle.solid),
+      ),
       title: Align(
         alignment: Alignment.bottomCenter,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            // IconButton(
-            //   color: Colors.grey[800],
-            //   icon: Icon(Icons.menu),
-            //   onPressed: () {},
-            // ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
+              padding: const EdgeInsets.symmetric(horizontal: 5),
               child: Text(
                 "mpoKottayam",
                 style: TextStyle(
-                  color: Colors.grey,
+                  color: Colors.grey[700],
                   fontFamily: 'Bellota',
                 ),
                 textScaleFactor: 1.15,

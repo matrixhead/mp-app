@@ -8,4 +8,6 @@ abstract class HomeEvent extends Equatable {
 
 class NivedhanamFetchedEvent extends HomeEvent {}
 
+class CategoryFetchedEvent extends HomeEvent {}
+
 class RefreshNivedhanamEvent extends HomeEvent {}

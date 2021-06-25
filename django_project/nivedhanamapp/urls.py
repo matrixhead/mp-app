@@ -6,6 +6,8 @@ from . import views
 router = routers.DefaultRouter()
 router.register(r'nivedhanams', views.NivedhanamViewSet)
 router.register(r'scans', views.ScanViewSet)
+router.register(r'category', views.CategoryViewSet)
+
 
 
 

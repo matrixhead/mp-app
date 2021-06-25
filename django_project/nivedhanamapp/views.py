@@ -20,6 +20,14 @@ class NivedhanamViewSet(viewsets.ModelViewSet):
     # ordering_fields = '__all__'
     permission_classes = [IsAuthenticated]
 
+class CategoryViewSet(viewsets.ModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+    filter_backends = [DjangoFilterBackend, OrderingFilter]
+    # filterset_fields = '__all__'
+    # ordering_fields = '__all__'
+    # permission_classes = [IsAuthenticated]
+
 
 
 

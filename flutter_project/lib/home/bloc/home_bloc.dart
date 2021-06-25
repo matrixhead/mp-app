@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mpapp/data_layer/authentication_repository/authentication.dart';
+import 'package:mpapp/data_layer/nivedhanam_repository/models/category_model.dart';
 import 'package:mpapp/data_layer/nivedhanam_repository/nivedhanam.dart';
 import 'package:mpapp/data_layer/nivedhanam_repository/nivedhanam_repository.dart';
 import 'package:rxdart/rxdart.dart';
@@ -24,8 +25,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     Stream<HomeEvent> events,
     TransitionFunction<HomeEvent, HomeState> transitionFn,
   ) {
+    var fetchEventStream = events
+        .where((event) => event is NivedhanamFetchedEvent)
+        .debounceTime(const Duration(milliseconds: 500));
+    var otherEventStream =
+        events.where((event) => event is! NivedhanamFetchedEvent);
+    var combined = Rx.merge([fetchEventStream, otherEventStream]);
     return super.transformEvents(
-      events.debounceTime(const Duration(milliseconds: 500)),
+      combined,
       transitionFn,
     );
   }
@@ -36,6 +43,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       yield await _mapNivedhanamFetchedToState(state);
     } else if (event is RefreshNivedhanamEvent) {
       yield _refreshNivedhanamToState(state);
+    } else if (event is CategoryFetchedEvent) {
+      yield await categoryFetchedEventToState();
     }
   }
 
@@ -70,9 +79,16 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   HomeState _refreshNivedhanamToState(HomeState state) {
     this.add(NivedhanamFetchedEvent());
+    this.add(CategoryFetchedEvent());
     return state.copyWith(
         status: NivedhanamStatus.initial,
         nivedhanams: [],
-        hasReachedMax: false);
+        hasReachedMax: false,
+        categories: []);
+  }
+
+  Future<HomeState> categoryFetchedEventToState() async {
+    return state.copyWith(
+        categories: await nivedhanamRepository.fetchCategory());
   }
 }

@@ -8,7 +8,14 @@ from django.core.files.uploadedfile import InMemoryUploadedFile
 
 grid_fs_storage = GridFSStorage(collection='scan_collection', base_url='scan_collection/')
 
-# Create your models here.
+
+
+class Category(models.Model):
+     category_name = models.CharField(primary_key=True,max_length=100)
+     categoryfields = models.JSONField(default={})
+     objects = models.DjongoManager()
+
+
 class Nivedhanam(models.Model):
     _id = models.UUIDField(
          unique=True,
@@ -17,12 +24,18 @@ class Nivedhanam(models.Model):
     SI_no = models.AutoField(primary_key=True)
     name = models.CharField(max_length=200)
     address = models.TextField()
+    pincode = models.IntegerField()
     letterno = models.IntegerField()
     date = models.DateField()
+    mobile = models.IntegerField()
     reply_recieved = models.BooleanField()
     amount_sanctioned = models.FloatField()
     date_sanctioned = models.DateField()
     remarks = models.TextField()
+    Category = models.ForeignKey(Category,on_delete=models.PROTECT,null=True)
+    categoryfields = models.JSONField(default={})
+
+
     
 
 class Scan(models.Model):

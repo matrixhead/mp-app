@@ -1,5 +1,6 @@
 import 'dart:collection';
 import 'dart:convert';
+import 'package:mpapp/data_layer/nivedhanam_repository/models/category_model.dart';
 import 'package:mpapp/data_layer/nivedhanam_repository/models/nivedhanam_model.dart';
 import 'package:http/http.dart' as http;
 import '../config.dart';
@@ -103,6 +104,34 @@ class NivedhanamRepository {
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
       print(await response.stream.bytesToString());
+    } else {
+      throw Exception(response);
+    }
+  }
+
+  Future<void> addCategory(String categoryName, Map categoryfields) async {
+    Uri uri = Uri.http(url, '/api/category/');
+    Map body = {"category_name": categoryName};
+    Map cf2 = {};
+    categoryfields.forEach((key, value) {
+      cf2.addAll({value["name"]: value["type"]});
+    });
+    body.addAll({"categoryfields": jsonEncode(cf2)});
+    final response = await http.post(uri, body: body);
+    if (response.statusCode == 201) {
+    } else {
+      throw Exception(response);
+    }
+  }
+
+  Future<List<Category>> fetchCategory() async {
+    Uri uri = Uri.http(url, '/api/category/');
+    final response = await httpClient.get(uri);
+    if (response.statusCode == 200) {
+      final resultMap = jsonDecode(response.body);
+      return resultMap
+          .map<Category>((json) => Category.fromJson(json))
+          .toList();
     } else {
       throw Exception(response);
     }

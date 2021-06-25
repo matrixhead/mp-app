@@ -19,7 +19,7 @@ class Command(BaseCommand):
             self.user.objects.create_superuser('admin', 'admin@mpokottayam', 'admin')
             print("creating some mock data")
             for i in range(20):
-                nivedhanam =Nivedhanam(name="applicant{}".format(i),address="kottayam/kerala/india",letterno=i,date=date.today(),reply_recieved=False,amount_sanctioned=i+1000,date_sanctioned=date.today(),remarks="lalala")
+                nivedhanam =Nivedhanam(name="applicant{}".format(i),address="kottayam/kerala/india",letterno=i,date=date.today(),reply_recieved=False,amount_sanctioned=i+1000,date_sanctioned=date.today(),remarks="lalala",pincode=680001,mobile=8129029020+i)
                 nivedhanam.save()
         else:
             print("user found skipping ")

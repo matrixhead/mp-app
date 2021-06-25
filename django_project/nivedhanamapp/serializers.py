@@ -41,3 +41,10 @@ class NivedhanamSerializer(serializers.ModelSerializer):
     class Meta:
         model = Nivedhanam
         fields = '__all__'
+
+class CategorySerializer(serializers.ModelSerializer):
+    categoryfields=serializers.JSONField()
+    class Meta:
+        model = Category
+        fields = '__all__'
+
