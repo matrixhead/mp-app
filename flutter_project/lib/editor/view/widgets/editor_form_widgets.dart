@@ -10,6 +10,7 @@ class NivedahnamFormText extends StatefulWidget {
     required this.fieldName,
     this.numberField = false,
     this.dateField = false,
+    this.categoryField = false,
     required this.keyName,
   }) : super(key: key);
 
@@ -17,6 +18,7 @@ class NivedahnamFormText extends StatefulWidget {
   final String keyName;
   final bool numberField;
   final bool dateField;
+  final bool categoryField;
 
   @override
   _NivedahnamFormTextState createState() => _NivedahnamFormTextState();
@@ -59,8 +61,12 @@ class _NivedahnamFormTextState extends State<NivedahnamFormText> {
                     ? () {
                         _selectDate(context).then((value) {
                           _textEditingController.text = value;
-                          _editorBloc
-                              .add(FormEditedEvent({widget.keyName: value}));
+                          widget.categoryField
+                              ? _editorBloc.add(FormEditedEvent({
+                                  "categoryfields": {widget.keyName: value}
+                                }))
+                              : _editorBloc.add(
+                                  FormEditedEvent({widget.keyName: value}));
                         });
                       }
                     : () {},
@@ -73,7 +79,12 @@ class _NivedahnamFormTextState extends State<NivedahnamFormText> {
                 minLines: 1,
                 maxLines: 8,
                 onChanged: (text) {
-                  _editorBloc.add(FormEditedEvent({widget.keyName: text}));
+                  widget.categoryField
+                      ? _editorBloc.add(FormEditedEvent({
+                          "categoryfields": {widget.keyName: text}
+                        }))
+                      : _editorBloc
+                          .add(FormEditedEvent({widget.keyName: text}));
                 },
               ),
             ),

@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mpapp/data_layer/authentication_repository/authentication.dart';
+import 'package:mpapp/data_layer/nivedhanam_repository/models/category_model.dart';
 import 'package:mpapp/data_layer/nivedhanam_repository/nivedhanam.dart';
 
 part 'editor_event.dart';
@@ -31,25 +34,38 @@ class EditorBloc extends Bloc<EditorEvent, EditorState> {
       yield await fetchScannedImagesTostate(event, state);
     } else if (event is FilesSelectedEvent) {
       yield await filesSelectedEventToState(event);
+    } else if (event is CategoryFetchedEvent) {
+      yield await categoryFetchedEventToState();
     }
   }
 
   EditorState formEditedEventToState(FormEditedEvent event, EditorState state) {
+    if (event.input.values.first is Map) {
+      final Map currentMap =
+          Map.from(state.editorFormMap['categoryfields'] ?? {});
+      currentMap.addAll(event.input["categoryfields"]);
+      return state.copyWith(
+          editorFormMap: Map.from(state.editorFormMap)
+            ..addAll({'categoryfields': currentMap}));
+    }
     return state.copyWith(
         editorFormMap: Map.from(state.editorFormMap)..addAll(event.input));
   }
 
   Stream<EditorState> formSubmittedToState(EditorState state) async* {
     yield state.copyWith(status: SubmissionStatus.submissionInProgress);
+    final serialisedNivedhanam = Map.from(state.editorFormMap)
+      ..update("categoryfields", (value) => jsonEncode(value),
+          ifAbsent: () => jsonEncode({}));
     try {
       if (state.mode == Mode.create) {
         await nivedhanamRepository.createNivedhanam(
-            nivedhanamMap: state.editorFormMap,
+            nivedhanamMap: serialisedNivedhanam,
             token: authenticationRepository.getUser.token,
             imageList: state.scanloc == ScanLoc.local ? state.imageList : {});
       } else {
         nivedhanamRepository.updateNivedhanam(
-            nivedhanamMap: state.editorFormMap,
+            nivedhanamMap: serialisedNivedhanam,
             token: authenticationRepository.getUser.token,
             imageList: state.scanloc == ScanLoc.local ? state.imageList : {});
       }
@@ -77,5 +93,10 @@ class EditorBloc extends Bloc<EditorEvent, EditorState> {
       FilesSelectedEvent event) async {
     Map<int, dynamic> imageMap = event.files.asMap();
     return state.copyWith(imageList: imageMap, scanloc: ScanLoc.local);
+  }
+
+  Future<EditorState> categoryFetchedEventToState() async {
+    return state.copyWith(
+        categories: List.from(await nivedhanamRepository.fetchCategory()));
   }
 }

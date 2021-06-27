@@ -23,17 +23,17 @@ class Nivedhanam(models.Model):
          editable = False)
     SI_no = models.AutoField(primary_key=True)
     name = models.CharField(max_length=200)
-    address = models.TextField()
-    pincode = models.IntegerField()
+    address = models.TextField(null=True)
+    pincode = models.IntegerField(null=True)
     letterno = models.IntegerField()
     date = models.DateField()
-    mobile = models.IntegerField()
+    mobile = models.TextField(null=True)
     reply_recieved = models.BooleanField()
     amount_sanctioned = models.FloatField()
-    date_sanctioned = models.DateField()
-    remarks = models.TextField()
+    date_sanctioned = models.DateField(null=True)
+    remarks = models.TextField(null=True)
     Category = models.ForeignKey(Category,on_delete=models.PROTECT,null=True)
-    categoryfields = models.JSONField(default={})
+    categoryfields = models.JSONField(default={},null=True)
 
 
     

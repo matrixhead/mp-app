@@ -38,6 +38,7 @@ class ScanUploadSerializer(serializers.ModelSerializer):
     
 
 class NivedhanamSerializer(serializers.ModelSerializer):
+    categoryfields=serializers.JSONField(required=False)
     class Meta:
         model = Nivedhanam
         fields = '__all__'

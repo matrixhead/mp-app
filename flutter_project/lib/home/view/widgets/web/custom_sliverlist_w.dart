@@ -146,7 +146,7 @@ class CustomListTileW extends StatelessWidget {
                         toBeginningOfSentenceCase(nivedhanam.address) ?? "",
                         style: TextStyle(fontWeight: FontWeight.w600),
                       ),
-                      Text("-" + nivedhanam.remarks)
+                      Text("-" + nivedhanam.remarks!)
                     ],
                   ),
                 ),

@@ -3,6 +3,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mpapp/data_layer/authentication_repository/authentication.dart';
+import 'package:mpapp/data_layer/nivedhanam_repository/models/category_model.dart';
 import 'package:mpapp/data_layer/nivedhanam_repository/nivedhanam_repository.dart';
 import 'package:mpapp/editor/bloc/editor_bloc.dart';
 import 'package:photo_view/photo_view_gallery.dart';
@@ -13,14 +14,15 @@ class EditorPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Map<String, String>? nivedhanam =
+    final Map<String, dynamic>? nivedhanam =
         (ModalRoute.of(context)!.settings.arguments as Nivedhanam?)?.toMap();
     return BlocProvider(
       create: (context) => EditorBloc(
           RepositoryProvider.of<NivedhanamRepository>(context),
           RepositoryProvider.of<AuthenticationRepository>(context),
           nivedhanam)
-        ..add(FetchScannedImages(nivedhanam?["SI_no"])),
+        ..add(FetchScannedImages(nivedhanam?["SI_no"]))
+        ..add(CategoryFetchedEvent()),
       child: EditorPageWebView(),
     );
   }
@@ -237,37 +239,58 @@ class _NivedhanamFormState extends State<NivedhanamForm> {
           Expanded(
               child: Form(
             key: _formKey,
-            child: ListView(
-              children: [
-                NivedahnamFormText(fieldName: "Name", keyName: "name"),
-                NivedahnamFormText(
-                  fieldName: "Address",
-                  keyName: 'address',
-                ),
-                NivedahnamFormText(
-                  fieldName: "Letter number",
-                  numberField: true,
-                  keyName: 'letterno',
-                ),
-                NivedahnamFormText(
-                    fieldName: "Date", dateField: true, keyName: 'date'),
-                NivedhanamFormRadio(
-                    fieldName: "Reply recieved", keyName: 'reply_recieved'),
-                NivedahnamFormText(
-                  fieldName: "Amount sanctioned",
-                  numberField: true,
-                  keyName: 'amount_sanctioned',
-                ),
-                NivedahnamFormText(
-                  fieldName: "Date sanctioned",
-                  dateField: true,
-                  keyName: 'date_sanctioned',
-                ),
-                NivedahnamFormText(
-                  fieldName: "remarks",
-                  keyName: 'remarks',
-                ),
-              ],
+            child: BlocBuilder<EditorBloc, EditorState>(
+              builder: (context, state) {
+                return ListView(
+                  children: [
+                    NivedahnamFormText(fieldName: "Name", keyName: "name"),
+                    NivedahnamFormText(
+                      fieldName: "Address",
+                      keyName: 'address',
+                    ),
+                    NivedahnamFormText(
+                      fieldName: "Pincode",
+                      numberField: true,
+                      keyName: 'pincode',
+                    ),
+                    NivedahnamFormText(
+                      fieldName: "Mobile",
+                      numberField: true,
+                      keyName: 'mobile',
+                    ),
+                    NivedahnamFormText(
+                      fieldName: "Letter number",
+                      numberField: true,
+                      keyName: 'letterno',
+                    ),
+                    NivedahnamFormText(
+                        fieldName: "Date", dateField: true, keyName: 'date'),
+                    NivedhanamFormRadio(
+                        fieldName: "Reply recieved", keyName: 'reply_recieved'),
+                    NivedahnamFormText(
+                      fieldName: "Amount sanctioned",
+                      numberField: true,
+                      keyName: 'amount_sanctioned',
+                    ),
+                    NivedahnamFormText(
+                      fieldName: "Date sanctioned",
+                      dateField: true,
+                      keyName: 'date_sanctioned',
+                    ),
+                    NivedahnamFormText(
+                      fieldName: "remarks",
+                      keyName: 'remarks',
+                    ),
+                    DropDownField(
+                      choices:
+                          state.categories.map((e) => e.categoryName).toList(),
+                      fieldName: 'Category',
+                    ),
+                    if (state.editorFormMap['Category'] != null)
+                      ...buildCategoryFields(state.editorFormMap['Category'])
+                  ],
+                );
+              },
             ),
           )),
           Row(
@@ -330,6 +353,111 @@ class _NivedhanamFormState extends State<NivedhanamForm> {
           )
         ],
       ),
+    );
+  }
+
+  List<Widget> buildCategoryFields(String? categoryname) {
+    final Category category = context
+        .read<EditorBloc>()
+        .state
+        .categories
+        .firstWhere((element) => element.categoryName == categoryname,
+            orElse: () => Category("", {}));
+
+    List<Widget> categoryFields = [];
+    category.categoryFields.forEach((key, value) {
+      if (value == 'Text') {
+        categoryFields.add(NivedahnamFormText(
+          fieldName: key,
+          keyName: key,
+          categoryField: true,
+        ));
+      } else if (value == 'Number') {
+        categoryFields.add(NivedahnamFormText(
+          fieldName: key,
+          numberField: true,
+          keyName: key,
+          categoryField: true,
+        ));
+      } else if (value == 'Date') {
+        categoryFields.add(NivedahnamFormText(
+          fieldName: key,
+          dateField: true,
+          keyName: key,
+          categoryField: true,
+        ));
+      }
+    });
+    return categoryFields;
+  }
+}
+
+class DropDownField extends StatefulWidget {
+  const DropDownField({
+    required this.choices,
+    Key? key,
+    required this.fieldName,
+  }) : super(key: key);
+  final List<String> choices;
+  final String fieldName;
+
+  @override
+  _DropDownFieldState createState() => _DropDownFieldState();
+}
+
+class _DropDownFieldState extends State<DropDownField> {
+  String? dropdownValue;
+  @override
+  void initState() {
+    dropdownValue =
+        context.read<EditorBloc>().state.editorFormMap[widget.fieldName];
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.max,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Text(widget.fieldName),
+        Expanded(
+          child: Align(
+            alignment: Alignment.centerRight,
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                maxWidth: 350,
+              ),
+              child: DropdownButton<String>(
+                isExpanded: true,
+                value: dropdownValue,
+                icon: const Icon(Icons.expand_more),
+                iconSize: 24,
+                elevation: 16,
+                onChanged: (String? newValue) {
+                  context
+                      .read<EditorBloc>()
+                      .add(FormEditedEvent({widget.fieldName: newValue ?? ""}));
+                  setState(() {
+                    dropdownValue = newValue!;
+                  });
+                },
+                hint: Text(
+                  "Select Item Type",
+                  style: TextStyle(color: Colors.grey),
+                ),
+                items: widget.choices
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+              ),
+            ),
+          ),
+        )
+      ],
     );
   }
 }

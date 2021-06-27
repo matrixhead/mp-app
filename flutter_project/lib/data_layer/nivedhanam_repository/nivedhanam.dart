@@ -52,10 +52,9 @@ class NivedhanamRepository {
   }
 
   void updateNivedhanam(
-      {required Map<String, String> nivedhanamMap,
+      {required Map nivedhanamMap,
       required String token,
       required Map<int, dynamic> imageList}) async {
-    print(imageList);
     String siNo = nivedhanamMap.remove("SI_no") ?? "";
     Uri uri = Uri.http(url, '/api/nivedhanams/$siNo/');
     Map<String, String> headers = {'Authorization': 'Token $token'};
