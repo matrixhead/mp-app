@@ -32,8 +32,14 @@ class _NivedahnamFormTextState extends State<NivedahnamFormText> {
   void initState() {
     super.initState();
     _editorBloc = context.read<EditorBloc>();
-    _textEditingController = TextEditingController(
-        text: _editorBloc.state.editorFormMap[widget.keyName]);
+    _textEditingController = TextEditingController();
+    _textEditingController.text = widget.categoryField
+        ? _editorBloc.state.editorFormMap.containsKey("categoryfields")
+            ? _editorBloc.state.editorFormMap["categoryfields"]
+                    [widget.keyName] ??
+                ""
+            : ""
+        : _editorBloc.state.editorFormMap[widget.keyName] ?? "";
   }
 
   @override
