@@ -34,41 +34,10 @@ class CustomSliverAppBarW extends StatelessWidget {
                 textScaleFactor: 1.15,
               ),
             ),
-            Expanded(
-              flex: 1,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30),
-                child: Material(
-                  color: Colors.grey[200],
-                  elevation: 0,
-                  borderRadius: BorderRadius.all(Radius.circular(12.0)),
-                  child: Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
-                        child: IconButton(
-                          color: Colors.grey,
-                          splashColor: Colors.grey[600],
-                          icon: Icon(Icons.search),
-                          onPressed: () {},
-                        ),
-                      ),
-                      Expanded(
-                        child: TextField(
-                          cursorColor: Colors.grey,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.go,
-                          decoration: InputDecoration(
-                              border: InputBorder.none,
-                              contentPadding:
-                                  EdgeInsets.symmetric(horizontal: 15),
-                              hintText: "Search"),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+            BlocBuilder<HomeBloc, HomeState>(
+              builder: (context, state) {
+                return SeachBox();
+              },
             ),
             Expanded(
               child: Row(
@@ -109,6 +78,73 @@ class CustomSliverAppBarW extends StatelessWidget {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class SeachBox extends StatefulWidget {
+  const SeachBox({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  _SeachBoxState createState() => _SeachBoxState();
+}
+
+class _SeachBoxState extends State<SeachBox> {
+  late final TextEditingController _textEditingController;
+
+  @override
+  void initState() {
+    _textEditingController = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    _textEditingController.text = context.read<HomeBloc>().state.searchString;
+    return Expanded(
+      flex: 1,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 30),
+        child: Material(
+          color: Colors.grey[200],
+          elevation: 0,
+          borderRadius: BorderRadius.all(Radius.circular(12.0)),
+          child: Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: IconButton(
+                  color: Colors.grey,
+                  splashColor: Colors.grey[600],
+                  icon: Icon(Icons.search),
+                  onPressed: () {
+                    context
+                        .read<HomeBloc>()
+                        .add(SearchEditedEvent(_textEditingController.text));
+                  },
+                ),
+              ),
+              Expanded(
+                child: TextField(
+                  cursorColor: Colors.grey,
+                  keyboardType: TextInputType.text,
+                  textInputAction: TextInputAction.go,
+                  controller: _textEditingController,
+                  decoration: InputDecoration(
+                      border: InputBorder.none,
+                      contentPadding: EdgeInsets.symmetric(horizontal: 15),
+                      hintText: "Search"),
+                  onSubmitted: (text) {
+                    context.read<HomeBloc>().add(SearchEditedEvent(text));
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

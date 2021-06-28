@@ -174,25 +174,26 @@ class CategoryGridTile extends StatelessWidget {
           border: Border.all(width: .5, color: Colors.grey),
           borderRadius: BorderRadius.all(Radius.circular(5.0)),
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              child: Icon(Icons.inventory_2_outlined),
-            ),
-            Text(
-              category.categoryName,
-              textScaleFactor: 1.1,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                const VerticalDivider(thickness: 1, width: 1),
-                IconButton(onPressed: () {}, icon: Icon(Icons.more_horiz)),
-              ],
-            )
-          ],
+        child: InkWell(
+          onTap: () {
+            context
+                .read<HomeBloc>()
+                .add(SearchEditedEvent("category:${category.categoryName}"));
+          },
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: Icon(Icons.inventory_2_outlined),
+              ),
+              Text(
+                category.categoryName,
+                textScaleFactor: 1.1,
+              ),
+              IconButton(onPressed: () {}, icon: Icon(Icons.more_horiz))
+            ],
+          ),
         ),
       ),
     );

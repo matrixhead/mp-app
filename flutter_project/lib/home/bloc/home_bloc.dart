@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mpapp/data_layer/authentication_repository/authentication.dart';
@@ -45,6 +47,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       yield _refreshNivedhanamToState(state);
     } else if (event is CategoryFetchedEvent) {
       yield await categoryFetchedEventToState();
+    } else if (event is SearchEditedEvent) {
+      yield searchEditedToState(event);
+    } else if (event is NavigationRailIndexChangedEvent) {
+      yield navigationIndexChangedToState(event);
     }
   }
 
@@ -53,6 +59,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     try {
       if (state.status == NivedhanamStatus.initial) {
         final nivedhanams = await nivedhanamRepository.fetchNivedhanam(
+            searchquery: state.searchString,
             postLimit: nivedhanamLimit,
             token: authenticationRepository.getUser.token);
         return state.copyWith(
@@ -62,6 +69,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         );
       }
       final nivedhanams = await nivedhanamRepository.fetchNivedhanam(
+          searchquery: state.searchString,
           startIndex: state.nivedhanams.length,
           postLimit: nivedhanamLimit,
           token: authenticationRepository.getUser.token);
@@ -90,5 +98,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   Future<HomeState> categoryFetchedEventToState() async {
     return state.copyWith(
         categories: await nivedhanamRepository.fetchCategory());
+  }
+
+  HomeState searchEditedToState(event) {
+    this.add(RefreshNivedhanamEvent());
+    return state.copyWith(searchString: event.input, navigationRailindex: 1);
+  }
+
+  HomeState navigationIndexChangedToState(event) {
+    return state.copyWith(navigationRailindex: event.index);
   }
 }

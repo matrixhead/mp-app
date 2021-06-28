@@ -1,13 +1,11 @@
-from rest_framework.decorators import api_view
-from rest_framework.serializers import Serializer
 from .models import Nivedhanam
 from .serializers import *
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.filters import OrderingFilter
+from rest_framework.filters import OrderingFilter,SearchFilter
 from rest_framework.response import Response
-from django.core.files.uploadedfile import InMemoryUploadedFile
+
 
 
 
@@ -16,9 +14,12 @@ class NivedhanamViewSet(viewsets.ModelViewSet):
     queryset = Nivedhanam.objects.all()
     serializer_class = NivedhanamSerializer
     filter_backends = [DjangoFilterBackend, OrderingFilter]
-    # filterset_fields = '__all__'
-    # ordering_fields = '__all__'
-    # permission_classes = [IsAuthenticated]
+    filterset_fields = {
+        'name': ['icontains'],
+        'Category':['exact']
+        }
+    ordering_fields = '__all__'
+    permission_classes = [IsAuthenticated]
 
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()

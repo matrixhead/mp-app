@@ -11,17 +11,19 @@ class NivedhanamRepository {
 
   NivedhanamRepository() : httpClient = http.Client();
 
-  Future<List<Nivedhanam>> fetchNivedhanam(
-      {required int postLimit,
-      int startIndex = 0,
-      required String token}) async {
+  Future<List<Nivedhanam>> fetchNivedhanam({
+    required int postLimit,
+    int startIndex = 0,
+    required String token,
+    required String searchquery,
+  }) async {
     Uri uri = Uri.http(
       url,
       '/api/nivedhanams/',
       <String, String>{
         'limit': '$postLimit',
         'offset': '$startIndex',
-      },
+      }..addAll(parseSearchquery(searchquery)),
     );
     Map<String, String> headers = {'Authorization': 'Token $token'};
 
@@ -134,5 +136,22 @@ class NivedhanamRepository {
     } else {
       throw Exception(response);
     }
+  }
+
+  Map<String, String> parseSearchquery(String searchquery) {
+    Map<String, String> queryMap = {};
+    final filterList = searchquery.split(";");
+    filterList.forEach((element) {
+      final splittedFilter = element.split(":");
+      if (splittedFilter[0] == 'category') {
+        queryMap.addAll({
+          "Category":
+              splittedFilter.length > 1 ? splittedFilter.elementAt(1) : ""
+        });
+      } else if (splittedFilter.length == 1) {
+        queryMap.addAll({"name__icontains": splittedFilter[0]});
+      }
+    });
+    return queryMap;
   }
 }

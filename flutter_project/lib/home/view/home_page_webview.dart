@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mpapp/home/bloc/home_bloc.dart';
 import 'package:mpapp/home/view/widgets/web/custom_sliverlist_w.dart';
 import 'widgets/web/fab_w.dart';
 import 'widgets/web/home_w.dart';
@@ -14,8 +16,6 @@ class HomePageWebView extends StatefulWidget {
 }
 
 class _HomePageWebViewState extends State<HomePageWebView> {
-  int _selectedIndex = 0;
-
   @override
   void initState() {
     super.initState();
@@ -27,36 +27,43 @@ class _HomePageWebViewState extends State<HomePageWebView> {
       appBar: PreferredSize(
           preferredSize: Size.fromHeight(57.0), child: CustomSliverAppBarW()),
       floatingActionButton: Fab(),
-      body: Row(
-        children: [
-          NavigationRail(
-            selectedIndex: _selectedIndex,
-            onDestinationSelected: (int index) {
-              setState(() {
-                _selectedIndex = index;
-              });
-            },
-            labelType: NavigationRailLabelType.selected,
-            destinations: const <NavigationRailDestination>[
-              NavigationRailDestination(
-                icon: Icon(Icons.home_outlined),
-                selectedIcon: Icon(Icons.home_filled),
-                label: Text('Home'),
+      body: BlocBuilder<HomeBloc, HomeState>(
+        buildWhen: (current, next) {
+          return current.navigationRailindex != next.navigationRailindex;
+        },
+        builder: (context, state) {
+          return Row(
+            children: [
+              NavigationRail(
+                selectedIndex: state.navigationRailindex,
+                onDestinationSelected: (int index) {
+                  context
+                      .read<HomeBloc>()
+                      .add(NavigationRailIndexChangedEvent(index));
+                },
+                labelType: NavigationRailLabelType.selected,
+                destinations: const <NavigationRailDestination>[
+                  NavigationRailDestination(
+                    icon: Icon(Icons.home_outlined),
+                    selectedIcon: Icon(Icons.home_filled),
+                    label: Text('Home'),
+                  ),
+                  NavigationRailDestination(
+                    icon: Icon(Icons.description_outlined),
+                    selectedIcon: Icon(Icons.description),
+                    label: Text(
+                      'List',
+                    ),
+                  ),
+                ],
               ),
-              NavigationRailDestination(
-                icon: Icon(Icons.description_outlined),
-                selectedIcon: Icon(Icons.description),
-                label: Text(
-                  'List',
-                ),
+              const VerticalDivider(thickness: 1, width: 1),
+              Expanded(
+                child: state.navigationRailindex == 0 ? Home() : List(),
               ),
             ],
-          ),
-          const VerticalDivider(thickness: 1, width: 1),
-          Expanded(
-            child: _selectedIndex == 0 ? Home() : List(),
-          ),
-        ],
+          );
+        },
       ),
     );
   }

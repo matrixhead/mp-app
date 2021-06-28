@@ -5,6 +5,8 @@ from nivedhanamapp.models import Nivedhanam
 from django.contrib.auth import get_user_model
 from django.core import management
 from datetime import date
+from pymongo.mongo_client import MongoClient
+from mpdjango import settings
 
 class Command(BaseCommand):
     
@@ -12,8 +14,7 @@ class Command(BaseCommand):
         self.user=get_user_model()
 
 
-    def handle(self,*args, **options):
-        
+    def handle(self,*args, **options):        
         if(len(self.user.objects.all())==0):
             print('no user found creating a super user "admin" with password "admin"')
             self.user.objects.create_superuser('admin', 'admin@mpokottayam', 'admin')

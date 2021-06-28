@@ -14,7 +14,7 @@ services:
       - ./flutter_project/build/web:/flutter_project/build/web
     depends_on:
       - mongo
-    command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py initializedevserver && python manage.py runserver 0.0.0.0:8100"
+    command: bash -c "python manage.py resetdb && python manage.py makemigrations && python manage.py migrate && python manage.py initializedevserver && python manage.py runserver 0.0.0.0:8100"
     ports:
       - 8100:8100
 
