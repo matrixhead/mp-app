@@ -17,6 +17,7 @@ class Category(models.Model):
 
 
 class Nivedhanam(models.Model):
+    STATUS_CHOICES=[("recieved","Nivedhanam Recieved"),("processing","Nivedhanam Processing"),('approved',"Nivedhanam Approved")]
     _id = models.UUIDField(
          unique=True,
          default = uuid.uuid4,
@@ -24,12 +25,16 @@ class Nivedhanam(models.Model):
     SI_no = models.AutoField(primary_key=True)
     name = models.CharField(max_length=200)
     address = models.TextField(null=True)
-    pincode = models.IntegerField(null=True)
+    pincode = models.IntegerField(null=True,default=0);
     letterno = models.IntegerField()
     date = models.DateField()
-    mobile = models.TextField(null=True)
-    reply_recieved = models.BooleanField()
-    amount_sanctioned = models.FloatField()
+    mobile = models.TextField(null=True,default="")
+    status = models.CharField(
+         max_length=50,
+        choices=STATUS_CHOICES,
+        default="recieved",
+    )
+    amount_sanctioned = models.FloatField(null=True,default=0)
     date_sanctioned = models.DateField(null=True)
     remarks = models.TextField(null=True)
     Category = models.ForeignKey(Category,on_delete=models.PROTECT,null=True)

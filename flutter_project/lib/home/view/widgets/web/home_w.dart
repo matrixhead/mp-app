@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:mpapp/data_layer/nivedhanam_repository/models/category_model.dart';
 import 'package:mpapp/home/bloc/home_bloc.dart';
 import 'add_dialog.dart';
@@ -27,35 +28,96 @@ class Home extends StatelessWidget {
                 children: [
                   Categories(),
                   const VerticalDivider(thickness: 1, width: 1),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 8, vertical: 30),
-                                child: Text(
-                                  "Overview",
-                                  textScaleFactor: 2,
-                                ),
-                              ),
-                            ],
-                          ),
-                          const Divider(
-                            thickness: 1,
-                            height: 1,
-                          )
-                        ],
-                      ),
-                    ),
-                  )
+                  Overview()
                 ],
               ),
             ),
           ),
+        ],
+      ),
+    );
+  }
+}
+
+class Overview extends StatelessWidget {
+  const Overview({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 30),
+                  child: Text(
+                    "Overview",
+                    textScaleFactor: 2,
+                  ),
+                ),
+              ],
+            ),
+            const Divider(
+              thickness: 1,
+              height: 1,
+            ),
+            Expanded(
+              child: BlocBuilder<HomeBloc, HomeState>(
+                builder: (context, state) {
+                  return ListView(
+                    children: [
+                      OverviewListtile(
+                          fieldName: "Total number of nivedhanams",
+                          keyName: "totalNivedhanams"),
+                      OverviewListtile(
+                          fieldName: "Nivedhanams being processed",
+                          keyName: "processing"),
+                      OverviewListtile(
+                          fieldName: "Number of Approved nivedhanams",
+                          keyName: "approved"),
+                    ],
+                  );
+                },
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class OverviewListtile extends StatelessWidget {
+  const OverviewListtile(
+      {Key? key, required this.fieldName, required this.keyName})
+      : super(key: key);
+  final String fieldName;
+  final String keyName;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      tileColor: Colors.white,
+      shape: Border(
+        bottom: BorderSide(
+            color: Colors.black, width: .3, style: BorderStyle.solid),
+      ),
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Expanded(
+            child: Text(
+              fieldName,
+              style: TextStyle(fontWeight: FontWeight.w600),
+            ),
+          ),
+          Text(context.read<HomeBloc>().state.overview[keyName].toString())
         ],
       ),
     );

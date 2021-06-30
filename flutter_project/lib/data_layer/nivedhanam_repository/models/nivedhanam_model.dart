@@ -11,7 +11,7 @@ class Nivedhanam extends Equatable {
         letterno = json['letterno'],
         date = json['date'],
         mobile = json['mobile'],
-        replyRecieved = json['reply_recieved'],
+        status = json['status'],
         amountSanctioned = json['amount_sanctioned'],
         dateSanctioned = json['date_sanctioned'],
         remarks = json['remarks'],
@@ -26,7 +26,7 @@ class Nivedhanam extends Equatable {
   final int letterno;
   final String date;
   final String? mobile;
-  final bool replyRecieved;
+  final String status;
   final double? amountSanctioned;
   final String? dateSanctioned;
   final String? remarks;
@@ -36,14 +36,14 @@ class Nivedhanam extends Equatable {
     return {
       "SI_no": this.siNo.toString(),
       "categoryfields": this.categoryfields,
-      "_id": this.id,
+      "_id": this.id.toString(),
       "name": this.name,
       "address": this.address,
       "pincode": this.pincode.toString(),
       "letterno": this.letterno.toString(),
       "date": this.date,
       "mobile": this.mobile,
-      "reply_recieved": this.replyRecieved.toString(),
+      "status": this.status,
       "amount_sanctioned": this.amountSanctioned.toString(),
       "date_sanctioned": this.dateSanctioned.toString(),
       "remarks": this.remarks,

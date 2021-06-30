@@ -265,8 +265,10 @@ class _NivedhanamFormState extends State<NivedhanamForm> {
                     ),
                     NivedahnamFormText(
                         fieldName: "Date", dateField: true, keyName: 'date'),
-                    NivedhanamFormRadio(
-                        fieldName: "Reply recieved", keyName: 'reply_recieved'),
+                    DropDownField(
+                      choices: ["recieved", "processing", "approved"],
+                      fieldName: 'status',
+                    ),
                     NivedahnamFormText(
                       fieldName: "Amount sanctioned",
                       numberField: true,
@@ -443,7 +445,7 @@ class _DropDownFieldState extends State<DropDownField> {
                   });
                 },
                 hint: Text(
-                  "Select Item Type",
+                  "Select ${widget.fieldName}",
                   style: TextStyle(color: Colors.grey),
                 ),
                 items: widget.choices

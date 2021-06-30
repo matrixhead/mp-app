@@ -14,7 +14,8 @@ class HomePage extends StatelessWidget {
           RepositoryProvider.of<NivedhanamRepository>(context),
           RepositoryProvider.of<AuthenticationRepository>(context))
         ..add(NivedhanamFetchedEvent())
-        ..add(CategoryFetchedEvent()),
+        ..add(CategoryFetchedEvent())
+        ..add(OverviewFetchedEvent()),
       child: MediaQuery.of(context).size.width < 600
           ? HomePageHandsetView()
           : HomePageWebView(),

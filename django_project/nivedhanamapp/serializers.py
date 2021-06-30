@@ -45,7 +45,11 @@ class NivedhanamSerializer(serializers.ModelSerializer):
 
 class CategorySerializer(serializers.ModelSerializer):
     categoryfields=serializers.JSONField()
+    num_nivedhanam=serializers.IntegerField(read_only=True)
     class Meta:
         model = Category
         fields = '__all__'
+
+    
+
 

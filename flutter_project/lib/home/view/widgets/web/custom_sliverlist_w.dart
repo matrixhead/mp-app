@@ -113,13 +113,14 @@ class CustomListTileW extends StatelessWidget {
                 borderRadius: BorderRadius.circular(100),
                 border: Border.all(
                     width: 2,
-                    color: nivedhanam.replyRecieved
+                    color: nivedhanam.status != "recieved"
                         ? Colors.grey.shade600
                         : Colors.grey)),
             child: Icon(
               Icons.description_rounded,
-              color:
-                  nivedhanam.replyRecieved ? Colors.grey.shade600 : Colors.grey,
+              color: nivedhanam.status != "recieved"
+                  ? Colors.grey.shade600
+                  : Colors.grey,
             ),
           ),
         ],

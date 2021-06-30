@@ -46,8 +46,10 @@ class NivedhanamRepository {
     final response =
         await http.post(uri, body: nivedhanamMap, headers: headers);
     if (response.statusCode == 201) {
-      final siNo = jsonDecode(response.body)["SI_no"];
-      uploadscans(imageList, token, siNo.toString());
+      if (imageList.isNotEmpty) {
+        final siNo = jsonDecode(response.body)["SI_no"];
+        uploadscans(imageList, token, siNo.toString());
+      }
     } else {
       throw Exception(response);
     }
@@ -153,5 +155,12 @@ class NivedhanamRepository {
       }
     });
     return queryMap;
+  }
+
+  Future<Map> fetchOverview(token) async {
+    Map<String, String> headers = {'Authorization': 'Token $token'};
+    Uri uri = Uri.http(url, '/api/nivedhanams/overview/');
+    final response = await httpClient.get(uri, headers: headers);
+    return jsonDecode(response.body);
   }
 }

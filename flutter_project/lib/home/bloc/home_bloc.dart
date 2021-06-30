@@ -51,6 +51,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       yield searchEditedToState(event);
     } else if (event is NavigationRailIndexChangedEvent) {
       yield navigationIndexChangedToState(event);
+    } else if (event is OverviewFetchedEvent) {
+      yield await overviewFetcehdEventToState();
     }
   }
 
@@ -88,6 +90,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeState _refreshNivedhanamToState(HomeState state) {
     this.add(NivedhanamFetchedEvent());
     this.add(CategoryFetchedEvent());
+    this.add(OverviewFetchedEvent());
     return state.copyWith(
         status: NivedhanamStatus.initial,
         nivedhanams: [],
@@ -107,5 +110,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   HomeState navigationIndexChangedToState(event) {
     return state.copyWith(navigationRailindex: event.index);
+  }
+
+  Future<HomeState> overviewFetcehdEventToState() async {
+    return state.copyWith(
+        overview: await nivedhanamRepository
+            .fetchOverview(authenticationRepository.getUser.token));
   }
 }

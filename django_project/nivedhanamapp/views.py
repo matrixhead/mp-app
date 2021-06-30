@@ -1,10 +1,14 @@
+from django.db.models.aggregates import Sum
 from .models import Nivedhanam
 from .serializers import *
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.filters import OrderingFilter,SearchFilter
+from rest_framework.filters import OrderingFilter
 from rest_framework.response import Response
+from rest_framework.decorators import action 
+from django.db.models import Count
+from rest_framework import status
 
 
 
@@ -21,12 +25,24 @@ class NivedhanamViewSet(viewsets.ModelViewSet):
     ordering_fields = '__all__'
     permission_classes = [IsAuthenticated]
 
+    @action(methods=['get'], detail=False)
+    def overview(self, request):
+        totalnivedhanams = Nivedhanam.objects.count()
+        recievednivedhanam = Nivedhanam.objects.filter(status="recieved").count()
+        processing = Nivedhanam.objects.filter(status="processing").count()
+        approved = Nivedhanam.objects.filter(status="approved").count()
+       
+        data = {"totalNivedhanams":totalnivedhanams,
+                "recievedNivedhanams":recievednivedhanam,
+                "processing":processing,
+                'approved':approved,
+               
+        }
+        return Response(data, status=status.HTTP_200_OK)
+
 class CategoryViewSet(viewsets.ModelViewSet):
-    queryset = Category.objects.all()
+    queryset = Category.objects.all().annotate(num_nivedhanam=Count('nivedhanam'))
     serializer_class = CategorySerializer
-    filter_backends = [DjangoFilterBackend, OrderingFilter]
-    # filterset_fields = '__all__'
-    # ordering_fields = '__all__'
     # permission_classes = [IsAuthenticated]
 
 

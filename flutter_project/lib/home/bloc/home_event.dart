@@ -24,3 +24,5 @@ class NavigationRailIndexChangedEvent extends HomeEvent {
   final int index;
   List<Object> get props => [index];
 }
+
+class OverviewFetchedEvent extends HomeEvent {}

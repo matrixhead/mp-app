@@ -57,6 +57,7 @@ class EditorBloc extends Bloc<EditorEvent, EditorState> {
     final serialisedNivedhanam = Map.from(state.editorFormMap)
       ..update("categoryfields", (value) => jsonEncode(value),
           ifAbsent: () => jsonEncode({}));
+    serialisedNivedhanam.removeWhere((key, value) => value == null);
     try {
       if (state.mode == Mode.create) {
         await nivedhanamRepository.createNivedhanam(
