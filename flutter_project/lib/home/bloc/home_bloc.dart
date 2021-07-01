@@ -1,9 +1,8 @@
-import 'dart:html';
-
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mpapp/data_layer/authentication_repository/authentication.dart';
 import 'package:mpapp/data_layer/nivedhanam_repository/models/category_model.dart';
+import 'package:mpapp/data_layer/nivedhanam_repository/models/recent_model.dart';
 import 'package:mpapp/data_layer/nivedhanam_repository/nivedhanam.dart';
 import 'package:mpapp/data_layer/nivedhanam_repository/nivedhanam_repository.dart';
 import 'package:rxdart/rxdart.dart';
@@ -53,6 +52,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       yield navigationIndexChangedToState(event);
     } else if (event is OverviewFetchedEvent) {
       yield await overviewFetcehdEventToState();
+    } else if (event is FetchSiFromSpEvent) {
+      yield await fetchSIfromSPtoState();
+    } else if (event is FetchRecentEvent) {
+      yield await fetchRecentEvenToState(event);
+    } else if (event is AddNivedhanamToRecent) {
+      yield addNivedhanamToRecentToState(event);
     }
   }
 
@@ -91,6 +96,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     this.add(NivedhanamFetchedEvent());
     this.add(CategoryFetchedEvent());
     this.add(OverviewFetchedEvent());
+    this.add(FetchRecentEvent());
     return state.copyWith(
         status: NivedhanamStatus.initial,
         nivedhanams: [],
@@ -116,5 +122,41 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     return state.copyWith(
         overview: await nivedhanamRepository
             .fetchOverview(authenticationRepository.getUser.token));
+  }
+
+  Future<HomeState> fetchSIfromSPtoState() async {
+    this.add(
+        FetchRecentEvent(sino: await nivedhanamRepository.fetchSIfromSP()));
+    return state;
+  }
+
+  Future<HomeState> fetchRecentEvenToState(FetchRecentEvent event) async {
+    if (event.sino == null) {
+      final List<Nivedhanam> cachedNivedhanam = [];
+      for (Nivedhanam nivedhanam in state.recent.recentNivedhanams) {
+        final newnivedhanam = await nivedhanamRepository.fetchSingleNivedhanam(
+            nivedhanam.siNo.toString(), authenticationRepository.getUser.token);
+        cachedNivedhanam.add(newnivedhanam);
+      }
+      return state.copyWith(recent: Recent(cachedNivedhanam));
+    } else {
+      final List<Nivedhanam> cachedNivedhanam = [];
+      for (String sino in event.sino ?? []) {
+        final nivedhanam = await nivedhanamRepository.fetchSingleNivedhanam(
+            sino, authenticationRepository.getUser.token);
+        cachedNivedhanam.add(nivedhanam);
+      }
+      return state.copyWith(recent: Recent(cachedNivedhanam));
+    }
+  }
+
+  HomeState addNivedhanamToRecentToState(AddNivedhanamToRecent event) {
+    final newState =
+        state.copyWith(recent: state.recent.addNivedhanam(event.nivedhanam));
+    nivedhanamRepository.saveSIToSP(newState.recent.recentNivedhanams
+        .map((e) => e.siNo.toString())
+        .toList());
+
+    return newState;
   }
 }

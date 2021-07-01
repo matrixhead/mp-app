@@ -91,6 +91,7 @@ class CustomListTileW extends StatelessWidget {
     return ListTile(
       tileColor: Colors.white,
       onTap: () async {
+        context.read<HomeBloc>().add(AddNivedhanamToRecent(nivedhanam));
         final result = await Navigator.pushNamed(context, '/editor',
             arguments: nivedhanam);
         if (result == true) {

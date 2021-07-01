@@ -11,6 +11,7 @@ class HomeState extends Equatable {
     this.searchString = "",
     this.navigationRailindex = 0,
     this.overview = const {},
+    this.recent = const Recent(const []),
   });
   final List<Category> categories;
   final List<Nivedhanam> nivedhanams;
@@ -19,6 +20,7 @@ class HomeState extends Equatable {
   final String searchString;
   final int navigationRailindex;
   final Map overview;
+  final Recent recent;
 
   HomeState copyWith(
       {List<Category>? categories,
@@ -27,8 +29,10 @@ class HomeState extends Equatable {
       bool? hasReachedMax,
       String? searchString,
       int? navigationRailindex,
-      Map? overview}) {
+      Map? overview,
+      Recent? recent}) {
     return HomeState(
+      recent: recent ?? this.recent,
       navigationRailindex: navigationRailindex ?? this.navigationRailindex,
       searchString: searchString ?? this.searchString,
       status: status ?? this.status,
@@ -47,7 +51,8 @@ class HomeState extends Equatable {
         categories,
         searchString,
         navigationRailindex,
-        overview
+        overview,
+        recent
       ];
 
   @override

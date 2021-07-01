@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:mpapp/data_layer/nivedhanam_repository/models/category_model.dart';
 import 'package:mpapp/data_layer/nivedhanam_repository/models/nivedhanam_model.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import '../config.dart';
 import 'package:http_parser/http_parser.dart';
 
@@ -162,5 +163,23 @@ class NivedhanamRepository {
     Uri uri = Uri.http(url, '/api/nivedhanams/overview/');
     final response = await httpClient.get(uri, headers: headers);
     return jsonDecode(response.body);
+  }
+
+  Future<List<String>?> fetchSIfromSP() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getStringList('sino');
+  }
+
+  Future<Nivedhanam> fetchSingleNivedhanam(String sino, String token) async {
+    Map<String, String> headers = {'Authorization': 'Token $token'};
+    Uri uri = Uri.http(url, '/api/nivedhanams/$sino/');
+    final response = await httpClient.get(uri, headers: headers);
+    final res = jsonDecode(response.body);
+    return Nivedhanam.fromJson(res);
+  }
+
+  void saveSIToSP(List<String> list) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setStringList("sino", list);
   }
 }

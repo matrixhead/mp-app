@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:mpapp/data_layer/nivedhanam_repository/models/category_model.dart';
+import 'package:mpapp/data_layer/nivedhanam_repository/nivedhanam_repository.dart';
 import 'package:mpapp/home/bloc/home_bloc.dart';
 import 'add_dialog.dart';
 
@@ -11,15 +12,14 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.grey,
+      color: Colors.white,
       child: Column(
         children: [
           Expanded(
             flex: 2,
-            child: Container(
-              color: Colors.white,
-            ),
+            child: RecentlyOpened(),
           ),
+          Divider(),
           Expanded(
             flex: 4,
             child: Container(
@@ -34,6 +34,87 @@ class Home extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class RecentlyOpened extends StatelessWidget {
+  const RecentlyOpened({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(16, 16, 0, 0),
+            child: Text(
+              "Recently Opened",
+              textScaleFactor: 1.5,
+            ),
+          ),
+        ),
+        BlocBuilder<HomeBloc, HomeState>(
+          builder: (context, state) {
+            return Expanded(
+              child: Container(
+                  child: ListView.builder(
+                itemCount: state.recent.recentNivedhanams.length,
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (context, index) {
+                  return RecentTile(
+                      nivedhanam: state.recent.recentNivedhanams[index]);
+                },
+              )),
+            );
+          },
+        ),
+      ],
+    );
+  }
+}
+
+class RecentTile extends StatelessWidget {
+  const RecentTile({Key? key, required this.nivedhanam}) : super(key: key);
+  final Nivedhanam nivedhanam;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(30.0),
+        child: InkWell(
+          onTap: () async {
+            context.read<HomeBloc>().add(AddNivedhanamToRecent(nivedhanam));
+            final result = await Navigator.pushNamed(context, '/editor',
+                arguments: nivedhanam);
+            if (result == true) {
+              context.read<HomeBloc>().add(RefreshNivedhanamEvent());
+            }
+          },
+          child: Material(
+            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+            elevation: 5,
+            child: Container(
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    toBeginningOfSentenceCase(nivedhanam.name) ?? "",
+                    textAlign: TextAlign.center,
+                    textScaleFactor: 1.2,
+                  ),
+                ),
+              ),
+              width: 120,
+              height: 165,
+            ),
+          ),
+        ),
       ),
     );
   }

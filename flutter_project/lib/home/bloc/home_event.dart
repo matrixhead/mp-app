@@ -26,3 +26,15 @@ class NavigationRailIndexChangedEvent extends HomeEvent {
 }
 
 class OverviewFetchedEvent extends HomeEvent {}
+
+class FetchSiFromSpEvent extends HomeEvent {}
+
+class FetchRecentEvent extends HomeEvent {
+  final List? sino;
+  const FetchRecentEvent({this.sino});
+}
+
+class AddNivedhanamToRecent extends HomeEvent {
+  final Nivedhanam nivedhanam;
+  AddNivedhanamToRecent(this.nivedhanam);
+}
