@@ -52,5 +52,20 @@ class Nivedhanam extends Equatable {
   }
 
   @override
-  List<Object?> get props => [id, name];
+  List<Object?> get props => [
+        siNo,
+        categoryfields,
+        id,
+        name,
+        address,
+        pincode,
+        letterno,
+        date,
+        mobile,
+        status,
+        amountSanctioned,
+        dateSanctioned,
+        remarks,
+        category
+      ];
 }
