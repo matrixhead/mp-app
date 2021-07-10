@@ -14,12 +14,12 @@ class EditorState extends Equatable {
   final SubmissionStatus status;
   final Mode mode;
   final ScanLoc scanloc;
-  final Map<int, dynamic> imageList;
+  final Uint8List? pdf;
   final List<Category> categories;
 
   EditorState({
     required this.editorFormMap,
-    this.imageList = const {},
+    this.pdf,
     this.categories = const [],
     this.status = SubmissionStatus.pure,
     required this.mode,
@@ -31,23 +31,30 @@ class EditorState extends Equatable {
       SubmissionStatus? status,
       ScanLoc? scanloc,
       List<Category>? categories,
-      Map<int, dynamic>? imageList}) {
+      Uint8List? pdf}) {
     return EditorState(
       scanloc: scanloc ?? this.scanloc,
       editorFormMap: editorFormMap ?? this.editorFormMap,
       status: status ?? this.status,
       mode: this.mode,
-      imageList: imageList ?? this.imageList,
+      pdf: pdf ?? this.pdf,
       categories: categories ?? this.categories,
     );
   }
+  //  Uint8List dsfasf =pw.Document().save()
+  // Future<Uint8List> get getPdf async => pdf ?? await pw.Document().save()
 
   @override
   List<Object?> get props => [
         editorFormMap,
         status,
         mode,
-        imageList,
+        pdf,
         categories,
       ];
+
+  @override
+  String toString() {
+    return 'Homestate ';
+  }
 }

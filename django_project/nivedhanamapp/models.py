@@ -45,18 +45,17 @@ class Nivedhanam(models.Model):
 
 class Scan(models.Model):
      SI_no = models.ForeignKey(Nivedhanam,on_delete=models.CASCADE)
-     page_number=models.IntegerField()
-     scan = models.ImageField(upload_to='scan_collection', storage=grid_fs_storage)
-     def save(self, *args, **kwargs):
-          if not self.id:
-            self.scan = self.compressImage(self.scan)
-          super(Scan, self).save(*args, **kwargs)
+     scan = models.FileField(upload_to='scan_collection', storage=grid_fs_storage)
+     # def save(self, *args, **kwargs):
+     #      if not self.id:
+     #        self.scan = self.compressImage(self.scan)
+     #      super(Scan, self).save(*args, **kwargs)
 
-     def compressImage(self,scannedImage):
-        imageTemproary = Image.open(scannedImage)
-        outputIoStream = BytesIO()
-        imageTemproary.save(outputIoStream , format='JPEG', quality=10)
-        outputIoStream.seek(0)
-        scannedImage = InMemoryUploadedFile(outputIoStream,'scan', "%s.jpg" % scannedImage.name.split('.')[0], 'image/jpeg', sys.getsizeof(outputIoStream), None)
-        return scannedImage
+     # def compressImage(self,scannedImage):
+     #    imageTemproary = Image.open(scannedImage)
+     #    outputIoStream = BytesIO()
+     #    imageTemproary.save(outputIoStream , format='JPEG', quality=10)
+     #    outputIoStream.seek(0)
+     #    scannedImage = InMemoryUploadedFile(outputIoStream,'scan', "%s.jpg" % scannedImage.name.split('.')[0], 'image/jpeg', sys.getsizeof(outputIoStream), None)
+     #    return scannedImage
      

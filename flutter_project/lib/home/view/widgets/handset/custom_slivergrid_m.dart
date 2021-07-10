@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:mpapp/data_layer/nivedhanam_repository/models/nivedhanam_model.dart';
 import 'package:mpapp/home/bloc/home_bloc.dart';
 
@@ -17,7 +18,6 @@ class CustomSliverGridM extends StatelessWidget {
           delegate: gridItemBuilderM(state),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
-            crossAxisSpacing: 15,
           ),
         );
       },
@@ -48,16 +48,60 @@ class CustomGridTileM extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GridTile(
-      child: Center(
-        child: InkWell(
-          onTap: () {},
-          child: Container(
-            decoration: BoxDecoration(
-                border: Border.all(width: .6, color: Colors.grey),
-                borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                color: Colors.black),
-            width: 160,
-            height: 100,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 8),
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: InkWell(
+            onTap: () {},
+            child: Material(
+              color: Colors.black87,
+              borderRadius: BorderRadius.all(Radius.circular(10.0)),
+              elevation: 4,
+              child: Container(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8, bottom: 4),
+                      child: Text(
+                        "Letter no:" + nivedhanam.letterno.toString(),
+                        style: TextStyle(color: Colors.grey),
+                        textAlign: TextAlign.center,
+                        textScaleFactor: 1.2,
+                        overflow: TextOverflow.fade,
+                        maxLines: 1,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8, bottom: 4),
+                      child: Text(
+                        "Submitted on:" + nivedhanam.date,
+                        style: TextStyle(color: Colors.grey),
+                        textAlign: TextAlign.center,
+                        textScaleFactor: .7,
+                        overflow: TextOverflow.fade,
+                        maxLines: 1,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8, bottom: 4),
+                      child: Text(
+                        "Status:" + nivedhanam.status,
+                        style: TextStyle(color: Colors.grey),
+                        textAlign: TextAlign.center,
+                        textScaleFactor: .7,
+                        overflow: TextOverflow.fade,
+                        maxLines: 1,
+                      ),
+                    ),
+                  ],
+                ),
+                width: 160,
+                height: 100,
+              ),
+            ),
           ),
         ),
       ),
@@ -69,10 +113,9 @@ class CustomGridTileM extends StatelessWidget {
         title: Text(
           nivedhanam.name,
           style: TextStyle(color: Colors.black87),
-          textAlign: TextAlign.center,
         ),
         trailing: IconButton(
-          splashColor: Colors.grey,
+          splashColor: Colors.black87,
           icon: Icon(
             Icons.more_vert,
             color: Colors.grey,

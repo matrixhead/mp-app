@@ -330,9 +330,13 @@ class CategoryGridTile extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 child: Icon(Icons.inventory_2_outlined),
               ),
-              Text(
-                category.categoryName,
-                textScaleFactor: 1.1,
+              Expanded(
+                child: Text(
+                  category.categoryName,
+                  textScaleFactor: 1.1,
+                  overflow: TextOverflow.fade,
+                  maxLines: 1,
+                ),
               ),
               IconButton(onPressed: () {}, icon: Icon(Icons.more_horiz))
             ],

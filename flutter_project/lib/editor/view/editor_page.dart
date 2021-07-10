@@ -1,3 +1,4 @@
+import 'dart:typed_data';
 import 'dart:ui';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -6,8 +7,11 @@ import 'package:mpapp/data_layer/authentication_repository/authentication.dart';
 import 'package:mpapp/data_layer/nivedhanam_repository/models/category_model.dart';
 import 'package:mpapp/data_layer/nivedhanam_repository/nivedhanam_repository.dart';
 import 'package:mpapp/editor/bloc/editor_bloc.dart';
+import 'package:mpapp/editor/view/widgets/pdf_editor.dart';
+import 'package:native_pdf_view/native_pdf_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import 'widgets/editor_form_widgets.dart';
+import 'package:pdf/widgets.dart' as pw;
 
 class EditorPage extends StatelessWidget {
   const EditorPage({Key? key}) : super(key: key);
@@ -106,12 +110,14 @@ class ScanView extends StatefulWidget {
 
 class _ScanViewState extends State<ScanView> {
   late EditorBloc _editBloc;
-  late final PageController _pageController;
+  late PdfController _pageController;
 
   @override
   void initState() {
     _editBloc = context.read<EditorBloc>();
-    _pageController = PageController();
+    _pageController = PdfController(
+        document: PdfDocument.openData(_editBloc.state.pdf ?? Uint8List(0)));
+
     super.initState();
   }
 
@@ -120,48 +126,26 @@ class _ScanViewState extends State<ScanView> {
     return Container(
       color: Colors.black,
       child: BlocBuilder<EditorBloc, EditorState>(
+        buildWhen: (oldState, newState) => oldState.pdf != newState.pdf,
         builder: (context, state) {
+          if (state.pdf != null) {
+            _pageController
+                .loadDocument(PdfDocument.openData(state.pdf ?? Uint8List(0)));
+          }
           return Stack(
             children: [
-              PhotoViewGallery.builder(
-                builder: (BuildContext context, int index) {
-                  return state.scanloc == ScanLoc.local
-                      ? PhotoViewGalleryPageOptions(
-                          imageProvider: MemoryImage(
-                              state.imageList.values.elementAt(index).bytes))
-                      : PhotoViewGalleryPageOptions(
-                          imageProvider: NetworkImage(
-                              state.imageList.values.elementAt(index)));
-                },
-                itemCount: state.imageList.length,
-                loadingBuilder: (context, event) => Center(
-                  child: Container(
-                    width: 20.0,
-                    height: 20.0,
-                    child: CircularProgressIndicator(
-                      value: event == null
-                          ? 0
-                          : event.cumulativeBytesLoaded /
-                              event.cumulativeBytesLoaded,
-                    ),
-                  ),
-                ),
-                pageController: _pageController,
-                scrollPhysics: NeverScrollableScrollPhysics(),
+              PdfView(
+                controller: _pageController,
               ),
               Positioned(
                 bottom: 50,
                 right: 50,
                 child: ElevatedButton(
                   onPressed: () async {
-                    FilePickerResult? result = await FilePicker.platform
-                        .pickFiles(
-                            allowCompression: true,
-                            allowMultiple: true,
-                            type: FileType.image);
-
+                    final result =
+                        await showDialog(context: context, builder: _pdfEditor);
                     if (result != null) {
-                      _editBloc.add(FilesSelectedEvent(result.files));
+                      _editBloc.add(FilesSelectedEvent(result));
                     }
                   },
                   child: Icon(
@@ -212,6 +196,10 @@ class _ScanViewState extends State<ScanView> {
         },
       ),
     );
+  }
+
+  Widget _pdfEditor(BuildContext context) {
+    return PdfEditor();
   }
 }
 

@@ -11,6 +11,6 @@ def test_image_server(request, filename):
     fs = gridfs.GridFS(db, collection='scan_collection.scan_collection')
     file = fs.get_last_version(filename)
     response = StreamingHttpResponse(
-        FileWrapper(file), content_type="image/jpeg")
+        FileWrapper(file), content_type="application/pdf")
     file.close
     return response

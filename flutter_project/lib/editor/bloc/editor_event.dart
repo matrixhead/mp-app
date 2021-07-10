@@ -24,10 +24,14 @@ class FetchScannedImages extends EditorEvent {
 }
 
 class FilesSelectedEvent extends EditorEvent {
-  FilesSelectedEvent(this.files);
-  final files;
+  FilesSelectedEvent(this.pdf);
+  final pdf;
   @override
-  List<Object> get props => [files ?? ""];
+  List<Object> get props => [pdf];
+  @override
+  String toString() {
+    return '';
+  }
 }
 
 class CategoryFetchedEvent extends EditorEvent {}

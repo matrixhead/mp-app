@@ -1,5 +1,6 @@
 import 'dart:collection';
 import 'dart:convert';
+import 'dart:typed_data';
 import 'package:mpapp/data_layer/nivedhanam_repository/models/category_model.dart';
 import 'package:mpapp/data_layer/nivedhanam_repository/models/nivedhanam_model.dart';
 import 'package:http/http.dart' as http;
@@ -41,15 +42,15 @@ class NivedhanamRepository {
   Future<void> createNivedhanam(
       {required Map nivedhanamMap,
       required String token,
-      required Map<int, dynamic> imageList}) async {
+      required Uint8List? pdf}) async {
     Uri uri = Uri.http(url, '/api/nivedhanams/');
     Map<String, String> headers = {'Authorization': 'Token $token'};
     final response =
         await http.post(uri, body: nivedhanamMap, headers: headers);
     if (response.statusCode == 201) {
-      if (imageList.isNotEmpty) {
+      if (pdf != null) {
         final siNo = jsonDecode(response.body)["SI_no"];
-        uploadscans(imageList, token, siNo.toString());
+        uploadscans(pdf, token, siNo.toString());
       }
     } else {
       throw Exception(response);
@@ -59,21 +60,21 @@ class NivedhanamRepository {
   void updateNivedhanam(
       {required Map nivedhanamMap,
       required String token,
-      required Map<int, dynamic> imageList}) async {
+      required Uint8List? pdf}) async {
     String siNo = nivedhanamMap.remove("SI_no") ?? "";
     Uri uri = Uri.http(url, '/api/nivedhanams/$siNo/');
     Map<String, String> headers = {'Authorization': 'Token $token'};
     final response = await http.put(uri, body: nivedhanamMap, headers: headers);
     if (response.statusCode == 200) {
-      if (imageList.isNotEmpty) {
-        uploadscans(imageList, token, siNo);
+      if (pdf != null) {
+        uploadscans(pdf, token, siNo);
       }
     } else {
       throw Exception(response);
     }
   }
 
-  Future<Map<int, String>> fetchscan(String? sino) async {
+  Future<Uint8List> fetchscan(String? sino) async {
     Uri uri = Uri.http(
       url,
       '/api/scans/',
@@ -83,28 +84,21 @@ class NivedhanamRepository {
     );
     final response = await httpClient.get(uri);
     List scanurls = jsonDecode(response.body);
-    SplayTreeMap<int, String> imageMap = SplayTreeMap();
-    scanurls.forEach((element) async {
-      String imageuri = "http://" + url + "/" + element["imageurl"];
-      imageMap.addAll({element["page_number_read"]: imageuri});
-    });
-    return imageMap;
+    String pdfUrl = "http://" + url + "/" + scanurls[0]["pdfurl"];
+    final pdfresponse = await httpClient.get(Uri.parse(pdfUrl));
+
+    return pdfresponse.bodyBytes;
   }
 
-  void uploadscans(
-      Map<int, dynamic> imageList, String token, String siNo) async {
+  void uploadscans(Uint8List pdf, String token, String siNo) async {
     Uri uri = Uri.http(url, '/api/scans/');
     Map<String, String> headers = {'Authorization': 'Token $token'};
     var request = http.MultipartRequest('POST', uri);
     request.fields.addAll({"SI_no": siNo});
 
-    imageList.forEach((key, value) {
-      request.files
-          .add(http.MultipartFile.fromString('page_number', key.toString()));
+    request.files.add(http.MultipartFile.fromBytes('scan', pdf,
+        contentType: MediaType('application', 'pdf'), filename: "$siNo.pdf"));
 
-      request.files.add(http.MultipartFile.fromBytes('scan', value.bytes,
-          contentType: MediaType('image', 'jpg'), filename: value.name));
-    });
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
       print(await response.stream.bytesToString());

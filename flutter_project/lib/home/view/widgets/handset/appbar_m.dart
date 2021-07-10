@@ -18,27 +18,25 @@ class CustomSliverAppBarM extends StatelessWidget {
         child: Container(
           child: Row(
             children: [
-              IconButton(
-                splashColor: Colors.grey,
-                icon: Icon(Icons.menu),
-                onPressed: () {},
-              ),
               Expanded(
                 child: TextField(
-                  cursorColor: Colors.black,
+                  cursorColor: Colors.black87,
                   keyboardType: TextInputType.text,
                   textInputAction: TextInputAction.go,
                   decoration: InputDecoration(
                       border: InputBorder.none,
                       contentPadding: EdgeInsets.symmetric(horizontal: 15),
-                      hintText: "Search..."),
+                      hintText: "  Search..."),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.only(right: 8.0),
                 child: IconButton(
                   splashColor: Colors.grey,
-                  icon: Icon(Icons.account_circle),
+                  icon: Icon(
+                    Icons.account_circle,
+                    color: Colors.black87,
+                  ),
                   onPressed: () {},
                 ),
               ),

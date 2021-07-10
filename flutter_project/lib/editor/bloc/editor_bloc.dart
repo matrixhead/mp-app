@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'dart:typed_data';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mpapp/data_layer/authentication_repository/authentication.dart';
@@ -63,12 +63,12 @@ class EditorBloc extends Bloc<EditorEvent, EditorState> {
         await nivedhanamRepository.createNivedhanam(
             nivedhanamMap: serialisedNivedhanam,
             token: authenticationRepository.getUser.token,
-            imageList: state.scanloc == ScanLoc.local ? state.imageList : {});
+            pdf: state.scanloc == ScanLoc.local ? state.pdf : null);
       } else {
         nivedhanamRepository.updateNivedhanam(
             nivedhanamMap: serialisedNivedhanam,
             token: authenticationRepository.getUser.token,
-            imageList: state.scanloc == ScanLoc.local ? state.imageList : {});
+            pdf: state.scanloc == ScanLoc.local ? state.pdf : null);
       }
       yield state.copyWith(status: SubmissionStatus.submissionSuccess);
     } on Exception catch (_) {
@@ -82,7 +82,7 @@ class EditorBloc extends Bloc<EditorEvent, EditorState> {
     if (state.scanloc == ScanLoc.network) {
       try {
         return state.copyWith(
-            imageList: await nivedhanamRepository.fetchscan(event.sino));
+            pdf: await nivedhanamRepository.fetchscan(event.sino));
       } on Exception catch (_) {
         print(_);
       }
@@ -92,8 +92,7 @@ class EditorBloc extends Bloc<EditorEvent, EditorState> {
 
   Future<EditorState> filesSelectedEventToState(
       FilesSelectedEvent event) async {
-    Map<int, dynamic> imageMap = event.files.asMap();
-    return state.copyWith(imageList: imageMap, scanloc: ScanLoc.local);
+    return state.copyWith(pdf: event.pdf, scanloc: ScanLoc.local);
   }
 
   Future<EditorState> categoryFetchedEventToState() async {
