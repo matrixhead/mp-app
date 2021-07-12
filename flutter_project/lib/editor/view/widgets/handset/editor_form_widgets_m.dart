@@ -48,10 +48,9 @@ class _NivedahnamFormTextState extends State<NivedahnamFormText> {
       mainAxisSize: MainAxisSize.max,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Text(widget.fieldName),
         Expanded(
           child: Align(
-            alignment: Alignment.centerRight,
+            alignment: Alignment.center,
             child: ConstrainedBox(
               constraints: BoxConstraints(maxWidth: 350),
               child: TextFormField(
@@ -92,6 +91,9 @@ class _NivedahnamFormTextState extends State<NivedahnamFormText> {
                       : _editorBloc
                           .add(FormEditedEvent({widget.keyName: text}));
                 },
+                decoration: InputDecoration(
+                  labelText: widget.fieldName,
+                ),
               ),
             ),
           ),
@@ -118,89 +120,80 @@ class _NivedahnamFormTextState extends State<NivedahnamFormText> {
   }
 }
 
-class NivedhanamFormRadio extends StatefulWidget {
-  const NivedhanamFormRadio(
-      {Key? key, required this.fieldName, required this.keyName})
-      : super(key: key);
+class DropDownField extends StatefulWidget {
+  const DropDownField({
+    required this.choices,
+    Key? key,
+    required this.fieldName,
+  }) : super(key: key);
+  final List<String> choices;
   final String fieldName;
-  final String keyName;
 
   @override
-  _NivedhanamFormRadioState createState() => _NivedhanamFormRadioState();
+  _DropDownFieldState createState() => _DropDownFieldState();
 }
 
-class _NivedhanamFormRadioState extends State<NivedhanamFormRadio> {
-  bool? value = false;
-  late EditorBloc _editorBloc;
+class _DropDownFieldState extends State<DropDownField> {
+  String? dropdownValue;
   @override
   void initState() {
+    dropdownValue =
+        context.read<EditorBloc>().state.editorFormMap[widget.fieldName];
     super.initState();
-    _editorBloc = context.read<EditorBloc>();
-    value = _editorBloc.state.editorFormMap['reply_recieved'] == "true"
-        ? true
-        : false;
   }
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.max,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Text(widget.fieldName),
-        Expanded(
-          child: Align(
-            alignment: Alignment.centerRight,
-            child: ConstrainedBox(
-              constraints: BoxConstraints(maxWidth: 350),
-              child: Container(
-                decoration: BoxDecoration(
-                    border: Border(
-                  bottom: BorderSide(
-                      width: 2,
-                      style: BorderStyle.solid,
-                      color: Colors.grey.shade400),
-                )),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Expanded(
-                      child: ListTile(
-                        title: const Text('Yes'),
-                        leading: Radio(
-                            value: true,
-                            groupValue: value,
-                            onChanged: (bool? _) {
-                              _editorBloc.add(FormEditedEvent(
-                                  {widget.keyName: _.toString()}));
-                              setState(() {
-                                value = _;
-                              });
-                            }),
-                      ),
-                    ),
-                    Expanded(
-                      child: ListTile(
-                        title: const Text('No'),
-                        leading: Radio(
-                            value: false,
-                            groupValue: value,
-                            onChanged: (bool? _) {
-                              _editorBloc.add(FormEditedEvent(
-                                  {widget.keyName: _.toString()}));
-                              setState(() {
-                                value = _;
-                              });
-                            }),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+    return Center(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 8),
+            child: Text(
+              widget.fieldName,
+              textScaleFactor: 0.9,
+              style: TextStyle(color: Colors.grey),
             ),
           ),
-        )
-      ],
+          ConstrainedBox(
+            constraints: BoxConstraints(
+              maxWidth: 350,
+            ),
+            child: DropdownButton<String>(
+              underline: Container(
+                height: 1.5,
+                color: Colors.grey,
+              ),
+              isDense: false,
+              isExpanded: true,
+              value: dropdownValue,
+              icon: const Icon(Icons.expand_more),
+              iconSize: 24,
+              elevation: 16,
+              onChanged: (String? newValue) {
+                context
+                    .read<EditorBloc>()
+                    .add(FormEditedEvent({widget.fieldName: newValue ?? ""}));
+                setState(() {
+                  dropdownValue = newValue!;
+                });
+              },
+              hint: Text(
+                "Select ${widget.fieldName}",
+                style: TextStyle(color: Colors.grey),
+              ),
+              items:
+                  widget.choices.map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+            ),
+          )
+        ],
+      ),
     );
   }
 }

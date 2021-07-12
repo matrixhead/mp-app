@@ -49,11 +49,18 @@ class CustomGridTileM extends StatelessWidget {
   Widget build(BuildContext context) {
     return GridTile(
       child: Padding(
-        padding: const EdgeInsets.only(left: 8),
+        padding: const EdgeInsets.only(left: 10),
         child: Align(
           alignment: Alignment.centerLeft,
           child: InkWell(
-            onTap: () {},
+            onTap: () async {
+              context.read<HomeBloc>().add(AddNivedhanamToRecent(nivedhanam));
+              final result = await Navigator.pushNamed(context, '/editor',
+                  arguments: nivedhanam);
+              if (result == true) {
+                context.read<HomeBloc>().add(RefreshNivedhanamEvent());
+              }
+            },
             child: Material(
               color: Colors.black87,
               borderRadius: BorderRadius.all(Radius.circular(10.0)),
@@ -98,7 +105,7 @@ class CustomGridTileM extends StatelessWidget {
                     ),
                   ],
                 ),
-                width: 160,
+                width: 170,
                 height: 100,
               ),
             ),
@@ -111,7 +118,7 @@ class CustomGridTileM extends StatelessWidget {
           color: Colors.grey,
         ),
         title: Text(
-          nivedhanam.name,
+          toBeginningOfSentenceCase(nivedhanam.name) ?? "",
           style: TextStyle(color: Colors.black87),
         ),
         trailing: IconButton(

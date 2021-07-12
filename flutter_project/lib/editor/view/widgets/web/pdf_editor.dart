@@ -141,6 +141,7 @@ class Actions extends StatelessWidget {
                           onPressed: () async {
                             FilePickerResult? result = await FilePicker.platform
                                 .pickFiles(
+                                    withData: true,
                                     allowCompression: true,
                                     allowMultiple: true,
                                     type: FileType.image);
