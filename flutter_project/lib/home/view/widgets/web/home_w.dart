@@ -66,8 +66,11 @@ class RecentlyOpened extends StatelessWidget {
                 itemCount: state.recent.recentNivedhanams.length,
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (context, index) {
-                  return RecentTile(
-                      nivedhanam: state.recent.recentNivedhanams[index]);
+                  return AbsorbPointer(
+                    absorbing: state.status == NivedhanamStatus.initial,
+                    child: RecentTile(
+                        nivedhanam: state.recent.recentNivedhanams[index]),
+                  );
                 },
               )),
             );

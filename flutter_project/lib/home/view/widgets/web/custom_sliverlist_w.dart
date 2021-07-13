@@ -53,10 +53,13 @@ class _CustomPageViewState extends State<CustomPageView> {
                 : null);
     return pageNumber >= (_homeBloc.state.nivedhanams.length / nPerView).ceil()
         ? BottomLoaderW()
-        : ListView(
-            children: currentpagenivedhanam
-                .map<Widget>((nivedhanam) => CustomListTileW(nivedhanam))
-                .toList());
+        : Scrollbar(
+            isAlwaysShown: true,
+            child: ListView(
+                children: currentpagenivedhanam
+                    .map<Widget>((nivedhanam) => CustomListTileW(nivedhanam))
+                    .toList()),
+          );
   }
 
   @override

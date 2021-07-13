@@ -123,11 +123,11 @@ class PdfEditordialogM extends StatelessWidget {
                           textStyle: const TextStyle(fontSize: 20),
                         ),
                         onPressed: () async {
-                          FilePickerResult? result =
-                              await FilePicker.platform.pickFiles(
-                            allowCompression: true,
-                            allowMultiple: false,
-                          );
+                          FilePickerResult? result = await FilePicker.platform
+                              .pickFiles(
+                                  allowCompression: true,
+                                  allowMultiple: false,
+                                  withData: true);
                           if (result != null) {
                             Navigator.pop(context, result.files.single.bytes);
                           }

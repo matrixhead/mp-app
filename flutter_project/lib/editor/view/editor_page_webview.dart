@@ -98,56 +98,71 @@ class _NivedhanamFormState extends State<NivedhanamForm> {
             key: _formKey,
             child: BlocBuilder<EditorBloc, EditorState>(
               builder: (context, state) {
-                return ListView(
-                  children: [
-                    NivedahnamFormText(fieldName: "Name", keyName: "name"),
-                    NivedahnamFormText(
-                      fieldName: "Address",
-                      keyName: 'address',
+                return Scrollbar(
+                  isAlwaysShown: true,
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 12.0),
+                    child: ScrollConfiguration(
+                      behavior: ScrollConfiguration.of(context)
+                          .copyWith(scrollbars: false),
+                      child: ListView(
+                        children: [
+                          NivedahnamFormText(
+                              fieldName: "Name", keyName: "name"),
+                          NivedahnamFormText(
+                            fieldName: "Address",
+                            keyName: 'address',
+                          ),
+                          NivedahnamFormText(
+                            fieldName: "Pincode",
+                            numberField: true,
+                            keyName: 'pincode',
+                          ),
+                          NivedahnamFormText(
+                            fieldName: "Mobile",
+                            numberField: true,
+                            keyName: 'mobile',
+                          ),
+                          NivedahnamFormText(
+                            fieldName: "Letter number",
+                            numberField: true,
+                            keyName: 'letterno',
+                          ),
+                          NivedahnamFormText(
+                              fieldName: "Date",
+                              dateField: true,
+                              keyName: 'date'),
+                          DropDownField(
+                            choices: ["recieved", "processing", "approved"],
+                            fieldName: 'status',
+                          ),
+                          NivedahnamFormText(
+                            fieldName: "Amount sanctioned",
+                            numberField: true,
+                            keyName: 'amount_sanctioned',
+                          ),
+                          NivedahnamFormText(
+                            fieldName: "Date sanctioned",
+                            dateField: true,
+                            keyName: 'date_sanctioned',
+                          ),
+                          NivedahnamFormText(
+                            fieldName: "remarks",
+                            keyName: 'remarks',
+                          ),
+                          DropDownField(
+                            choices: state.categories
+                                .map((e) => e.categoryName)
+                                .toList(),
+                            fieldName: 'Category',
+                          ),
+                          if (state.editorFormMap['Category'] != null)
+                            ...buildCategoryFields(
+                                state.editorFormMap['Category'])
+                        ],
+                      ),
                     ),
-                    NivedahnamFormText(
-                      fieldName: "Pincode",
-                      numberField: true,
-                      keyName: 'pincode',
-                    ),
-                    NivedahnamFormText(
-                      fieldName: "Mobile",
-                      numberField: true,
-                      keyName: 'mobile',
-                    ),
-                    NivedahnamFormText(
-                      fieldName: "Letter number",
-                      numberField: true,
-                      keyName: 'letterno',
-                    ),
-                    NivedahnamFormText(
-                        fieldName: "Date", dateField: true, keyName: 'date'),
-                    DropDownField(
-                      choices: ["recieved", "processing", "approved"],
-                      fieldName: 'status',
-                    ),
-                    NivedahnamFormText(
-                      fieldName: "Amount sanctioned",
-                      numberField: true,
-                      keyName: 'amount_sanctioned',
-                    ),
-                    NivedahnamFormText(
-                      fieldName: "Date sanctioned",
-                      dateField: true,
-                      keyName: 'date_sanctioned',
-                    ),
-                    NivedahnamFormText(
-                      fieldName: "remarks",
-                      keyName: 'remarks',
-                    ),
-                    DropDownField(
-                      choices:
-                          state.categories.map((e) => e.categoryName).toList(),
-                      fieldName: 'Category',
-                    ),
-                    if (state.editorFormMap['Category'] != null)
-                      ...buildCategoryFields(state.editorFormMap['Category'])
-                  ],
+                  ),
                 );
               },
             ),

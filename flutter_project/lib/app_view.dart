@@ -18,6 +18,8 @@ class _AppViewState extends State<AppView> {
       theme: ThemeData(
         fontFamily: "Open Sans",
         accentColor: Colors.grey,
+        scrollbarTheme: ScrollbarThemeData()
+            .copyWith(thumbColor: MaterialStateProperty.all(Colors.grey[500])),
         colorScheme: ColorScheme.fromSwatch(
             accentColor: Colors.grey,
             primarySwatch: Colors.grey,

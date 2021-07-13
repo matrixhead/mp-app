@@ -47,11 +47,12 @@ class _ScanViewState extends State<ScanView> {
             return Stack(
               children: [
                 PdfView(
+                  physics: NeverScrollableScrollPhysics(),
                   errorBuilder: (o) {
                     return Center(
                       child: Icon(
                         Icons.document_scanner_outlined,
-                        color: Colors.grey.withAlpha(30),
+                        color: Colors.grey.withAlpha(40),
                         size: 500,
                       ),
                     );

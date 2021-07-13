@@ -16,7 +16,7 @@ class Login extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  "Welcome to sdfsdf",
+                  "Welcome to Kottayam Mp office.",
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
@@ -25,7 +25,7 @@ class Login extends StatelessWidget {
                 ),
                 SizedBox(height: 10),
                 Text(
-                  "Omnis vero quo dolor quia. Et sint excepturi qui. Ex voluptatem quas sint suscipit eius inventore. Dolores et quo enim. Omnis accusantium autem qui architecto perspiciatis a. ",
+                  "If you want to know the status of your nivedhanam, click on the button below.",
                   style: TextStyle(
                     color: Colors.white,
                   ),
@@ -34,7 +34,7 @@ class Login extends StatelessWidget {
                 SizedBox(height: 10),
                 OutlinedButton(
                   onPressed: () => {},
-                  child: Text("Know more"),
+                  child: Text("Track nivedhanam"),
                   style: OutlinedButton.styleFrom(
                       primary: Colors.white,
                       shape: StadiumBorder(),
