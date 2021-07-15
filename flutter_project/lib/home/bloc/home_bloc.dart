@@ -76,7 +76,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         return state.copyWith(
           status: NivedhanamStatus.success,
           nivedhanams: nivedhanams,
-          hasReachedMax: false,
+          hasReachedMax: nivedhanams.length < nivedhanamLimit,
         );
       }
       final nivedhanams = await nivedhanamRepository.fetchNivedhanam(

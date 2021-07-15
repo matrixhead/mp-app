@@ -38,7 +38,7 @@ class _CustomScrollViewMState extends State<CustomScrollViewM> {
       controller: _scrollController,
       slivers: [
         CustomSliverAppBarM(),
-        // SliverPersistentHeader(delegate: CustomFilter()),
+        SliverPersistentHeader(delegate: CustomFilter()),
         CustomSliverGridM(_scrollController)
       ],
     );

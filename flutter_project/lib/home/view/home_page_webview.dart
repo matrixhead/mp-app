@@ -117,17 +117,6 @@ class _ListState extends State<List> {
                       duration: Duration(milliseconds: 100),
                       curve: Curves.easeIn),
                 ),
-                BlocBuilder<HomeBloc, HomeState>(
-                  builder: (context, state) {
-                    return Visibility(
-                      visible: state.searchString == "",
-                      child: Text(_pageController.hasClients
-                          ? _pageController.page.toString()
-                          : ""),
-                    );
-                  },
-                ),
-                // Pagenumber(_pageController),
                 SortButton()
               ],
             ),

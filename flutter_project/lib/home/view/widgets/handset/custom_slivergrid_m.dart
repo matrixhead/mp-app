@@ -17,8 +17,9 @@ class CustomSliverGridM extends StatelessWidget {
         return SliverGrid(
           delegate: gridItemBuilderM(state),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-          ),
+              mainAxisSpacing: 5,
+              crossAxisCount: 2,
+              childAspectRatio: 16 / 12.5),
         );
       },
     );
@@ -49,9 +50,9 @@ class CustomGridTileM extends StatelessWidget {
   Widget build(BuildContext context) {
     return GridTile(
       child: Padding(
-        padding: const EdgeInsets.only(left: 10),
+        padding: const EdgeInsets.only(left: 10, top: 8),
         child: Align(
-          alignment: Alignment.centerLeft,
+          alignment: Alignment.topLeft,
           child: InkWell(
             onTap: () async {
               context.read<HomeBloc>().add(AddNivedhanamToRecent(nivedhanam));
@@ -112,22 +113,25 @@ class CustomGridTileM extends StatelessWidget {
           ),
         ),
       ),
-      footer: GridTileBar(
-        leading: Icon(
-          Icons.description,
-          color: Colors.grey,
-        ),
-        title: Text(
-          toBeginningOfSentenceCase(nivedhanam.name) ?? "",
-          style: TextStyle(color: Colors.black87),
-        ),
-        trailing: IconButton(
-          splashColor: Colors.black87,
-          icon: Icon(
-            Icons.more_vert,
+      footer: Padding(
+        padding: const EdgeInsets.only(left: 4),
+        child: GridTileBar(
+          leading: Icon(
+            Icons.description,
             color: Colors.grey,
           ),
-          onPressed: () {},
+          title: Text(
+            toBeginningOfSentenceCase(nivedhanam.name) ?? "",
+            style: TextStyle(color: Colors.black87),
+          ),
+          trailing: IconButton(
+            splashColor: Colors.black87,
+            icon: Icon(
+              Icons.more_vert,
+              color: Colors.grey,
+            ),
+            onPressed: () {},
+          ),
         ),
       ),
     );

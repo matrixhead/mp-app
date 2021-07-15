@@ -99,8 +99,8 @@ class _SeachBoxState extends State<SeachBox> {
   @override
   void initState() {
     _textEditingController = TextEditingController();
-    super.initState();
     _textEditingController.text = context.read<HomeBloc>().state.searchString;
+    super.initState();
   }
 
   @override
@@ -129,21 +129,26 @@ class _SeachBoxState extends State<SeachBox> {
                 ),
               ),
               Expanded(
-                child: TextField(
-                  cursorColor: Colors.grey,
-                  keyboardType: TextInputType.text,
-                  textInputAction: TextInputAction.go,
-                  controller: _textEditingController,
-                  decoration: InputDecoration(
-                      border: InputBorder.none,
-                      contentPadding: EdgeInsets.symmetric(horizontal: 15),
-                      hintText: "Search"),
-                  onSubmitted: (text) {
-                    context.read<HomeBloc>().add(SearchEditedEvent(text));
+                child: BlocListener<HomeBloc, HomeState>(
+                  listener: (context, state) {
+                    _textEditingController.text = state.searchString;
                   },
-                  onChanged: (_) {
-                    setState(() {});
-                  },
+                  child: TextField(
+                    cursorColor: Colors.grey,
+                    keyboardType: TextInputType.text,
+                    textInputAction: TextInputAction.go,
+                    controller: _textEditingController,
+                    decoration: InputDecoration(
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.symmetric(horizontal: 15),
+                        hintText: "Search"),
+                    onSubmitted: (text) {
+                      context.read<HomeBloc>().add(SearchEditedEvent(text));
+                    },
+                    onChanged: (_) {
+                      setState(() {});
+                    },
+                  ),
                 ),
               ),
               if (_textEditingController.text.isNotEmpty) ...[
