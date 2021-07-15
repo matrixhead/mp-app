@@ -1,6 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:mpapp/home/bloc/home_bloc.dart';
+import 'package:mpapp/home/view/widgets/handset/fab_m.dart';
+import 'package:mpapp/home/view/widgets/handset/home_m.dart';
 import 'widgets/handset/home_widgets_m.dart';
 
 class HomePageHandsetView extends StatelessWidget {
@@ -10,8 +12,34 @@ class HomePageHandsetView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: CustomScrollViewM(),
+    return BlocBuilder<HomeBloc, HomeState>(
+      buildWhen: (current, next) {
+        return current.navigationRailindex != next.navigationRailindex;
+      },
+      builder: (context, state) {
+        return Scaffold(
+            floatingActionButton: FabM(),
+            body:
+                state.navigationRailindex == 0 ? HomeM() : CustomScrollViewM(),
+            bottomNavigationBar: BottomNavigationBar(
+                items: const <BottomNavigationBarItem>[
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.home),
+                    label: 'Home',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.description),
+                    label: 'List',
+                  ),
+                ],
+                currentIndex: state.navigationRailindex,
+                selectedItemColor: Colors.black87,
+                onTap: (index) {
+                  context
+                      .read<HomeBloc>()
+                      .add(NavigationRailIndexChangedEvent(index));
+                }));
+      },
     );
   }
 }

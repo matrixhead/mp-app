@@ -63,9 +63,9 @@ class CustomGridTileM extends StatelessWidget {
               }
             },
             child: Material(
-              color: Colors.black87,
+              color: Colors.grey.shade100,
               borderRadius: BorderRadius.all(Radius.circular(10.0)),
-              elevation: 4,
+              elevation: 2,
               child: Container(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -75,7 +75,7 @@ class CustomGridTileM extends StatelessWidget {
                       padding: const EdgeInsets.only(left: 8, bottom: 4),
                       child: Text(
                         "Letter no:" + nivedhanam.letterno.toString(),
-                        style: TextStyle(color: Colors.grey),
+                        style: TextStyle(color: Colors.black),
                         textAlign: TextAlign.center,
                         textScaleFactor: 1.2,
                         overflow: TextOverflow.fade,
@@ -86,7 +86,7 @@ class CustomGridTileM extends StatelessWidget {
                       padding: const EdgeInsets.only(left: 8, bottom: 4),
                       child: Text(
                         "Submitted on:" + nivedhanam.date,
-                        style: TextStyle(color: Colors.grey),
+                        style: TextStyle(color: Colors.black),
                         textAlign: TextAlign.center,
                         textScaleFactor: .7,
                         overflow: TextOverflow.fade,
@@ -97,7 +97,7 @@ class CustomGridTileM extends StatelessWidget {
                       padding: const EdgeInsets.only(left: 8, bottom: 4),
                       child: Text(
                         "Status:" + nivedhanam.status,
-                        style: TextStyle(color: Colors.grey),
+                        style: TextStyle(color: Colors.black),
                         textAlign: TextAlign.center,
                         textScaleFactor: .7,
                         overflow: TextOverflow.fade,

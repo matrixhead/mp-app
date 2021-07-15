@@ -103,15 +103,51 @@ class RecentTile extends StatelessWidget {
             borderRadius: BorderRadius.all(Radius.circular(10.0)),
             elevation: 5,
             child: Container(
-              child: Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    toBeginningOfSentenceCase(nivedhanam.name) ?? "",
-                    textAlign: TextAlign.center,
-                    textScaleFactor: 1.2,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8, bottom: 4),
+                    child: Text(
+                      nivedhanam.name,
+                      style: TextStyle(color: Colors.black),
+                      textScaleFactor: 1.2,
+                      overflow: TextOverflow.fade,
+                      maxLines: 2,
+                    ),
                   ),
-                ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8, bottom: 4),
+                    child: Text(
+                      "Letter no:" + nivedhanam.letterno.toString(),
+                      style: TextStyle(color: Colors.black),
+                      textScaleFactor: .7,
+                      overflow: TextOverflow.fade,
+                      maxLines: 2,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8, bottom: 4),
+                    child: Text(
+                      "Submitted on:" + nivedhanam.date,
+                      style: TextStyle(color: Colors.black),
+                      textScaleFactor: .7,
+                      overflow: TextOverflow.fade,
+                      maxLines: 1,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8, bottom: 4),
+                    child: Text(
+                      "Status:" + nivedhanam.status,
+                      style: TextStyle(color: Colors.black),
+                      textScaleFactor: .7,
+                      overflow: TextOverflow.fade,
+                      maxLines: 1,
+                    ),
+                  ),
+                ],
               ),
               width: 120,
               height: 165,
