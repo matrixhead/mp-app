@@ -100,11 +100,11 @@ class _SeachBoxState extends State<SeachBox> {
   void initState() {
     _textEditingController = TextEditingController();
     super.initState();
+    _textEditingController.text = context.read<HomeBloc>().state.searchString;
   }
 
   @override
   Widget build(BuildContext context) {
-    _textEditingController.text = context.read<HomeBloc>().state.searchString;
     return Expanded(
       flex: 1,
       child: Padding(
@@ -141,8 +141,24 @@ class _SeachBoxState extends State<SeachBox> {
                   onSubmitted: (text) {
                     context.read<HomeBloc>().add(SearchEditedEvent(text));
                   },
+                  onChanged: (_) {
+                    setState(() {});
+                  },
                 ),
               ),
+              if (_textEditingController.text.isNotEmpty) ...[
+                IconButton(
+                  color: Colors.grey,
+                  splashColor: Colors.grey[600],
+                  icon: Icon(Icons.cancel_rounded),
+                  onPressed: () {
+                    _textEditingController.text = "";
+                    context
+                        .read<HomeBloc>()
+                        .add(SearchEditedEvent(_textEditingController.text));
+                  },
+                ),
+              ]
             ],
           ),
         ),

@@ -14,15 +14,20 @@ from rest_framework import status
 
 
 
+
 class NivedhanamViewSet(viewsets.ModelViewSet):
     queryset = Nivedhanam.objects.all()
     serializer_class = NivedhanamSerializer
     filter_backends = [DjangoFilterBackend, OrderingFilter]
     filterset_fields = {
         'name': ['icontains'],
-        'Category':['exact']
+        'Category':['exact'],
+        'address':['icontains'],
+        "pincode":['exact'],
+        "letterno":['exact'],
+        "mobile":["exact"],
         }
-    ordering_fields = '__all__'
+    ordering_fields = ["SI_no"]
     permission_classes = [IsAuthenticated]
 
     @action(methods=['get'], detail=False)

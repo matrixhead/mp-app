@@ -44,6 +44,7 @@ class _CustomPageViewState extends State<CustomPageView> {
   }
 
   Widget pageBuilder(context, pageNumber) {
+    ScrollController _scroll = ScrollController();
     late List<Nivedhanam> currentpagenivedhanam = _homeBloc.state.nivedhanams
         .sublist(
             pageNumber * nPerView,
@@ -54,8 +55,10 @@ class _CustomPageViewState extends State<CustomPageView> {
     return pageNumber >= (_homeBloc.state.nivedhanams.length / nPerView).ceil()
         ? BottomLoaderW()
         : Scrollbar(
+            controller: _scroll,
             isAlwaysShown: true,
             child: ListView(
+                controller: _scroll,
                 children: currentpagenivedhanam
                     .map<Widget>((nivedhanam) => CustomListTileW(nivedhanam))
                     .toList()),
@@ -135,29 +138,52 @@ class CustomListTileW extends StatelessWidget {
             child: Text(
               toBeginningOfSentenceCase(nivedhanam.name) ?? "",
               style: TextStyle(fontWeight: FontWeight.w600),
+              textScaleFactor: 1.1,
+              overflow: TextOverflow.fade,
             ),
           ),
           Expanded(
             flex: 3,
             child: Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisSize: MainAxisSize.max,
               children: [
                 Expanded(
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisSize: MainAxisSize.max,
                     children: [
                       Text(
                         toBeginningOfSentenceCase(nivedhanam.address) ?? "",
                         style: TextStyle(fontWeight: FontWeight.w600),
+                        textScaleFactor: 1.1,
+                        overflow: TextOverflow.fade,
                       ),
-                      Text("-" + nivedhanam.remarks!)
                     ],
                   ),
                 ),
-                Text(
-                  nivedhanam.date,
-                  style: TextStyle(fontWeight: FontWeight.w600),
+                Expanded(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Text(
+                        "-" + nivedhanam.remarks!,
+                        textScaleFactor: 1.1,
+                        overflow: TextOverflow.fade,
+                      ),
+                      Expanded(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text(
+                              nivedhanam.date,
+                              style: TextStyle(fontWeight: FontWeight.w600),
+                              textScaleFactor: 1.1,
+                              overflow: TextOverflow.fade,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 )
               ],
             ),

@@ -73,60 +73,68 @@ class _EditorPageHandsetViewState extends State<EditorPageHandsetView> {
                         return Form(
                           key: _formKey,
                           child: SliverList(
-                              delegate: SliverChildListDelegate([
-                            NivedahnamFormText(
-                                fieldName: "Name", keyName: "name"),
-                            NivedahnamFormText(
-                              fieldName: "Address",
-                              keyName: 'address',
-                            ),
-                            NivedahnamFormText(
-                              fieldName: "Pincode",
-                              numberField: true,
-                              keyName: 'pincode',
-                            ),
-                            NivedahnamFormText(
-                              fieldName: "Mobile",
-                              numberField: true,
-                              keyName: 'mobile',
-                            ),
-                            NivedahnamFormText(
-                              fieldName: "Letter number",
-                              numberField: true,
-                              keyName: 'letterno',
-                            ),
-                            NivedahnamFormText(
+                              delegate: SliverChildListDelegate(
+                            [
+                              NivedahnamFormText(
+                                  fieldName: "Name", keyName: "name"),
+                              NivedahnamFormText(
+                                fieldName: "Address",
+                                keyName: 'address',
+                                nullable: true,
+                              ),
+                              NivedahnamFormText(
+                                fieldName: "Pincode",
+                                numberField: true,
+                                keyName: 'pincode',
+                                nullable: true,
+                              ),
+                              NivedahnamFormText(
+                                fieldName: "Mobile",
+                                numberField: true,
+                                keyName: 'mobile',
+                                nullable: true,
+                              ),
+                              NivedahnamFormText(
+                                fieldName: "Letter number",
+                                keyName: 'letterno',
+                              ),
+                              NivedahnamFormText(
                                 fieldName: "Date",
                                 dateField: true,
-                                keyName: 'date'),
-                            DropDownField(
-                              choices: ["recieved", "processing", "approved"],
-                              fieldName: 'status',
-                            ),
-                            NivedahnamFormText(
-                              fieldName: "Amount sanctioned",
-                              numberField: true,
-                              keyName: 'amount_sanctioned',
-                            ),
-                            NivedahnamFormText(
-                              fieldName: "Date sanctioned",
-                              dateField: true,
-                              keyName: 'date_sanctioned',
-                            ),
-                            NivedahnamFormText(
-                              fieldName: "remarks",
-                              keyName: 'remarks',
-                            ),
-                            DropDownField(
-                              choices: state.categories
-                                  .map((e) => e.categoryName)
-                                  .toList(),
-                              fieldName: 'Category',
-                            ),
-                            if (state.editorFormMap['Category'] != null)
-                              ...buildCategoryFields(
-                                  state.editorFormMap['Category'])
-                          ])),
+                                keyName: 'date',
+                              ),
+                              DropDownField(
+                                choices: ["recieved", "processing", "approved"],
+                                fieldName: 'status',
+                              ),
+                              NivedahnamFormText(
+                                fieldName: "Amount sanctioned",
+                                numberField: true,
+                                keyName: 'amount_sanctioned',
+                                nullable: true,
+                              ),
+                              NivedahnamFormText(
+                                fieldName: "Date sanctioned",
+                                dateField: true,
+                                keyName: 'date_sanctioned',
+                                nullable: true,
+                              ),
+                              NivedahnamFormText(
+                                fieldName: "remarks",
+                                keyName: 'remarks',
+                                nullable: true,
+                              ),
+                              DropDownField(
+                                choices: state.categories
+                                    .map((e) => e.categoryName)
+                                    .toList(),
+                                fieldName: 'Category',
+                              ),
+                              if (state.editorFormMap['Category'] != null)
+                                ...buildCategoryFields(
+                                    state.editorFormMap['Category'])
+                            ],
+                          )),
                         );
                       },
                     )
@@ -214,6 +222,7 @@ class _EditorPageHandsetViewState extends State<EditorPageHandsetView> {
           fieldName: key,
           keyName: key,
           categoryField: true,
+          nullable: true,
         ));
       } else if (value == 'Number') {
         categoryFields.add(NivedahnamFormText(
@@ -221,6 +230,7 @@ class _EditorPageHandsetViewState extends State<EditorPageHandsetView> {
           numberField: true,
           keyName: key,
           categoryField: true,
+          nullable: true,
         ));
       } else if (value == 'Date') {
         categoryFields.add(NivedahnamFormText(
@@ -228,6 +238,7 @@ class _EditorPageHandsetViewState extends State<EditorPageHandsetView> {
           dateField: true,
           keyName: key,
           categoryField: true,
+          nullable: true,
         ));
       }
     });
@@ -284,7 +295,6 @@ class _NivedhanamFormState extends State<NivedhanamForm> {
                     ),
                     NivedahnamFormText(
                       fieldName: "Letter number",
-                      numberField: true,
                       keyName: 'letterno',
                     ),
                     NivedahnamFormText(

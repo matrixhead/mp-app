@@ -3,18 +3,18 @@ import 'package:equatable/equatable.dart';
 class Nivedhanam extends Equatable {
   Nivedhanam.fromJson(Map<String, dynamic> json)
       : siNo = json['SI_no'],
-        categoryfields = json['categoryfields'],
+        categoryfields = json['categoryfields'] ?? {},
         id = json['_id'],
         name = json['name'],
-        address = json['address'],
-        pincode = json['pincode'],
+        address = json['address'] ?? "",
+        pincode = json['pincode'] ?? "",
         letterno = json['letterno'],
         date = json['date'],
-        mobile = json['mobile'],
+        mobile = json['mobile'] ?? "",
         status = json['status'],
         amountSanctioned = json['amount_sanctioned'],
-        dateSanctioned = json['date_sanctioned'],
-        remarks = json['remarks'],
+        dateSanctioned = json['date_sanctioned'] ?? "",
+        remarks = json['remarks'] ?? "",
         category = json['Category'];
 
   final int siNo;
@@ -22,8 +22,8 @@ class Nivedhanam extends Equatable {
   final String id;
   final String name;
   final String? address;
-  final int? pincode;
-  final int letterno;
+  final String? pincode;
+  final String letterno;
   final String date;
   final String? mobile;
   final String status;
@@ -39,8 +39,8 @@ class Nivedhanam extends Equatable {
       "_id": this.id.toString(),
       "name": this.name,
       "address": this.address,
-      "pincode": this.pincode.toString(),
-      "letterno": this.letterno.toString(),
+      "pincode": this.pincode,
+      "letterno": this.letterno,
       "date": this.date,
       "mobile": this.mobile,
       "status": this.status,

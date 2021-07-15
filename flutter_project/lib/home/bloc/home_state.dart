@@ -9,6 +9,7 @@ class HomeState extends Equatable {
     this.categories = const <Category>[],
     this.hasReachedMax = false,
     this.searchString = "",
+    this.orderingString = "-SI_no",
     this.navigationRailindex = 0,
     this.overview = const {},
     this.recent = const Recent(const []),
@@ -18,29 +19,32 @@ class HomeState extends Equatable {
   final bool hasReachedMax;
   final NivedhanamStatus status;
   final String searchString;
+  final String orderingString;
   final int navigationRailindex;
   final Map overview;
   final Recent recent;
 
-  HomeState copyWith(
-      {List<Category>? categories,
-      NivedhanamStatus? status,
-      List<Nivedhanam>? nivedhanams,
-      bool? hasReachedMax,
-      String? searchString,
-      int? navigationRailindex,
-      Map? overview,
-      Recent? recent}) {
+  HomeState copyWith({
+    List<Category>? categories,
+    NivedhanamStatus? status,
+    List<Nivedhanam>? nivedhanams,
+    bool? hasReachedMax,
+    String? searchString,
+    int? navigationRailindex,
+    Map? overview,
+    Recent? recent,
+    String? orderingString,
+  }) {
     return HomeState(
-      recent: recent ?? this.recent,
-      navigationRailindex: navigationRailindex ?? this.navigationRailindex,
-      searchString: searchString ?? this.searchString,
-      status: status ?? this.status,
-      nivedhanams: nivedhanams ?? this.nivedhanams,
-      hasReachedMax: hasReachedMax ?? this.hasReachedMax,
-      categories: categories ?? this.categories,
-      overview: overview ?? this.overview,
-    );
+        recent: recent ?? this.recent,
+        navigationRailindex: navigationRailindex ?? this.navigationRailindex,
+        searchString: searchString ?? this.searchString,
+        status: status ?? this.status,
+        nivedhanams: nivedhanams ?? this.nivedhanams,
+        hasReachedMax: hasReachedMax ?? this.hasReachedMax,
+        categories: categories ?? this.categories,
+        overview: overview ?? this.overview,
+        orderingString: orderingString ?? this.orderingString);
   }
 
   @override
@@ -52,7 +56,8 @@ class HomeState extends Equatable {
         searchString,
         navigationRailindex,
         overview,
-        recent
+        recent,
+        orderingString
       ];
 
   @override

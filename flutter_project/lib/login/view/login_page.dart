@@ -4,47 +4,7 @@ import 'package:mpapp/login/login.dart';
 import 'package:mpapp/data_layer/authentication_repository/authentication_repository.dart';
 
 class Login extends StatelessWidget {
-  final left = Expanded(
-    child: Container(
-        decoration: BoxDecoration(color: Colors.black),
-        child: Center(
-          child: Container(
-            padding: EdgeInsets.only(left: 20, right: 20),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  "Welcome to Kottayam Mp office.",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textScaleFactor: 2,
-                ),
-                SizedBox(height: 10),
-                Text(
-                  "If you want to know the status of your nivedhanam, click on the button below.",
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
-                  textScaleFactor: 1,
-                ),
-                SizedBox(height: 10),
-                OutlinedButton(
-                  onPressed: () => {},
-                  child: Text("Track nivedhanam"),
-                  style: OutlinedButton.styleFrom(
-                      primary: Colors.white,
-                      shape: StadiumBorder(),
-                      side: BorderSide(width: 1, color: Colors.white)),
-                )
-              ],
-            ),
-          ),
-        )),
-  );
+  final left = Left();
 
   final right = Expanded(
     child: Container(
@@ -88,6 +48,57 @@ class Login extends StatelessWidget {
           right,
         ]),
       ),
+    );
+  }
+}
+
+class Left extends StatelessWidget {
+  const Left({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Container(
+          decoration: BoxDecoration(color: Colors.black),
+          child: Center(
+            child: Container(
+              padding: EdgeInsets.only(left: 20, right: 20),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    "Welcome to Kottayam Mp office.",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textScaleFactor: 2,
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    "If you want to know the status of your nivedhanam, click on the button below.",
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                    textScaleFactor: 1,
+                  ),
+                  SizedBox(height: 10),
+                  OutlinedButton(
+                    onPressed: () => {Navigator.pushNamed(context, '/public')},
+                    child: Text("Track nivedhanam"),
+                    style: OutlinedButton.styleFrom(
+                        primary: Colors.white,
+                        shape: StadiumBorder(),
+                        side: BorderSide(width: 1, color: Colors.white)),
+                  )
+                ],
+              ),
+            ),
+          )),
     );
   }
 }

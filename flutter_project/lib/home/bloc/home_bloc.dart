@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mpapp/data_layer/authentication_repository/authentication.dart';
+import 'package:mpapp/data_layer/exceptions.dart';
 import 'package:mpapp/data_layer/nivedhanam_repository/models/category_model.dart';
 import 'package:mpapp/data_layer/nivedhanam_repository/models/recent_model.dart';
 import 'package:mpapp/data_layer/nivedhanam_repository/nivedhanam.dart';
@@ -58,6 +59,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       yield await fetchRecentEvenToState(event);
     } else if (event is AddNivedhanamToRecent) {
       yield addNivedhanamToRecentToState(event);
+    } else if (event is OrderingChanged) {
+      yield orderingChanged(event);
     }
   }
 
@@ -66,6 +69,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     try {
       if (state.status == NivedhanamStatus.initial) {
         final nivedhanams = await nivedhanamRepository.fetchNivedhanam(
+            orderingquery: state.orderingString,
             searchquery: state.searchString,
             postLimit: nivedhanamLimit,
             token: authenticationRepository.getUser.token);
@@ -76,6 +80,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         );
       }
       final nivedhanams = await nivedhanamRepository.fetchNivedhanam(
+          orderingquery: state.orderingString,
           searchquery: state.searchString,
           startIndex: state.nivedhanams.length,
           postLimit: nivedhanamLimit,
@@ -87,6 +92,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
               nivedhanams: List.of(state.nivedhanams)..addAll(nivedhanams),
               hasReachedMax: nivedhanams.length < nivedhanamLimit,
             );
+    } on AuthException {
+      authenticationRepository.logOut();
+      return state.copyWith(status: NivedhanamStatus.failure);
     } on Exception {
       return state.copyWith(status: NivedhanamStatus.failure);
     }
@@ -112,6 +120,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeState searchEditedToState(event) {
     this.add(RefreshNivedhanamEvent());
     return state.copyWith(searchString: event.input, navigationRailindex: 1);
+  }
+
+  HomeState orderingChanged(event) {
+    this.add(RefreshNivedhanamEvent());
+    return state.copyWith(orderingString: event.value);
   }
 
   HomeState navigationIndexChangedToState(event) {

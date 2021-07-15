@@ -12,8 +12,9 @@ class NivedahnamFormText extends StatefulWidget {
     this.dateField = false,
     this.categoryField = false,
     required this.keyName,
+    this.nullable = false,
   }) : super(key: key);
-
+  final bool nullable;
   final String fieldName;
   final String keyName;
   final bool numberField;
@@ -39,7 +40,10 @@ class _NivedahnamFormTextState extends State<NivedahnamFormText> {
                     [widget.keyName] ??
                 ""
             : ""
-        : _editorBloc.state.editorFormMap[widget.keyName] ?? "";
+        : _editorBloc.state.editorFormMap[widget.keyName] == "null" ||
+                _editorBloc.state.editorFormMap[widget.keyName] == null
+            ? ""
+            : _editorBloc.state.editorFormMap[widget.keyName];
   }
 
   @override
@@ -55,12 +59,14 @@ class _NivedahnamFormTextState extends State<NivedahnamFormText> {
             child: ConstrainedBox(
               constraints: BoxConstraints(maxWidth: 350),
               child: TextFormField(
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter ' + widget.fieldName;
-                  }
-                  return null;
-                },
+                validator: widget.nullable
+                    ? (value) => null
+                    : (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter ' + widget.fieldName;
+                        }
+                        return null;
+                      },
                 readOnly: widget.dateField ? true : false,
                 controller: _textEditingController,
                 onTap: widget.dateField

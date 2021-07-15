@@ -1,6 +1,6 @@
-import 'dart:collection';
 import 'dart:convert';
 import 'dart:typed_data';
+import 'package:mpapp/data_layer/exceptions.dart';
 import 'package:mpapp/data_layer/nivedhanam_repository/models/category_model.dart';
 import 'package:mpapp/data_layer/nivedhanam_repository/models/nivedhanam_model.dart';
 import 'package:http/http.dart' as http;
@@ -13,18 +13,19 @@ class NivedhanamRepository {
 
   NivedhanamRepository() : httpClient = http.Client();
 
-  Future<List<Nivedhanam>> fetchNivedhanam({
-    required int postLimit,
-    int startIndex = 0,
-    required String token,
-    required String searchquery,
-  }) async {
+  Future<List<Nivedhanam>> fetchNivedhanam(
+      {required int postLimit,
+      int startIndex = 0,
+      required String token,
+      required String searchquery,
+      required String orderingquery}) async {
     Uri uri = Uri.http(
       url,
       '/api/nivedhanams/',
       <String, String>{
         'limit': '$postLimit',
         'offset': '$startIndex',
+        'ordering': orderingquery
       }..addAll(parseSearchquery(searchquery)),
     );
     Map<String, String> headers = {'Authorization': 'Token $token'};
@@ -36,7 +37,8 @@ class NivedhanamRepository {
           .map<Nivedhanam>((json) => Nivedhanam.fromJson(json))
           .toList();
     }
-    throw Exception('error fetching posts');
+    if (response.reasonPhrase == "Unauthorized") throw AuthException();
+    throw Exception();
   }
 
   Future<void> createNivedhanam(
@@ -147,6 +149,25 @@ class NivedhanamRepository {
         });
       } else if (splittedFilter.length == 1) {
         queryMap.addAll({"name__icontains": splittedFilter[0]});
+      } else if (splittedFilter[0] == 'pincode') {
+        queryMap.addAll({
+          "pincode":
+              splittedFilter.length > 1 ? splittedFilter.elementAt(1) : ""
+        });
+      } else if (splittedFilter[0] == 'address') {
+        queryMap.addAll({
+          "address":
+              splittedFilter.length > 1 ? splittedFilter.elementAt(1) : ""
+        });
+      } else if (splittedFilter[0] == 'letterno') {
+        queryMap.addAll({
+          "letterno":
+              splittedFilter.length > 1 ? splittedFilter.elementAt(1) : ""
+        });
+      } else if (splittedFilter[0] == 'mobile') {
+        queryMap.addAll({
+          "mobile": splittedFilter.length > 1 ? splittedFilter.elementAt(1) : ""
+        });
       }
     });
     return queryMap;

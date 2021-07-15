@@ -98,8 +98,9 @@ class _ListState extends State<List> {
                 color: Colors.grey, width: .3, style: BorderStyle.solid),
           ),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.only(left: 20),
             child: Row(
+              mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 IconButton(
@@ -116,12 +117,119 @@ class _ListState extends State<List> {
                       duration: Duration(milliseconds: 100),
                       curve: Curves.easeIn),
                 ),
+                BlocBuilder<HomeBloc, HomeState>(
+                  builder: (context, state) {
+                    return Visibility(
+                      visible: state.searchString == "",
+                      child: Text(_pageController.hasClients
+                          ? _pageController.page.toString()
+                          : ""),
+                    );
+                  },
+                ),
+                // Pagenumber(_pageController),
+                SortButton()
               ],
             ),
           ),
         ),
         Expanded(child: CustomPageView(_pageController)),
       ],
+    );
+  }
+}
+
+// class Pagenumber extends StatefulWidget {
+//   const Pagenumber(this.pageController, {Key? key}) : super(key: key);
+//   final PageController pageController;
+//   @override
+//   _PagenumberState createState() => _PagenumberState();
+// }
+
+// class _PagenumberState extends State<Pagenumber> {
+//   double? currentPage;
+//   @override
+//   void initState() {
+//     widget.pageController.addListener(() {
+//       if (widget.pageController.hasClients) {
+//         currentPage = widget.pageController.page;
+//       }
+//       setState(() {});
+//     });
+
+//     super.initState();
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return BlocBuilder<HomeBloc, HomeState>(
+//       builder: (context, state) {
+//         return Visibility(
+//           visible: state.searchString == "",
+//           child: Text(currentPage.toString()),
+//         );
+//       },
+//     );
+//   }
+// }
+
+class SortButton extends StatefulWidget {
+  const SortButton({Key? key}) : super(key: key);
+
+  @override
+  _SortButtonState createState() => _SortButtonState();
+}
+
+class _SortButtonState extends State<SortButton> {
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Container(
+            height: 25,
+            width: 120,
+            child: BlocBuilder<HomeBloc, HomeState>(
+              builder: (context, state) {
+                return DropdownButton<String>(
+                    underline: Container(),
+                    isDense: true,
+                    isExpanded: true,
+                    icon: Icon(
+                      Icons.ac_unit,
+                      color: Colors.transparent,
+                    ),
+                    value: state.orderingString,
+                    elevation: 16,
+                    onChanged: (String? newValue) {
+                      context
+                          .read<HomeBloc>()
+                          .add(OrderingChanged(newValue ?? "-SI_no"));
+
+                      setState(() {});
+                    },
+                    hint: Text(
+                      "Select ",
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                    items: [
+                      DropdownMenuItem(
+                        child: Text(
+                          "newest first",
+                        ),
+                        value: '-SI_no',
+                      ),
+                      DropdownMenuItem(
+                        child: Text("oldest first"),
+                        value: 'SI_no',
+                      )
+                    ]);
+              },
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

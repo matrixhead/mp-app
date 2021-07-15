@@ -25,8 +25,8 @@ class Nivedhanam(models.Model):
     SI_no = models.AutoField(primary_key=True)
     name = models.CharField(max_length=200)
     address = models.TextField(null=True)
-    pincode = models.IntegerField(null=True,default=0);
-    letterno = models.IntegerField()
+    pincode = models.TextField(null=True,default="");
+    letterno = models.TextField()
     date = models.DateField()
     mobile = models.TextField(null=True,default="")
     status = models.CharField(
@@ -39,6 +39,7 @@ class Nivedhanam(models.Model):
     remarks = models.TextField(null=True)
     Category = models.ForeignKey(Category,on_delete=models.PROTECT,null=True)
     categoryfields = models.JSONField(default={},null=True)
+    objects = models.DjongoManager()
 
 
     

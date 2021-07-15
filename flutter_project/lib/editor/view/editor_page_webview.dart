@@ -112,26 +112,29 @@ class _NivedhanamFormState extends State<NivedhanamForm> {
                           NivedahnamFormText(
                             fieldName: "Address",
                             keyName: 'address',
+                            nullable: true,
                           ),
                           NivedahnamFormText(
                             fieldName: "Pincode",
                             numberField: true,
                             keyName: 'pincode',
+                            nullable: true,
                           ),
                           NivedahnamFormText(
                             fieldName: "Mobile",
                             numberField: true,
                             keyName: 'mobile',
+                            nullable: true,
                           ),
                           NivedahnamFormText(
                             fieldName: "Letter number",
-                            numberField: true,
                             keyName: 'letterno',
                           ),
                           NivedahnamFormText(
-                              fieldName: "Date",
-                              dateField: true,
-                              keyName: 'date'),
+                            fieldName: "Date",
+                            dateField: true,
+                            keyName: 'date',
+                          ),
                           DropDownField(
                             choices: ["recieved", "processing", "approved"],
                             fieldName: 'status',
@@ -140,15 +143,18 @@ class _NivedhanamFormState extends State<NivedhanamForm> {
                             fieldName: "Amount sanctioned",
                             numberField: true,
                             keyName: 'amount_sanctioned',
+                            nullable: true,
                           ),
                           NivedahnamFormText(
                             fieldName: "Date sanctioned",
                             dateField: true,
                             keyName: 'date_sanctioned',
+                            nullable: true,
                           ),
                           NivedahnamFormText(
                             fieldName: "remarks",
                             keyName: 'remarks',
+                            nullable: true,
                           ),
                           DropDownField(
                             choices: state.categories
@@ -245,6 +251,7 @@ class _NivedhanamFormState extends State<NivedhanamForm> {
           fieldName: key,
           keyName: key,
           categoryField: true,
+          nullable: true,
         ));
       } else if (value == 'Number') {
         categoryFields.add(NivedahnamFormText(
@@ -252,6 +259,7 @@ class _NivedhanamFormState extends State<NivedhanamForm> {
           numberField: true,
           keyName: key,
           categoryField: true,
+          nullable: true,
         ));
       } else if (value == 'Date') {
         categoryFields.add(NivedahnamFormText(
@@ -259,6 +267,7 @@ class _NivedhanamFormState extends State<NivedhanamForm> {
           dateField: true,
           keyName: key,
           categoryField: true,
+          nullable: true,
         ));
       }
     });

@@ -19,6 +19,13 @@ class SearchEditedEvent extends HomeEvent {
   List<Object> get props => [input];
 }
 
+class OrderingChanged extends HomeEvent {
+  const OrderingChanged(this.value);
+  final String value;
+  @override
+  List<Object> get props => [value];
+}
+
 class NavigationRailIndexChangedEvent extends HomeEvent {
   const NavigationRailIndexChangedEvent(this.index);
   final int index;
