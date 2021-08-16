@@ -70,7 +70,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       if (state.status == NivedhanamStatus.initial) {
         final nivedhanams = await nivedhanamRepository.fetchNivedhanam(
             orderingquery: state.orderingString,
-            searchquery: state.searchString,
+            searchquery: parseSearchquery(state.searchString),
             postLimit: nivedhanamLimit,
             token: authenticationRepository.getUser.token);
         return state.copyWith(
@@ -81,7 +81,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       }
       final nivedhanams = await nivedhanamRepository.fetchNivedhanam(
           orderingquery: state.orderingString,
-          searchquery: state.searchString,
+          searchquery: parseSearchquery(state.searchString),
           startIndex: state.nivedhanams.length,
           postLimit: nivedhanamLimit,
           token: authenticationRepository.getUser.token);
@@ -171,5 +171,48 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         .toList());
 
     return newState;
+  }
+
+  Map<String, String> parseSearchquery(String searchquery) {
+    Map<String, String> queryMap = {};
+    final filterList = searchquery.split(";");
+    filterList.forEach((element) {
+      final splittedFilter = element.split(":");
+      if (splittedFilter[0] == 'category') {
+        final categoryname = splittedFilter.length > 1 ? splittedFilter.elementAt(1) : "";
+        final Category category = 
+          state
+          .categories
+          .firstWhere(
+              (element) =>
+                  element.categoryName == categoryname,
+              orElse: () => Category("", {}, 0));
+        queryMap.addAll({
+          "Category":category.categoryId.toString()
+        });
+      } else if (splittedFilter.length == 1) {
+        queryMap.addAll({"name__icontains": splittedFilter[0]});
+      } else if (splittedFilter[0] == 'pincode') {
+        queryMap.addAll({
+          "pincode":
+              splittedFilter.length > 1 ? splittedFilter.elementAt(1) : ""
+        });
+      } else if (splittedFilter[0] == 'address') {
+        queryMap.addAll({
+          "address":
+              splittedFilter.length > 1 ? splittedFilter.elementAt(1) : ""
+        });
+      } else if (splittedFilter[0] == 'letterno') {
+        queryMap.addAll({
+          "letterno":
+              splittedFilter.length > 1 ? splittedFilter.elementAt(1) : ""
+        });
+      } else if (splittedFilter[0] == 'mobile') {
+        queryMap.addAll({
+          "mobile": splittedFilter.length > 1 ? splittedFilter.elementAt(1) : ""
+        });
+      }
+    });
+    return queryMap;
   }
 }

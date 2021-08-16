@@ -30,7 +30,7 @@ class Nivedhanam extends Equatable {
   final double? amountSanctioned;
   final String? dateSanctioned;
   final String? remarks;
-  final String? category;
+  final int? category;
 
   Map<String, dynamic> toMap() {
     return {
@@ -47,7 +47,7 @@ class Nivedhanam extends Equatable {
       "amount_sanctioned": this.amountSanctioned.toString(),
       "date_sanctioned": this.dateSanctioned.toString(),
       "remarks": this.remarks,
-      'Category': this.category
+      'Category': this.category?.toString()
     };
   }
 

@@ -47,7 +47,7 @@ class _CustomSliverAppBarMState extends State<CustomSliverAppBarM> {
                     decoration: InputDecoration(
                         border: InputBorder.none,
                         contentPadding: EdgeInsets.symmetric(horizontal: 15),
-                        hintText: "Search"),
+                        hintText: 'Search eg: "letterno:11"'),
                     onSubmitted: (text) {
                       context.read<HomeBloc>().add(SearchEditedEvent(text));
                     },

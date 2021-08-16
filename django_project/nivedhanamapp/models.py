@@ -2,16 +2,15 @@ import uuid
 import sys
 from djongo import models
 from djongo.storage import GridFSStorage
-from PIL import Image
-from io import BytesIO
-from django.core.files.uploadedfile import InMemoryUploadedFile
+
 
 grid_fs_storage = GridFSStorage(collection='scan_collection', base_url='scan_collection/')
 
 
 
 class Category(models.Model):
-     category_name = models.CharField(primary_key=True,max_length=100)
+     category_id = models.AutoField(primary_key=True)
+     category_name = models.CharField(max_length=100,unique=True)
      categoryfields = models.JSONField(default={})
      objects = models.DjongoManager()
 
@@ -25,7 +24,7 @@ class Nivedhanam(models.Model):
     SI_no = models.AutoField(primary_key=True)
     name = models.CharField(max_length=200)
     address = models.TextField(null=True)
-    pincode = models.TextField(null=True,default="");
+    pincode = models.TextField(null=True,default="")
     letterno = models.TextField()
     date = models.DateField()
     mobile = models.TextField(null=True,default="")

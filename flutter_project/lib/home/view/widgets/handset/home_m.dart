@@ -6,6 +6,7 @@ import 'package:mpapp/home/bloc/home_bloc.dart';
 import 'package:mpapp/home/view/widgets/handset/add_dialog_m.dart';
 
 import 'appbar_m.dart';
+import 'category_editor_m.dart';
 
 class HomeM extends StatelessWidget {
   const HomeM({Key? key}) : super(key: key);
@@ -328,11 +329,22 @@ class CategoryListTileM extends StatelessWidget {
                   maxLines: 1,
                 ),
               ),
-              IconButton(onPressed: () {}, icon: Icon(Icons.more_horiz))
+              IconButton(onPressed: () async {
+                    final result = await showDialog(
+                        context: context, builder: _categoryEditorDialogue);
+                    if(result==true){
+                       context
+                .read<HomeBloc>()
+                .add(RefreshNivedhanamEvent());
+                    }
+                  }, icon: Icon(Icons.more_horiz))
             ],
           ),
         ),
       ),
     );
+  }
+   Widget _categoryEditorDialogue(BuildContext context) {
+    return CategoryEditorM(category);
   }
 }

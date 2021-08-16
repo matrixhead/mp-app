@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:mpapp/editor/bloc/editor_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mpapp/data_layer/nivedhanam_repository/models/category_model.dart';
+
 
 class NivedahnamFormText extends StatefulWidget {
   const NivedahnamFormText({
@@ -140,12 +142,27 @@ class DropDownField extends StatefulWidget {
 }
 
 class _DropDownFieldState extends State<DropDownField> {
-  String? dropdownValue;
-  @override
-  void initState() {
-    dropdownValue =
-        context.read<EditorBloc>().state.editorFormMap[widget.fieldName];
-    super.initState();
+  String? getDropDownValue() {
+    String? dropdownValue;
+    if (widget.fieldName == "Category") {
+      final Category category = context
+          .read<EditorBloc>()
+          .state
+          .categories
+          .firstWhere(
+              (element) =>
+                  element.categoryId ==
+                  int.parse(context
+                      .read<EditorBloc>()
+                      .state
+                      .editorFormMap[widget.fieldName]??"0"),
+              orElse: () => Category("", {}, 0));
+      dropdownValue = category.categoryId == 0 ? null : category.categoryName;
+    } else {
+      dropdownValue =
+          context.read<EditorBloc>().state.editorFormMap[widget.fieldName];
+    }
+    return dropdownValue;
   }
 
   @override
@@ -173,17 +190,26 @@ class _DropDownFieldState extends State<DropDownField> {
               ),
               isDense: false,
               isExpanded: true,
-              value: dropdownValue,
+              value: getDropDownValue(),
               icon: const Icon(Icons.expand_more),
               iconSize: 24,
               elevation: 16,
               onChanged: (String? newValue) {
-                context
-                    .read<EditorBloc>()
-                    .add(FormEditedEvent({widget.fieldName: newValue ?? ""}));
-                setState(() {
-                  dropdownValue = newValue!;
-                });
+                if (widget.fieldName == "Category") {
+                    final Category category = context
+                        .read<EditorBloc>()
+                        .state
+                        .categories
+                        .firstWhere(
+                            (element) =>
+                                element.categoryName == newValue,
+                            orElse: () => Category("", {}, 0));
+                  context.read<EditorBloc>().add(
+                        FormEditedEvent({widget.fieldName: category.categoryId.toString()}));
+                  } else {
+                    context.read<EditorBloc>().add(
+                        FormEditedEvent({widget.fieldName: newValue ?? ""}));
+                  }
               },
               hint: Text(
                 "Select ${widget.fieldName}",

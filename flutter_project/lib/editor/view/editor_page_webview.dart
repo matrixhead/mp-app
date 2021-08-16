@@ -236,18 +236,19 @@ class _NivedhanamFormState extends State<NivedhanamForm> {
     );
   }
 
-  List<Widget> buildCategoryFields(String? categoryname) {
+  List<Widget> buildCategoryFields(String? categoryid) {
     final Category category = context
         .read<EditorBloc>()
         .state
         .categories
-        .firstWhere((element) => element.categoryName == categoryname,
-            orElse: () => Category("", {}));
+        .firstWhere((element) => element.categoryId == int.parse(categoryid??"0"),
+            orElse: () => Category("", {},0));
 
     List<Widget> categoryFields = [];
     category.categoryFields.forEach((key, value) {
       if (value == 'Text') {
         categoryFields.add(NivedahnamFormText(
+          key: ValueKey(key),
           fieldName: key,
           keyName: key,
           categoryField: true,
@@ -255,6 +256,7 @@ class _NivedhanamFormState extends State<NivedhanamForm> {
         ));
       } else if (value == 'Number') {
         categoryFields.add(NivedahnamFormText(
+          key: ValueKey(key),
           fieldName: key,
           numberField: true,
           keyName: key,
@@ -263,6 +265,7 @@ class _NivedhanamFormState extends State<NivedhanamForm> {
         ));
       } else if (value == 'Date') {
         categoryFields.add(NivedahnamFormText(
+          key: ValueKey(key),
           fieldName: key,
           dateField: true,
           keyName: key,

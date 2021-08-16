@@ -17,7 +17,7 @@ class NivedhanamRepository {
       {required int postLimit,
       int startIndex = 0,
       required String token,
-      required String searchquery,
+      required Map<String,String> searchquery,
       required String orderingquery}) async {
     Uri uri = Uri.http(
       url,
@@ -26,7 +26,7 @@ class NivedhanamRepository {
         'limit': '$postLimit',
         'offset': '$startIndex',
         'ordering': orderingquery
-      }..addAll(parseSearchquery(searchquery)),
+      }..addAll(searchquery),
     );
     Map<String, String> headers = {'Authorization': 'Token $token'};
 
@@ -67,6 +67,8 @@ class NivedhanamRepository {
     Uri uri = Uri.http(url, '/api/nivedhanams/$siNo/');
     Map<String, String> headers = {'Authorization': 'Token $token'};
     final response = await http.put(uri, body: nivedhanamMap, headers: headers);
+    final a =jsonDecode(response.body);
+    print(a);
     if (response.statusCode == 200) {
       if (pdf != null) {
         uploadscans(pdf, token, siNo);
@@ -137,41 +139,7 @@ class NivedhanamRepository {
     }
   }
 
-  Map<String, String> parseSearchquery(String searchquery) {
-    Map<String, String> queryMap = {};
-    final filterList = searchquery.split(";");
-    filterList.forEach((element) {
-      final splittedFilter = element.split(":");
-      if (splittedFilter[0] == 'category') {
-        queryMap.addAll({
-          "Category":
-              splittedFilter.length > 1 ? splittedFilter.elementAt(1) : ""
-        });
-      } else if (splittedFilter.length == 1) {
-        queryMap.addAll({"name__icontains": splittedFilter[0]});
-      } else if (splittedFilter[0] == 'pincode') {
-        queryMap.addAll({
-          "pincode":
-              splittedFilter.length > 1 ? splittedFilter.elementAt(1) : ""
-        });
-      } else if (splittedFilter[0] == 'address') {
-        queryMap.addAll({
-          "address":
-              splittedFilter.length > 1 ? splittedFilter.elementAt(1) : ""
-        });
-      } else if (splittedFilter[0] == 'letterno') {
-        queryMap.addAll({
-          "letterno":
-              splittedFilter.length > 1 ? splittedFilter.elementAt(1) : ""
-        });
-      } else if (splittedFilter[0] == 'mobile') {
-        queryMap.addAll({
-          "mobile": splittedFilter.length > 1 ? splittedFilter.elementAt(1) : ""
-        });
-      }
-    });
-    return queryMap;
-  }
+  
 
   Future<Map> fetchOverview(token) async {
     Map<String, String> headers = {'Authorization': 'Token $token'};
@@ -196,5 +164,28 @@ class NivedhanamRepository {
   void saveSIToSP(List<String> list) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setStringList("sino", list);
+  }
+
+  Future<int> deletecategory(int categoryId) async{
+    Uri uri = Uri.http(url, '/api/category/${categoryId.toString()}/');
+    final response = await httpClient.delete(uri);
+    if (response.statusCode==500){
+      return 3;
+    }
+    else if(response.statusCode==204){
+      return 0;
+    }
+    return 1;
+  }
+
+  Future<int> updatecategory(String name, String categoryId) async{
+    Uri uri = Uri.http(url, '/api/category/$categoryId/');
+    final body = {"category_name":name};
+    final response = await http.put(uri, body: body,);
+    if (response.statusCode==200)
+    {
+      return 0;
+    }
+    return 1;
   }
 }

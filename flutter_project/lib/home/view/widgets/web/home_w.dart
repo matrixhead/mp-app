@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:mpapp/data_layer/nivedhanam_repository/models/category_model.dart';
 import 'package:mpapp/data_layer/nivedhanam_repository/nivedhanam_repository.dart';
 import 'package:mpapp/home/bloc/home_bloc.dart';
 import 'add_dialog.dart';
+import 'category_editor_w.dart';
 
 class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);
@@ -377,11 +377,25 @@ class CategoryGridTile extends StatelessWidget {
                   maxLines: 1,
                 ),
               ),
-              IconButton(onPressed: () {}, icon: Icon(Icons.more_horiz))
+              IconButton(
+                  onPressed: () async {
+                    final result = await showDialog(
+                        context: context, builder: _categoryEditorDialogue);
+                    if(result==true){
+                       context
+                .read<HomeBloc>()
+                .add(RefreshNivedhanamEvent());
+                    }
+                  },
+                  icon: Icon(Icons.more_horiz))
             ],
           ),
         ),
       ),
     );
+  }
+
+  Widget _categoryEditorDialogue(BuildContext context) {
+    return CategoryEditor(category);
   }
 }

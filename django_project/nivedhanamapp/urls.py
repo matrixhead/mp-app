@@ -13,5 +13,5 @@ router.register(r'category', views.CategoryViewSet)
 
 urlpatterns =[
     path('',include(router.urls)),
-    # path('scanupload/',views.scanupload),
+    path('uuid/',views.uuidlookup),
 ]

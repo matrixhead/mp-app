@@ -6,7 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter
 from rest_framework.response import Response
-from rest_framework.decorators import action 
+from rest_framework.decorators import action, api_view 
 from django.db.models import Count
 from rest_framework import status
 
@@ -27,7 +27,7 @@ class NivedhanamViewSet(viewsets.ModelViewSet):
         "letterno":['exact'],
         "mobile":["exact"],
         }
-    ordering_fields = ["SI_no"]
+    ordering_fields = ["SI_no","Category",'name','address',"pincode","letterno"]
     permission_classes = [IsAuthenticated]
 
     @action(methods=['get'], detail=False)
@@ -68,23 +68,15 @@ class ScanViewSet(viewsets.ModelViewSet):
         return Response(response)
 
 
-# @api_view(['POST'])
-# def scanupload(request):
-#     if request.method == 'POST':
-#         serializer_class = ScanUploadSerializer(data=request.data)
-#         serializer_class.is_valid()
-#         serializer_class.save()
-#         response = "sucessful"
-#         return Response(response)
+@api_view(['GET'])
+def uuidlookup(request):
+    if request.method == 'GET':
+        uuid=request.query_params.get('uuid')
+        status = Nivedhanam.objects.filter(_id=uuid).first().status
+        response = "successful"
+        return Response(status)
 
-# class ScanViewSet(viewsets.ViewSet):
-#     queryset = Scan.objects.all()
-#     def create(self, request):
-#         serializer_class = ScanUploadSerializer(data=request.data)
-#         serializer_class.is_valid()
-#         serializer_class.save()
-#         response = "sucessful"
-#         return Response(response)
+
 
 
 

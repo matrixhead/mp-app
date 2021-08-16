@@ -38,6 +38,7 @@ dependencies:
   file_picker: ^3.0.2+2
   pdf: ^3.4.2
   native_pdf_view: ^4.1.0
+  permission_handler: ^8.1.4+2
 
 dev_dependencies:
   flutter_test:

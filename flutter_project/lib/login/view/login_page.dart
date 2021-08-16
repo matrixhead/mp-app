@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mpapp/login/login.dart';
 import 'package:mpapp/data_layer/authentication_repository/authentication_repository.dart';
+import 'package:mpapp/login/view/widgets/public.dart';
 
 class Login extends StatelessWidget {
   final left = Left();
@@ -88,7 +89,10 @@ class Left extends StatelessWidget {
                   ),
                   SizedBox(height: 10),
                   OutlinedButton(
-                    onPressed: () => {Navigator.pushNamed(context, '/public')},
+                    onPressed: () async {
+                      await showDialog(
+                          context: context, builder: _publicDialog);
+                    },
                     child: Text("Track nivedhanam"),
                     style: OutlinedButton.styleFrom(
                         primary: Colors.white,
@@ -100,5 +104,9 @@ class Left extends StatelessWidget {
             ),
           )),
     );
+  }
+
+  Widget _publicDialog(BuildContext context) {
+    return Public();
   }
 }
