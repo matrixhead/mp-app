@@ -133,59 +133,47 @@ class CustomListTileW extends StatelessWidget {
         ],
       ),
       title: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Expanded(
             child: Text(
               toBeginningOfSentenceCase(nivedhanam.name) ?? "",
               style: TextStyle(fontWeight: FontWeight.w600),
               textScaleFactor: 1.1,
-              overflow: TextOverflow.fade,
+              overflow: TextOverflow.visible,
+              maxLines: 1,
             ),
           ),
           Expanded(
-            flex: 3,
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Expanded(
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Text(
-                        toBeginningOfSentenceCase(nivedhanam.address) ?? "",
-                        style: TextStyle(fontWeight: FontWeight.w600),
-                        textScaleFactor: 1.1,
-                        overflow: TextOverflow.fade,
-                      ),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Text(
-                        "-" + nivedhanam.remarks!,
-                        textScaleFactor: 1.1,
-                        overflow: TextOverflow.fade,
-                      ),
-                      Expanded(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Text(
-                              nivedhanam.date,
-                              style: TextStyle(fontWeight: FontWeight.w600),
-                              textScaleFactor: 1.1,
-                              overflow: TextOverflow.fade,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                )
-              ],
+            child: Text(
+              toBeginningOfSentenceCase(nivedhanam.address) ?? "",
+              style: TextStyle(fontWeight: FontWeight.w600),
+              overflow: TextOverflow.visible,
+              maxLines: 1,
+            ),
+          ),
+          Expanded(
+            child: Text(
+              "-" + nivedhanam.remarks!,
+              textScaleFactor: 1.1,
+              overflow: TextOverflow.visible,
+              maxLines: 1,
+            ),
+          ),
+          Expanded(
+            child: Text(
+              nivedhanam.status,
+              style: TextStyle(fontWeight: FontWeight.w600),
+              overflow: TextOverflow.visible,
+              maxLines: 1,
+            ),
+          ),
+          Expanded(
+            child: Text(
+              nivedhanam.date,
+              style: TextStyle(fontWeight: FontWeight.w600),
+              overflow: TextOverflow.visible,
+              maxLines: 1,
             ),
           )
         ],

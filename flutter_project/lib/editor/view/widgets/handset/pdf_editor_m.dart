@@ -166,6 +166,14 @@ class FilesList extends StatelessWidget {
           title: Text(
             context.read<PdfCubit>().state.files[index].name,
           ),
+          leading: IconButton(
+              onPressed: () {
+                context.read<PdfCubit>().onRemove(index);
+              },
+              icon: Icon(
+                Icons.remove_circle_outline,
+                color: Colors.black,
+              )),
         );
       },
       itemCount: context.read<PdfCubit>().state.files.length,

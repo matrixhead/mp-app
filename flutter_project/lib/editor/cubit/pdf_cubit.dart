@@ -55,4 +55,10 @@ class PdfCubit extends Cubit<PdfState> {
     });
     return await pdf.save();
   }
+
+  void onRemove(int index) {
+    final List<PlatformFile> fileList = List.from(state.files);
+    fileList.removeAt(index);
+    emit(state.copyWith(files: fileList));
+  }
 }

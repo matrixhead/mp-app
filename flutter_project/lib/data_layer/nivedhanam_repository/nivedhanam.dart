@@ -17,7 +17,7 @@ class NivedhanamRepository {
       {required int postLimit,
       int startIndex = 0,
       required String token,
-      required Map<String,String> searchquery,
+      required Map<String, String> searchquery,
       required String orderingquery}) async {
     Uri uri = Uri.http(
       url,
@@ -67,7 +67,7 @@ class NivedhanamRepository {
     Uri uri = Uri.http(url, '/api/nivedhanams/$siNo/');
     Map<String, String> headers = {'Authorization': 'Token $token'};
     final response = await http.put(uri, body: nivedhanamMap, headers: headers);
-    final a =jsonDecode(response.body);
+    final a = jsonDecode(response.body);
     print(a);
     if (response.statusCode == 200) {
       if (pdf != null) {
@@ -139,8 +139,6 @@ class NivedhanamRepository {
     }
   }
 
-  
-
   Future<Map> fetchOverview(token) async {
     Map<String, String> headers = {'Authorization': 'Token $token'};
     Uri uri = Uri.http(url, '/api/nivedhanams/overview/');
@@ -166,24 +164,25 @@ class NivedhanamRepository {
     prefs.setStringList("sino", list);
   }
 
-  Future<int> deletecategory(int categoryId) async{
+  Future<int> deletecategory(int categoryId) async {
     Uri uri = Uri.http(url, '/api/category/${categoryId.toString()}/');
     final response = await httpClient.delete(uri);
-    if (response.statusCode==500){
+    if (response.statusCode == 500) {
       return 3;
-    }
-    else if(response.statusCode==204){
+    } else if (response.statusCode == 204) {
       return 0;
     }
     return 1;
   }
 
-  Future<int> updatecategory(String name, String categoryId) async{
+  Future<int> updatecategory(String name, String categoryId) async {
     Uri uri = Uri.http(url, '/api/category/$categoryId/');
-    final body = {"category_name":name};
-    final response = await http.put(uri, body: body,);
-    if (response.statusCode==200)
-    {
+    final body = {"category_name": name};
+    final response = await http.put(
+      uri,
+      body: body,
+    );
+    if (response.statusCode == 200) {
       return 0;
     }
     return 1;

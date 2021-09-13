@@ -5,7 +5,6 @@ import 'package:mpapp/editor/bloc/editor_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mpapp/data_layer/nivedhanam_repository/models/category_model.dart';
 
-
 class NivedahnamFormText extends StatefulWidget {
   const NivedahnamFormText({
     Key? key,
@@ -15,6 +14,7 @@ class NivedahnamFormText extends StatefulWidget {
     this.categoryField = false,
     required this.keyName,
     this.nullable = false,
+    this.disabled = false,
   }) : super(key: key);
   final bool nullable;
   final String fieldName;
@@ -22,6 +22,7 @@ class NivedahnamFormText extends StatefulWidget {
   final bool numberField;
   final bool dateField;
   final bool categoryField;
+  final bool disabled;
 
   @override
   _NivedahnamFormTextState createState() => _NivedahnamFormTextState();
@@ -68,6 +69,7 @@ class _NivedahnamFormTextState extends State<NivedahnamFormText> {
                         }
                         return null;
                       },
+                enabled: !widget.disabled,
                 readOnly: widget.dateField ? true : false,
                 controller: _textEditingController,
                 onTap: widget.dateField
@@ -117,7 +119,7 @@ class _NivedahnamFormTextState extends State<NivedahnamFormText> {
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(2000),
-      lastDate: DateTime(2040),
+      lastDate: DateTime.now(),
     );
     final DateFormat formatter = DateFormat('yyyy-MM-dd');
     if (pickedDate != null) {
@@ -153,9 +155,10 @@ class _DropDownFieldState extends State<DropDownField> {
               (element) =>
                   element.categoryId ==
                   int.parse(context
-                      .read<EditorBloc>()
-                      .state
-                      .editorFormMap[widget.fieldName]??"0"),
+                          .read<EditorBloc>()
+                          .state
+                          .editorFormMap[widget.fieldName] ??
+                      "0"),
               orElse: () => Category("", {}, 0));
       dropdownValue = category.categoryId == 0 ? null : category.categoryName;
     } else {
@@ -196,20 +199,19 @@ class _DropDownFieldState extends State<DropDownField> {
               elevation: 16,
               onChanged: (String? newValue) {
                 if (widget.fieldName == "Category") {
-                    final Category category = context
-                        .read<EditorBloc>()
-                        .state
-                        .categories
-                        .firstWhere(
-                            (element) =>
-                                element.categoryName == newValue,
-                            orElse: () => Category("", {}, 0));
-                  context.read<EditorBloc>().add(
-                        FormEditedEvent({widget.fieldName: category.categoryId.toString()}));
-                  } else {
-                    context.read<EditorBloc>().add(
-                        FormEditedEvent({widget.fieldName: newValue ?? ""}));
-                  }
+                  final Category category = context
+                      .read<EditorBloc>()
+                      .state
+                      .categories
+                      .firstWhere((element) => element.categoryName == newValue,
+                          orElse: () => Category("", {}, 0));
+                  context.read<EditorBloc>().add(FormEditedEvent(
+                      {widget.fieldName: category.categoryId.toString()}));
+                } else {
+                  context
+                      .read<EditorBloc>()
+                      .add(FormEditedEvent({widget.fieldName: newValue ?? ""}));
+                }
               },
               hint: Text(
                 "Select ${widget.fieldName}",

@@ -229,7 +229,7 @@ class _SortButtonState extends State<SortButton> {
                         child: Text("name-dsc "),
                         value: '-name',
                       ),
-                       DropdownMenuItem(
+                      DropdownMenuItem(
                         child: Text("address-asc "),
                         value: 'address',
                       ),
@@ -252,6 +252,14 @@ class _SortButtonState extends State<SortButton> {
                       DropdownMenuItem(
                         child: Text("letterno-dsc"),
                         value: '-letterno',
+                      ),
+                      DropdownMenuItem(
+                        child: Text("status-asc"),
+                        value: 'status',
+                      ),
+                      DropdownMenuItem(
+                        child: Text("status-dsc"),
+                        value: '-status',
                       ),
                     ]);
               },

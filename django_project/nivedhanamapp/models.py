@@ -22,7 +22,7 @@ class Nivedhanam(models.Model):
          default = uuid.uuid4,
          editable = False)
     SI_no = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=200)
+    name = models.TextField()
     address = models.TextField(null=True)
     pincode = models.TextField(null=True,default="")
     letterno = models.TextField()

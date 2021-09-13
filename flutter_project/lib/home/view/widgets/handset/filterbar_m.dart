@@ -63,55 +63,63 @@ class _SortButtonState extends State<SortButton> {
             ),
             items: [
               DropdownMenuItem(
-                        child: Text(
-                          "newest first",
-                        ),
-                        value: '-SI_no',
-                      ),
-                      DropdownMenuItem(
-                        child: Text("oldest first"),
-                        value: 'SI_no',
-                      ),
-                      DropdownMenuItem(
-                        child: Text("category-asc "),
-                        value: 'Category',
-                      ),
-                      DropdownMenuItem(
-                        child: Text("category-dsc "),
-                        value: '-Category',
-                      ),
-                      DropdownMenuItem(
-                        child: Text("name-asc "),
-                        value: 'name',
-                      ),
-                      DropdownMenuItem(
-                        child: Text("name-dsc "),
-                        value: '-name',
-                      ),
-                       DropdownMenuItem(
-                        child: Text("address-asc "),
-                        value: 'address',
-                      ),
-                      DropdownMenuItem(
-                        child: Text("address-dsc "),
-                        value: '-address',
-                      ),
-                      DropdownMenuItem(
-                        child: Text("pincode-asc "),
-                        value: 'pincode',
-                      ),
-                      DropdownMenuItem(
-                        child: Text("pincode-dsc"),
-                        value: '-pincode',
-                      ),
-                      DropdownMenuItem(
-                        child: Text("letterno-asc"),
-                        value: 'letterno',
-                      ),
-                      DropdownMenuItem(
-                        child: Text("letterno-dsc"),
-                        value: '-letterno',
-                      ),
+                child: Text(
+                  "newest first",
+                ),
+                value: '-SI_no',
+              ),
+              DropdownMenuItem(
+                child: Text("oldest first"),
+                value: 'SI_no',
+              ),
+              DropdownMenuItem(
+                child: Text("category-asc "),
+                value: 'Category',
+              ),
+              DropdownMenuItem(
+                child: Text("category-dsc "),
+                value: '-Category',
+              ),
+              DropdownMenuItem(
+                child: Text("name-asc "),
+                value: 'name',
+              ),
+              DropdownMenuItem(
+                child: Text("name-dsc "),
+                value: '-name',
+              ),
+              DropdownMenuItem(
+                child: Text("address-asc "),
+                value: 'address',
+              ),
+              DropdownMenuItem(
+                child: Text("address-dsc "),
+                value: '-address',
+              ),
+              DropdownMenuItem(
+                child: Text("pincode-asc "),
+                value: 'pincode',
+              ),
+              DropdownMenuItem(
+                child: Text("pincode-dsc"),
+                value: '-pincode',
+              ),
+              DropdownMenuItem(
+                child: Text("letterno-asc"),
+                value: 'letterno',
+              ),
+              DropdownMenuItem(
+                child: Text("letterno-dsc"),
+                value: '-letterno',
+              ),
+              DropdownMenuItem(
+                child: Text("status-asc"),
+                value: 'status',
+              ),
+              DropdownMenuItem(
+                child: Text("status-dsc"),
+                value: '-status',
+              ),
             ]);
       },
     );

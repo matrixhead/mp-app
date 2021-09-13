@@ -72,33 +72,33 @@ class Left extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    "Welcome to Kottayam Mp office.",
+                    "Welcome to Kottayam MP office.",
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                     ),
                     textScaleFactor: 2,
                   ),
-                  SizedBox(height: 10),
-                  Text(
-                    "If you want to know the status of your nivedhanam, click on the button below.",
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                    textScaleFactor: 1,
-                  ),
-                  SizedBox(height: 10),
-                  OutlinedButton(
-                    onPressed: () async {
-                      await showDialog(
-                          context: context, builder: _publicDialog);
-                    },
-                    child: Text("Track nivedhanam"),
-                    style: OutlinedButton.styleFrom(
-                        primary: Colors.white,
-                        shape: StadiumBorder(),
-                        side: BorderSide(width: 1, color: Colors.white)),
-                  )
+                  // SizedBox(height: 10),
+                  // Text(
+                  //   "If you want to know the status of your nivedhanam, click on the button below.",
+                  //   style: TextStyle(
+                  //     color: Colors.white,
+                  //   ),
+                  //   textScaleFactor: 1,
+                  // ),
+                  // SizedBox(height: 10),
+                  // OutlinedButton(
+                  //   onPressed: () async {
+                  //     await showDialog(
+                  //         context: context, builder: _publicDialog);
+                  //   },
+                  //   child: Text("Track nivedhanam"),
+                  //   style: OutlinedButton.styleFrom(
+                  //       primary: Colors.white,
+                  //       shape: StadiumBorder(),
+                  //       side: BorderSide(width: 1, color: Colors.white)),
+                  // )
                 ],
               ),
             ),

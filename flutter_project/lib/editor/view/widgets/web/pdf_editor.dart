@@ -109,6 +109,14 @@ class FilesList extends StatelessWidget {
           title: Text(
             context.read<PdfCubit>().state.files[index].name,
           ),
+          leading: IconButton(
+              onPressed: () {
+                context.read<PdfCubit>().onRemove(index);
+              },
+              icon: Icon(
+                Icons.remove_circle_outline,
+                color: Colors.black,
+              )),
         );
       },
       itemCount: context.read<PdfCubit>().state.files.length,
@@ -212,7 +220,7 @@ class Actions extends StatelessWidget {
                   Navigator.pop(context, pdf);
                 },
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
                   child: Text("save",
                       style: TextStyle(
                           color: Colors.white, fontWeight: FontWeight.w500)),

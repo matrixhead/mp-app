@@ -27,7 +27,7 @@ class NivedhanamViewSet(viewsets.ModelViewSet):
         "letterno":['exact'],
         "mobile":["exact"],
         }
-    ordering_fields = ["SI_no","Category",'name','address',"pincode","letterno"]
+    ordering_fields = ["SI_no","Category",'name','address',"pincode","letterno","status"]
     permission_classes = [IsAuthenticated]
 
     @action(methods=['get'], detail=False)

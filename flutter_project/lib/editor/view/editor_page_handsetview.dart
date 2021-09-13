@@ -76,7 +76,11 @@ class _EditorPageHandsetViewState extends State<EditorPageHandsetView> {
                               delegate: SliverChildListDelegate(
                             [
                               NivedahnamFormText(
-                                  fieldName: "Name", keyName: "name"),
+                                fieldName: "Name",
+                                keyName: "name",
+                                disabled:
+                                    state.mode == Mode.update ? true : false,
+                              ),
                               NivedahnamFormText(
                                 fieldName: "Address",
                                 keyName: 'address',
@@ -97,11 +101,15 @@ class _EditorPageHandsetViewState extends State<EditorPageHandsetView> {
                               NivedahnamFormText(
                                 fieldName: "Letter number",
                                 keyName: 'letterno',
+                                disabled:
+                                    state.mode == Mode.update ? true : false,
                               ),
                               NivedahnamFormText(
                                 fieldName: "Date",
                                 dateField: true,
                                 keyName: 'date',
+                                disabled:
+                                    state.mode == Mode.update ? true : false,
                               ),
                               DropDownField(
                                 choices: ["recieved", "processing", "approved"],
@@ -212,8 +220,9 @@ class _EditorPageHandsetViewState extends State<EditorPageHandsetView> {
         .read<EditorBloc>()
         .state
         .categories
-        .firstWhere((element) => element.categoryId == int.parse(categoryid??"0"),
-            orElse: () => Category("", {},0));
+        .firstWhere(
+            (element) => element.categoryId == int.parse(categoryid ?? "0"),
+            orElse: () => Category("", {}, 0));
 
     List<Widget> categoryFields = [];
     category.categoryFields.forEach((key, value) {
